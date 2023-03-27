@@ -15,10 +15,6 @@ public class Member {
     private String email;
     private String password;
 
-    private String getName() {
-        return name;
-    }
-
     public Member() {
     }
 
@@ -41,6 +37,10 @@ public class Member {
         this.name = name;
     }
 
+
+    public String getName() {
+        return name;
+    }
     public String getNickName() {
         return nickName;
     }

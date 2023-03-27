@@ -24,22 +24,6 @@ public class MemberController {
     @GetMapping("member/new")
     public String signUp() {
         testService.test();
-//        Member member = new Member();
-//        member.setName("김태우");
-//        member.setEmail("rereers1125@naver.com");
-//        member.setPassword("taeu4616");
-//        member.setNickName("귀요미");
-//
-//        memberService.join(member);
-//
-//        Team team = new Team();
-//        team.setBody("asdasdas");
-//        team.setTitle("A팀");
-//        team.setName("fsdf");
-//        team.setTotal_num(4);
-//        team.setRecruited_num(0);
-//
-//        teamService.join(team);
 
         return "redirect:/";
     }

@@ -11,7 +11,7 @@ public class Team {
     @Column(name = "TEAM_ID")
     private long id;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<MemberTeam> memberTeams = new ArrayList<>();
 
     public List<MemberTeam> getMemberTeams() {

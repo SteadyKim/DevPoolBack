@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -21,5 +23,20 @@ public class MemberService {
         memberRepository.save(member);
 
         return member.getId();
+    }
+
+    //조회
+    @Transactional
+    public Member findOne(long memberId) {
+        Member findMember = memberRepository.findOneById(memberId);
+
+        return findMember;
+    }
+
+    @Transactional
+    public List<Member> findMembers() {
+        List<Member> members = memberRepository.findAll();
+
+        return members;
     }
 }

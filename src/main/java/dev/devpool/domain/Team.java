@@ -6,8 +6,7 @@ import java.util.List;
 
 @Entity
 public class Team {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TEAM_ID")
     private long id;
 
@@ -18,9 +17,6 @@ public class Team {
         return memberTeams;
     }
 
-    public void setMemberTeams(List<MemberTeam> memberTeams) {
-        this.memberTeams = memberTeams;
-    }
 
     private String name;
 

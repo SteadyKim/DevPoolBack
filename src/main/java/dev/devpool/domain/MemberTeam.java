@@ -6,7 +6,7 @@ import static javax.persistence.FetchType.*;
 
 @Entity
 public class MemberTeam {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(fetch = LAZY)

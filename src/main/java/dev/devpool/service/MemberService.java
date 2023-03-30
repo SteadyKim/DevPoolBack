@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
 
@@ -18,7 +19,6 @@ public class MemberService {
     }
 
     // 회원가입
-    @Transactional
     public long join(Member member) {
         memberRepository.save(member);
 
@@ -26,17 +26,27 @@ public class MemberService {
     }
 
     //조회
-    @Transactional
     public Member findOne(long memberId) {
         Member findMember = memberRepository.findOneById(memberId);
 
         return findMember;
     }
 
-    @Transactional
     public List<Member> findMembers() {
         List<Member> members = memberRepository.findAll();
 
         return members;
+    }
+
+    public void deleteById(long memberId) {
+    memberRepository.deleteById(memberId);
+    }
+
+    public void delete(Member member) {
+        memberRepository.delete(member);
+    }
+
+    public void deleteAll() {
+        memberRepository.deleteAll();
     }
 }

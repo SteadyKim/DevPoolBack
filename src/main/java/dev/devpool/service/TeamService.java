@@ -6,6 +6,7 @@ import dev.devpool.repository.TeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Query;
 import java.util.List;
 
 @Service
@@ -34,4 +35,16 @@ public class TeamService {
         return teamList;
     }
 
+
+    public void deleteById(long teamId) {
+        teamRepository.deleteById(teamId);
+    }
+
+    public void delete(Team team) {
+        teamRepository.delete(team);
+    }
+
+    public void deleteAll() {
+        teamRepository.deleteAll();
+    }
 }

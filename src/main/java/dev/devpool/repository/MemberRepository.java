@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -34,5 +35,19 @@ public class MemberRepository {
         return em.createQuery("select m from Member m", Member.class).getResultList();
     }
 
+    public void deleteById(long memberId) {
+        Member findMember = em.find(Member.class, memberId);
 
+        em.remove(findMember);
+    }
+
+    public void delete(Member member) {
+
+        em.remove(member);
+    }
+
+    public void deleteAll() {
+        Query deleteAll = em.createQuery("delete from Member m");
+        deleteAll.executeUpdate();
+    }
 }

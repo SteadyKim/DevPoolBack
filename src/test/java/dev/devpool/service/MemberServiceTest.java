@@ -4,16 +4,16 @@ import dev.devpool.domain.Member;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
 
-
 @SpringBootTest
-@Transactional
 public class MemberServiceTest {
     @Autowired
     MemberService memberService;
@@ -21,23 +21,114 @@ public class MemberServiceTest {
     @Autowired
     EntityManager em;
 
+    @Autowired
+    TransactionTemplate transactionTemplate;
+
+    @AfterEach
+    public void 지우기() {
+        System.out.println("======@AfterEach======");
+        memberService.deleteAll();
+    }
+
     @Test
     public void 멤버저장_조회 () {
+        transactionTemplate.execute(status -> {
+            //given
+            Member member = new Member();
+            member.setName("김dsa우");
+            member.setEmail("redasdsas11@ner.com");
+            member.setPassword("tasdaasd16");
+            member.setNickName("귀미");
+            memberService.join(member);
+
+            //when
+            em.flush();
+            em.clear();
+
+            //then
+            Member findMember = memberService.findOne(member.getId());
+            assertEquals(member.getId(), findMember.getId());
+
+            return null;
+        });
+    }
+
+    @Test
+    public void 멤버중복예외() {
         //given
         Member member = new Member();
-        member.setName("김태우");
-        member.setEmail("rereers1125@naver.com");
-        member.setPassword("taeu4616");
-        member.setNickName("귀요미");
+        member.setName("김우");
+        member.setEmail("redsas11@ner.com");
+        member.setPassword("taasd16");
+        member.setNickName("귀미");
+        memberService.join(member);
+
 
         //when
-        memberService.join(member);
-        em.flush();
-        em.clear();
+        Member member2 = new Member();
+        member2.setName("김우");
+        member2.setEmail("redsas11@ner.com");
+        member2.setPassword("taasd16");
+        member2.setNickName("귀미");
+
 
         //then
-        Member findMember = memberService.findOne(member.getId());
-        assertEquals(member.getId(), findMember.getId());
+        assertThrows(IllegalArgumentException.class, () -> {
+            memberService.join(member2);
+        });
     }
+
+    @Test
+    public void 멤버삭제ById () {
+        transactionTemplate.execute(status -> {
+
+            //given
+            Member member = new Member();
+            member.setName("김태우");
+            member.setEmail("rereers1125@naver.com");
+            member.setPassword("taeu4616");
+            member.setNickName("귀요미");
+            memberService.join(member);
+
+            //when
+            memberService.deleteById(member.getId());
+            em.flush();
+            em.clear();
+
+            //then
+            Member findMember = memberService.findOne(member.getId());
+            assertNull(findMember);
+
+            return null;
+        });
+    }
+    @Test
+    public void 멤버삭제() {
+        transactionTemplate.execute(status -> {
+
+            //given
+            Member member = new Member();
+            member.setName("김태우");
+            member.setEmail("rereers1125@naver.com");
+            member.setPassword("taeu4616");
+            member.setNickName("귀요미");
+            memberService.join(member);
+
+            //when
+            memberService.delete(member);
+            em.flush();
+            em.clear();
+
+            //then
+            Member findMember = memberService.findOne(member.getId());
+            assertNull(findMember);
+
+            return null;
+        });
+    }
+
+
+
+
 
 }

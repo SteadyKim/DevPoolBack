@@ -51,4 +51,14 @@ public class TeamRepository {
             em.remove(team);
         }
     }
+
+    /**
+     * MemberTEAM
+     */
+    public void deleteAllMemberTeam(Long teamId) {
+        Query query = em.createQuery("delete from MemberTeam mt where mt.team.id =:teamId")
+                .setParameter("teamId", teamId);
+
+        query.executeUpdate();
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemberRepository {
@@ -29,6 +30,14 @@ public class MemberRepository {
     //조회
     public Member findOneById(long memberId) {
         return em.find(Member.class, memberId);
+    }
+
+    public Optional<Member> findOneByEmail(String email) {
+        Optional<Member> findMember = em.createQuery("select m from Member m where m.email=:email", Member.class)
+                .setParameter("email", email)
+                .getResultList()
+                .stream().findAny();
+        return findMember;
     }
 
     public List<Member> findAll() {

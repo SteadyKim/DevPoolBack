@@ -8,7 +8,7 @@ import java.util.List;
 public class Team {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TEAM_ID")
-    private long id;
+    private Long id;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<MemberTeam> memberTeams = new ArrayList<>();
@@ -17,18 +17,15 @@ public class Team {
         return memberTeams;
     }
 
-
     private String name;
 
     private String title;
 
     private String body;
 
-    private int recruited_num;
-
     private int total_num;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -58,14 +55,6 @@ public class Team {
 
     public void setBody(String body) {
         this.body = body;
-    }
-
-    public int getRecruited_num() {
-        return recruited_num;
-    }
-
-    public void setRecruited_num(int recruited_num) {
-        this.recruited_num = recruited_num;
     }
 
     public int getTotal_num() {

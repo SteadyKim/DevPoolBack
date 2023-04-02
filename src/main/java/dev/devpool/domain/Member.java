@@ -8,7 +8,7 @@ import java.util.List;
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
-    private long id;
+    private Long id;
 
 
     private String name;
@@ -26,7 +26,7 @@ public class Member {
         this.password = password;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

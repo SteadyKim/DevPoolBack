@@ -7,7 +7,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 public class MemberTeam {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "MEMBER_ID")
@@ -17,7 +17,7 @@ public class MemberTeam {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

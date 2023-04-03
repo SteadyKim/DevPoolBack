@@ -32,12 +32,12 @@ public class MemberTeamServiceTest {
     @Autowired
     TransactionTemplate transactionTemplate;
 
-    @AfterEach
-    public void deleteAll() {
-        System.out.println("=====@AfterEach=====");
-        teamService.deleteAll();
-        memberService.deleteAll();
-    }
+//    @AfterEach
+//    public void deleteAll() {
+//        System.out.println("=====@AfterEach=====");
+//        teamService.deleteAll();
+//        memberService.deleteAll();
+//    }
     @Test
     public void 멤버팀_저장_조회() {
 
@@ -64,15 +64,10 @@ public class MemberTeamServiceTest {
             team.setTotal_num(4);
 
             MemberTeam memberTeam = new MemberTeam();
-            memberTeam.setMember(member);
-            memberTeam.setTeam(team);
+            memberTeam.addMemberTeam(member, team);
 
             MemberTeam memberTeam2 = new MemberTeam();
-            memberTeam2.setMember(member2);
-            memberTeam2.setTeam(team);
-
-            team.getMemberTeams().add(memberTeam);
-            team.getMemberTeams().add(memberTeam2);
+            memberTeam2.addMemberTeam(member2, team);
 
             teamService.join(team);
             em.flush();

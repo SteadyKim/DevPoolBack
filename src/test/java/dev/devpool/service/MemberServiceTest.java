@@ -127,7 +127,35 @@ public class MemberServiceTest {
         });
     }
 
+    @Test
+    public void 멤버수정() {
+        transactionTemplate.execute(status -> {
 
+            //given
+            Member member = new Member();
+            member.setName("김태우");
+            member.setEmail("re1125@ner.com");
+            member.setPassword("taed");
+            member.setNickName("귀요미");
+            memberService.join(member);
+
+            //when
+            // 데이터가 2개만 온 경우 등 issue -> front에서 모두 보내줄 수 있도록 짜달라고 하기...
+            String newName = "염진섭";
+            String newNickName = "asdasd";
+            String Email = "rerewrw2112";
+            String password = "asdasd";
+
+            em.flush();
+            em.clear();
+            Member findMember = memberService.update(member.getId(), newName, newNickName, Email, password);
+
+            //then
+            assertEquals(findMember.getEmail(), Email);
+
+            return null;
+        });
+    }
 
 
 

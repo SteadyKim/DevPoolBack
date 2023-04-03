@@ -29,6 +29,7 @@ class TeamServiceTest {
 
     @AfterEach
     public void deleteAll() {
+        System.out.println("=====@AfterEach=====");
         teamService.deleteAll();
     }
 
@@ -107,5 +108,32 @@ class TeamServiceTest {
         });
     }
 
+    @Test
+    public void 팀수정() {
+        transactionTemplate.execute(status -> {
+            //given
+            Team team = new Team();
+            team.setBody("asdasdas");
+            team.setTitle("A팀");
+            team.setName("fsdf");
+            team.setTotal_num(4);
 
+            teamService.join(team);
+
+            //when
+            String newTeamName = "sadasd";
+            String newTitle = "sadad";
+            String newBody = "asdasd";
+            int newTotalNum = 4;
+
+            em.flush();
+            em.clear();
+
+            //then
+            Team findTeam = teamService.update(team.getId(), newTeamName, newTitle, newBody, newTotalNum);
+
+            assertEquals(findTeam.getName(), newTeamName);
+            return null;
+        });
+    }
 }

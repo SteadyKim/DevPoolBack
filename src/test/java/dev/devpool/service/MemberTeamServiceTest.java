@@ -34,6 +34,7 @@ public class MemberTeamServiceTest {
 
     @AfterEach
     public void deleteAll() {
+        System.out.println("=====@AfterEach=====");
         teamService.deleteAll();
         memberService.deleteAll();
     }
@@ -154,4 +155,71 @@ public class MemberTeamServiceTest {
 
         });
     }
+    @Test
+    public void 멤버팀수정() {
+        transactionTemplate.execute(status -> {
+            //given
+            Member member = new Member();
+            member.setName("김태우");
+            member.setEmail("reres25@nar.com");
+            member.setPassword("taeu16");
+            member.setNickName("귀요미");
+            memberService.join(member);
+
+            Member member2 = new Member();
+            member2.setName("이영진");
+            member2.setEmail("eloo@naver.com");
+            member2.setPassword("tae616");
+            member2.setNickName("귀요미2");
+            memberService.join(member2);
+
+            Member newMember1 = new Member();
+            newMember1.setNickName("asda");
+            newMember1.setName("asd");
+            newMember1.setPassword("asda");
+            newMember1.setEmail("asdasd");
+            memberService.join(newMember1);
+
+            Member newMember2 = new Member();
+            newMember2.setNickName("asdasda");
+            newMember2.setName("asasdasdd");
+            newMember2.setPassword("aasdsda");
+            newMember2.setEmail("asdaasdassd");
+            memberService.join(newMember2);
+
+
+            Team team = new Team();
+            team.setBody("asdasdas");
+            team.setTitle("A팀");
+            team.setName("fsdf");
+            team.setTotal_num(4);
+
+            MemberTeam memberTeam = new MemberTeam();
+            memberTeam.setMember(member);
+            memberTeam.setTeam(team);
+
+            MemberTeam memberTeam2 = new MemberTeam();
+            memberTeam2.setMember(member2);
+            memberTeam2.setTeam(team);
+
+            team.getMemberTeams().add(memberTeam);
+            team.getMemberTeams().add(memberTeam2);
+
+            teamService.join(team);
+
+            //when
+            em.flush();
+            em.clear();
+
+
+            System.out.println("=====================");
+            //then
+            teamService.updateMemberTeam(team.getId(), newMember1, newMember2);
+
+
+
+            return null;
+        });
+    }
+
 }

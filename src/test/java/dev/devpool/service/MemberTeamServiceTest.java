@@ -32,12 +32,12 @@ public class MemberTeamServiceTest {
     @Autowired
     TransactionTemplate transactionTemplate;
 
-//    @AfterEach
-//    public void deleteAll() {
-//        System.out.println("=====@AfterEach=====");
-//        teamService.deleteAll();
-//        memberService.deleteAll();
-//    }
+    @AfterEach
+    public void deleteAll() {
+        System.out.println("=====@AfterEach=====");
+        teamService.deleteAll();
+        memberService.deleteAll();
+    }
     @Test
     public void 멤버팀_저장_조회() {
 
@@ -132,7 +132,7 @@ public class MemberTeamServiceTest {
             em.flush();
             em.clear();
             System.out.println("=================");
-            Team findTeam = teamService.findOne(team.getId());
+            Team findTeam = teamService.findOneById(team.getId());
             System.out.println("=================");
             teamService.delete(findTeam);
             System.out.println("=================");
@@ -140,7 +140,7 @@ public class MemberTeamServiceTest {
             System.out.println(em.contains(findTeam));
 
             //then
-            assertNull(teamService.findOne(team.getId())); // team도 없고
+            assertNull(teamService.findOneById(team.getId())); // team도 없고
 //        select mt from MemberTeam mt where mt.team.id=:teamId
             List<MemberTeam> memberTeamList = em.createQuery("select mt from MemberTeam mt where mt.team.id=:teamId", MemberTeam.class)
                     .setParameter("teamId", team.getId())

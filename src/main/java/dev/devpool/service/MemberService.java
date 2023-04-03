@@ -21,7 +21,7 @@ public class MemberService {
 
     @Transactional
     // 회원가입
-    public long join(Member member) {
+    public Long join(Member member) {
         validateMember(member);
         memberRepository.save(member);
 
@@ -37,7 +37,7 @@ public class MemberService {
     }
 
     //조회
-    public Member findOne(long memberId) {
+    public Member findOneById(Long memberId) {
         Member findMember = memberRepository.findOneById(memberId);
 
         return findMember;

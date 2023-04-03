@@ -47,7 +47,7 @@ class TeamServiceTest {
             em.flush();
             em.clear();
 
-            Team findTeam = teamService.findOne(team.getId());
+            Team findTeam = teamService.findOneById(team.getId());
 
             assertEquals(findTeam.getId(), team.getId());
             return null;
@@ -75,7 +75,7 @@ class TeamServiceTest {
             em.clear();
 
             //then
-            Team findTeam = teamService.findOne(team.getId());
+            Team findTeam = teamService.findOneById(team.getId());
             assertNull(findTeam);
 
             return null;
@@ -102,7 +102,7 @@ class TeamServiceTest {
             em.clear();
 
             //then
-            Team findTeam = teamService.findOne(team.getId());
+            Team findTeam = teamService.findOneById(team.getId());
             assertNull(findTeam);
             return null;
         });

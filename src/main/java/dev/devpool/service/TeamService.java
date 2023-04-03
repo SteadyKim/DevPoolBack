@@ -25,8 +25,8 @@ public class TeamService {
         return team.getId();
     }
 
-    public Team findOne(long teamId) {
-        Team findTeam = teamRepository.findOne(teamId);
+    public Team findOneById(long teamId) {
+        Team findTeam = teamRepository.findOneById(teamId);
 
         return findTeam;
     }
@@ -53,7 +53,7 @@ public class TeamService {
 
     @Transactional
     public Team update(Long teamId, String name, String title, String body, int total_num) {
-        Team findTeam = teamRepository.findOne(teamId);
+        Team findTeam = teamRepository.findOneById(teamId);
         // 변경감지를 활용해 Update 쿼리
         findTeam.setName(name);
         findTeam.setTitle(title);
@@ -68,7 +68,7 @@ public class TeamService {
      */
     @Transactional
     public Team updateMemberTeam(Long teamId, Member... members) {
-        Team findTeam = teamRepository.findOne(teamId);
+        Team findTeam = teamRepository.findOneById(teamId);
         // 지우고 추가하기...
         teamRepository.deleteAllMemberTeam(findTeam.getId());
 

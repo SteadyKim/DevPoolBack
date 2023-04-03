@@ -46,7 +46,7 @@ public class MemberServiceTest {
             em.clear();
 
             //then
-            Member findMember = memberService.findOne(member.getId());
+            Member findMember = memberService.findOneById(member.getId());
             assertEquals(member.getId(), findMember.getId());
 
             return null;
@@ -85,8 +85,8 @@ public class MemberServiceTest {
             //given
             Member member = new Member();
             member.setName("김태우");
-            member.setEmail("rereers1125@naver.com");
-            member.setPassword("taeu4616");
+            member.setEmail("rereeasd11sax@xver.com");
+            member.setPassword("taeasd16");
             member.setNickName("귀요미");
             memberService.join(member);
 
@@ -96,7 +96,7 @@ public class MemberServiceTest {
             em.clear();
 
             //then
-            Member findMember = memberService.findOne(member.getId());
+            Member findMember = memberService.findOneById(member.getId());
             assertNull(findMember);
 
             return null;
@@ -120,7 +120,7 @@ public class MemberServiceTest {
             em.clear();
 
             //then
-            Member findMember = memberService.findOne(member.getId());
+            Member findMember = memberService.findOneById(member.getId());
             assertNull(findMember);
 
             return null;

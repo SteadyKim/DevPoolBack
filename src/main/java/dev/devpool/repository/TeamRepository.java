@@ -23,7 +23,7 @@ public class TeamRepository {
         em.persist(team);
     }
 
-    public Team findOne(long teamId) {
+    public Team findOneById(long teamId) {
         Team findTeam = em.find(Team.class, teamId);
 
         return findTeam;

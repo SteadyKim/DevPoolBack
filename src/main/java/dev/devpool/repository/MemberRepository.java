@@ -37,11 +37,13 @@ public class MemberRepository {
                 .setParameter("email", email)
                 .getResultList()
                 .stream().findAny();
+
         return findMember;
     }
 
     public List<Member> findAll() {
-        return em.createQuery("select m from Member m", Member.class).getResultList();
+        return em.createQuery("select m from Member m", Member.class)
+                .getResultList();
     }
 
     public void deleteById(long memberId) {

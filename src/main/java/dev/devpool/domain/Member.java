@@ -26,6 +26,27 @@ public class Member {
         this.password = password;
     }
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Certificate> certificates = new ArrayList<>();
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Certificate> getCertificates() {
+        return certificates;
+    }
+
+    public void setCertificates(List<Certificate> certificates) {
+        this.certificates = certificates;
+    }
+
+    public void addCertificate(Certificate certificate) {
+        certificate.setMember(this);
+        certificates.add(certificate);
+    }
+
+
     public Long getId() {
         return id;
     }

@@ -48,16 +48,20 @@ public class MemberRepository {
 
     public void deleteById(long memberId) {
         Member findMember = em.find(Member.class, memberId);
-
-        em.remove(findMember);
+        if (findMember != null) {
+            em.remove(findMember);
+        }
     }
 
-    public void delete(Member member) {
-
-        em.remove(member);
-    }
 
     public void deleteAll() {
+        List<Member> findMembers = em.createQuery("select m from Member m", Member.class).getResultList();
+        for (Member findMember : findMembers) {
+            Long memberId = findMember.getId();
+            Query query = em.createQuery("delete from Certificate c where c.member.id=:memberId")
+                    .setParameter("memberId", memberId);
+            query.executeUpdate();
+        }
         Query deleteAll = em.createQuery("delete from Member m");
         deleteAll.executeUpdate();
     }

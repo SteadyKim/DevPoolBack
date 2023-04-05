@@ -55,11 +55,6 @@ public class MemberService {
     }
 
     @Transactional
-    public void delete(Member member) {
-        memberRepository.delete(member);
-    }
-
-    @Transactional
     public void deleteAll() {
         memberRepository.deleteAll();
     }

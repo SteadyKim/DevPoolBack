@@ -102,30 +102,6 @@ public class MemberServiceTest {
             return null;
         });
     }
-    @Test
-    public void 멤버삭제() {
-        transactionTemplate.execute(status -> {
-
-            //given
-            Member member = new Member();
-            member.setName("김태우");
-            member.setEmail("rereers1125@naver.com");
-            member.setPassword("taeu4616");
-            member.setNickName("귀요미");
-            memberService.join(member);
-
-            //when
-            memberService.delete(member);
-            em.flush();
-            em.clear();
-
-            //then
-            Member findMember = memberService.findOneById(member.getId());
-            assertNull(findMember);
-
-            return null;
-        });
-    }
 
     @Test
     public void 멤버수정() {

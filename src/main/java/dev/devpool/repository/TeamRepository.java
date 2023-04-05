@@ -44,12 +44,16 @@ public class TeamRepository {
     }
 
     public void deleteAll() {
-        // 부모 1 자식1 x 10 인 경우 delete 쿼리가 총 20개 나간다
-        // 그럼 직접 JPQL로 delete from memberTeam, delete from Team으로 해서 20 -> 2개로 줄일 수 있지 않을까??
-        List<Team> teamList = em.createQuery("select t from Team  t", Team.class).getResultList();
-        for (Team team : teamList) {
-            em.remove(team);
+        List<Team> findTeams = em.createQuery("select t from Team t", Team.class).getResultList();
+        for (Team findTeam : findTeams) {
+            Long teamId = findTeam.getId();
+            Query query = em.createQuery("delete from MemberTeam mt where mt.team.id=:teamId")
+                    .setParameter("teamId", teamId);
+            query.executeUpdate();
         }
+
+        Query query = em.createQuery("delete from Team t");
+        query.executeUpdate();
     }
 
     /**

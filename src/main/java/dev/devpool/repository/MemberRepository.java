@@ -28,7 +28,7 @@ public class MemberRepository {
     }
 
     //조회
-    public Member findOneById(long memberId) {
+    public Member findOneById(Long memberId) {
         return em.find(Member.class, memberId);
     }
 
@@ -46,7 +46,7 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    public void deleteById(long memberId) {
+    public void deleteById(Long memberId) {
         Member findMember = em.find(Member.class, memberId);
         if (findMember != null) {
             em.remove(findMember);
@@ -62,6 +62,14 @@ public class MemberRepository {
                     .setParameter("memberId", memberId);
             query.executeUpdate();
         }
+
+        for (Member findMember : findMembers) {
+            Long memberId = findMember.getId();
+            Query query = em.createQuery("delete from Latter l where l.member.id=:memberId")
+                    .setParameter("memberId", memberId);
+            query.executeUpdate();
+        }
+
         Query deleteAll = em.createQuery("delete from Member m");
         deleteAll.executeUpdate();
     }

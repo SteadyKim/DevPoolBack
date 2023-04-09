@@ -29,6 +29,20 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Certificate> certificates = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Latter> latters = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Site> sites = new ArrayList<>();
+
+    public List<Latter> getLatters() {
+        return latters;
+    }
+
+    public void setLatters(List<Latter> latters) {
+        this.latters = latters;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -41,10 +55,6 @@ public class Member {
         this.certificates = certificates;
     }
 
-    public void addCertificate(Certificate certificate) {
-        certificate.setMember(this);
-        certificates.add(certificate);
-    }
 
 
     public Long getId() {
@@ -85,5 +95,24 @@ public class Member {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    /**
+     * 편의 메서드
+     */
+    public void addCertificate(Certificate certificate) {
+        certificate.setMember(this);
+        certificates.add(certificate);
+    }
+
+    public void addLatter(Latter latter) {
+        latter.setMember(this);
+        latters.add(latter);
+    }
+
+    public void addSite(Site site){
+        site.setMember(this);
+        sites.add(site);
     }
 }

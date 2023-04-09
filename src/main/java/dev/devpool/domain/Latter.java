@@ -4,6 +4,8 @@ import dev.devpool.domain.enums.IsCheck;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
+
 import static javax.persistence.EnumType.STRING;
 
 @Entity
@@ -17,6 +19,8 @@ public class Latter {
     private Member member;
 
     private String body;
+
+    private LocalDate createDate;
 
     @Enumerated(STRING)
     private IsCheck isCheck;

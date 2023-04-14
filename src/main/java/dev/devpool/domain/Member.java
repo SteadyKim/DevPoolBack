@@ -26,10 +26,10 @@ public class Member {
         this.password = password;
     }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member")
     private List<Certificate> certificates = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member")
     private List<Latter> latters = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")

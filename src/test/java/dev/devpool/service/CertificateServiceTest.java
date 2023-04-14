@@ -31,11 +31,11 @@ class CertificateServiceTest {
     @Autowired
     TransactionTemplate transactionTemplate;
 
-    @AfterEach
-    public void 지우기() {
-        System.out.println("======@AfterEach======");
-        memberService.deleteAll();
-    }
+//    @AfterEach
+//    public void 지우기() {
+//        System.out.println("======@AfterEach======");
+//        memberService.deleteAll();
+//    }
 
     @Test
     public void 자격증저장_조회ByMember() {
@@ -49,7 +49,10 @@ class CertificateServiceTest {
             member.addCertificate(certificate);
             member.addCertificate(certificate2);
 
+
             memberService.join(member);
+            certificateService.join(certificate);
+            certificateService.join(certificate2);
 
             //when
             em.flush();
@@ -87,6 +90,8 @@ class CertificateServiceTest {
             member.addCertificate(certificate2);
 
             memberService.join(member);
+            certificateService.join(certificate);
+            certificateService.join(certificate2);
 
             //when
             em.flush();
@@ -120,6 +125,8 @@ class CertificateServiceTest {
             member.addCertificate(certificate2);
 
             memberService.join(member);
+            certificateService.join(certificate1);
+            certificateService.join(certificate2);
 
             // when
             ArrayList<Long> ids = new ArrayList<>();
@@ -139,6 +146,9 @@ class CertificateServiceTest {
             // then
             Member findedMember = memberService.findOneById(member.getId());
             List<Certificate> certificates = findedMember.getCertificates();
+            if (certificates.size() == 0){
+                fail("값이 존재해야 합니다");
+            }
             for (Certificate certificate : certificates) {
                 assertTrue(ids.contains(certificate.getId()));
             }

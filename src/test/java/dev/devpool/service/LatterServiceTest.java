@@ -32,11 +32,11 @@ class LatterServiceTest {
     @Autowired
     TransactionTemplate transactionTemplate;
 
-    @AfterEach
-    public void 지우기() {
-        System.out.println("======@AfterEach======");
-        memberService.deleteAll();
-    }
+//    @AfterEach
+//    public void 지우기() {
+//        System.out.println("======@AfterEach======");
+//        memberService.deleteAll();
+//    }
 
     @Test
     public void 쪽지저장_조회ByMember() {
@@ -52,6 +52,8 @@ class LatterServiceTest {
             member.addLatter(latter2);
 //
             memberService.join(member);
+            latterService.join(latter1);
+            latterService.join(latter2);
 //
             //when
             em.flush();
@@ -89,6 +91,8 @@ class LatterServiceTest {
             member.addLatter(latter2);
 
             memberService.join(member);
+            latterService.join(latter1);
+            latterService.join(latter2);
 
             em.flush();
             em.clear();

@@ -49,6 +49,20 @@ public class MemberRepository {
     public void deleteById(Long memberId) {
         Member findMember = em.find(Member.class, memberId);
         if (findMember != null) {
+            Query query = em.createQuery("delete from Certificate c where c.member.id=:memberId")
+                    .setParameter("memberId", findMember.getId());
+            query.executeUpdate();
+
+            Query query2 = em.createQuery("delete from Latter l where l.member.id=:memberId")
+                    .setParameter("memberId", findMember.getId());
+
+            query2.executeUpdate();
+
+            Query query3 = em.createQuery("delete from Site s where s.member.id=:memberId")
+                    .setParameter("memberId", findMember.getId());
+
+            query3.executeUpdate();
+
             em.remove(findMember);
         }
     }
@@ -56,18 +70,21 @@ public class MemberRepository {
 
     public void deleteAll() {
         List<Member> findMembers = em.createQuery("select m from Member m", Member.class).getResultList();
-        for (Member findMember : findMembers) {
-            Long memberId = findMember.getId();
-            Query query = em.createQuery("delete from Certificate c where c.member.id=:memberId")
-                    .setParameter("memberId", memberId);
-            query.executeUpdate();
-        }
 
         for (Member findMember : findMembers) {
             Long memberId = findMember.getId();
             Query query = em.createQuery("delete from Latter l where l.member.id=:memberId")
                     .setParameter("memberId", memberId);
             query.executeUpdate();
+
+            Query query2 = em.createQuery("delete from Certificate c where c.member.id=:memberId")
+                    .setParameter("memberId", memberId);
+            query2.executeUpdate();
+
+            Query query3 = em.createQuery("delete from Site s where s.member.id=:memberId")
+                    .setParameter("memberId", memberId);
+            query3.executeUpdate();
+
         }
 
         Query deleteAll = em.createQuery("delete from Member m");

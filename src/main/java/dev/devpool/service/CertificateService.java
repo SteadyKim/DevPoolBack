@@ -62,6 +62,8 @@ public class CertificateService {
         // 추가
         for (Certificate certificate : certificates) {
             member.addCertificate(certificate);
+            certificateRepository.save(certificate);
+
         }
     }
 

@@ -15,10 +15,10 @@ public class MainController {
     @GetMapping("/api")
     public Member getMember() {
         Member member = new Member();
-        member.setName("김태우");
-        member.setEmail("rereers1125@naver.com");
+        member.setName("김");
+        member.setEmail("rereer5@navom");
         member.setNickName("테디");
-        member.setPassword("taeu1125");
+        member.setPassword("tae125");
 
         return member;
     }

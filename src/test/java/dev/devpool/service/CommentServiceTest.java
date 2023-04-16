@@ -77,12 +77,19 @@ class CommentServiceTest {
             //given
 
             Comment parentComment = new Comment();
-            Comment childComment = new Comment();
+            Comment childComment1 = new Comment();
+            Comment childComment2 = new Comment();
 
-            childComment.setParent(parentComment);
+            childComment1.setParent(parentComment);
+            childComment2.setParent(parentComment);
 
             commentService.join(parentComment);
-            commentService.join(childComment);
+            commentService.join(childComment1);
+            commentService.join(childComment2);
+
+            ArrayList<Long> ids = new ArrayList<>();
+            ids.add(childComment1.getId());
+            ids.add(childComment2.getId());
 
             //when
             em.flush();
@@ -90,9 +97,13 @@ class CommentServiceTest {
 
             //then
             Comment findParentComment = commentService.findById(parentComment.getId());
-            Comment findChild = commentService.findChildByParentId(findParentComment.getId());
+            List<Comment> childComments = commentService.findChildByParentId(findParentComment.getId());
 
-            assertEquals(findParentComment.getId(), findChild.getParent().getId());
+            assertEquals(2, childComments.size());
+
+            for (Comment childComment : childComments) {
+                ids.contains(childComment.getId());
+            }
 
             return null;
         });
@@ -106,15 +117,17 @@ class CommentServiceTest {
             Comment parentComment = new Comment();
             commentService.join(parentComment);
 
+
+
             //when
             em.flush();
             em.clear();
 
             //then
             Comment findParentComment = commentService.findById(parentComment.getId());
-            Comment findChild = commentService.findChildByParentId(findParentComment.getId());
+            List<Comment> childComments = commentService.findChildByParentId(findParentComment.getId());
 
-            assertNull(findChild);
+            assertNull(childComments);
 
             return null;
         });
@@ -134,15 +147,30 @@ class CommentServiceTest {
 
             Comment childComment1 = new Comment();
             Comment childComment2 = new Comment();
+            Comment childComment3 = new Comment();
+            Comment childComment4 = new Comment();
 
             childComment1.setParent(parentComment1);
-            childComment2.setParent(parentComment2);
+            childComment2.setParent(parentComment1);
+            childComment3.setParent(parentComment2);
+            childComment4.setParent(parentComment2);
 
             teamService.join(team);
             commentService.join(parentComment1);
             commentService.join(parentComment2);
+
             commentService.join(childComment1);
             commentService.join(childComment2);
+            commentService.join(childComment3);
+            commentService.join(childComment4);
+
+            ArrayList<Long> ids1 = new ArrayList<>();
+            ids1.add(childComment1.getId());
+            ids1.add(childComment2.getId());
+
+            ArrayList<Long> ids2 = new ArrayList<>();
+            ids2.add(childComment3.getId());
+            ids2.add(childComment4.getId());
 
             // when
             em.flush();
@@ -152,8 +180,21 @@ class CommentServiceTest {
             // then
             List<Comment> parentComments = commentService.findAllParentByTeamId(team.getId());
             for (Comment parentComment : parentComments) {
-                Comment child = commentService.findChildByParentId(parentComment.getId());
-                assertNotNull(child);
+                if(parentComment.getId() == 1) {
+                    List<Comment> childComments = commentService.findChildByParentId(parentComment.getId());
+                    assertEquals(2, childComments.size());
+                    for (Comment childComment : childComments) {
+                        assertTrue(ids1.contains(childComment.getId()));
+                    }
+                }
+
+                if(parentComment.getId() == 2) {
+                    List<Comment> childComments = commentService.findChildByParentId(parentComment.getId());
+                    assertEquals(2, childComments.size());
+                    for (Comment childComment : childComments) {
+                        assertTrue(ids2.contains(childComment.getId()));
+                    }
+                }
             }
 
             return null;

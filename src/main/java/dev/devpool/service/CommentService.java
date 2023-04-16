@@ -35,9 +35,9 @@ public class CommentService {
         return comments;
     }
 
-    public Comment findChildByParentId(Long parentId) {
-        Comment childComment = commentRepository.findChildByParentId(parentId);
-        return childComment;
+    public List<Comment> findChildByParentId(Long parentId) {
+        List<Comment> childComments = commentRepository.findChildByParentId(parentId);
+        return childComments;
     }
 
     public List<Comment> findAllParentByTeamId(Long teamId) {

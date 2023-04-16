@@ -36,15 +36,14 @@ public class CommentRepository {
         return Comments;
     }
 
-    public Comment findChildByParentId(Long parentId) {
-        Optional<Comment> childComment = em.createQuery("select c from Comment c where c.parent.id=:parentId", Comment.class)
+    public List<Comment> findChildByParentId(Long parentId) {
+        List<Comment> childComments = em.createQuery("select c from Comment c where c.parent.id=:parentId", Comment.class)
                 .setParameter("parentId", parentId)
-                .getResultList()
-                .stream().findAny();
+                .getResultList();
 
-        if (childComment.isEmpty()) {
+        if (childComments.size() == 0) {
             return null;
-        } else return childComment.get();
+        } else return childComments;
     }
 
     // 팀Id로 Parent 조회

@@ -16,6 +16,24 @@ public class Member {
     private String email;
     private String password;
 
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public List<Site> getSites() {
+        return sites;
+    }
+
+    public void setSites(List<Site> sites) {
+        this.sites = sites;
+    }
+
     public Member() {
     }
 

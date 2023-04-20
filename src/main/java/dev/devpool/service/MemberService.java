@@ -1,6 +1,7 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Member;
+import dev.devpool.exception.DuplicateMemberException;
 import dev.devpool.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class MemberService {
         Optional<Member> findMember = memberRepository.findOneByEmail(member.getEmail());
 
         if (!(findMember.isEmpty())) {
-            throw new IllegalArgumentException("이미 있는 회원입니다.");
+            throw new DuplicateMemberException();
         }
     }
 

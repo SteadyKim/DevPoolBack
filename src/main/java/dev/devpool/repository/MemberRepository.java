@@ -1,11 +1,14 @@
 package dev.devpool.repository;
 
 import dev.devpool.domain.Member;
+import dev.devpool.exception.PersistenceIssueSaveException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import java.net.ConnectException;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +27,11 @@ public class MemberRepository {
 
     // 저장
     public void save(Member member) {
-        em.persist(member);
+        try {
+            em.persist(member);
+        } catch (PersistenceException e) {
+            throw new PersistenceIssueSaveException();
+        }
     }
 
     //조회

@@ -15,7 +15,7 @@ public class CreateMemberDto {
 
     private String password;
 
-    private String imgUrl;
+    private String imageUrl;
 
     public Member toEntity(){
         Member member = new Member();
@@ -23,7 +23,7 @@ public class CreateMemberDto {
         member.setNickName(nickName);
         member.setEmail(email);
         member.setPassword(password);
-        member.setImageUrl(imgUrl);
+        member.setImageUrl(imageUrl);
 
         return member;
     }

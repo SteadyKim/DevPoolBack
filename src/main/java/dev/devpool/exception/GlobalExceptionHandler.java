@@ -1,12 +1,12 @@
 package dev.devpool.exception;
 
-import io.swagger.models.Response;
+import dev.devpool.exception.member.create.DuplicateMemberException;
+import dev.devpool.exception.member.read.MemberNotFoundException;
+import dev.devpool.exception.member.create.PersistenceIssueSaveException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.DuplicateFormatFlagsException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

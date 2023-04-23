@@ -1,7 +1,7 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Member;
-import dev.devpool.exception.DuplicateMemberException;
+import dev.devpool.exception.member.create.DuplicateMemberException;
 import dev.devpool.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

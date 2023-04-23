@@ -1,4 +1,4 @@
-package dev.devpool.exception;
+package dev.devpool.exception.member.create;
 
 import javax.persistence.PersistenceException;
 

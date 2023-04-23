@@ -1,4 +1,4 @@
-package dev.devpool.exception;
+package dev.devpool.exception.member.read;
 
 public class MemberNotFoundException extends RuntimeException {
     public MemberNotFoundException(){

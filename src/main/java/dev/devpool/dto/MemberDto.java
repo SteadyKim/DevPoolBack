@@ -1,7 +1,7 @@
 package dev.devpool.dto;
 
 import dev.devpool.domain.Member;
-import dev.devpool.exception.MemberNotFoundException;
+import dev.devpool.exception.member.read.MemberNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,15 +32,7 @@ public class MemberDto {
         return member;
     }
 
-    /**
-     * 추후 Exception Handler 구현해야 함
-     */
     public static MemberDto convertToMemberDto(Member member) {
-        if(Optional.ofNullable(member).isPresent()) {
             return new MemberDto(member.getId(), member.getName(), member.getNickName(), member.getEmail(), member.getPassword(), member.getImageUrl());
-        }
-        else  {
-            throw new MemberNotFoundException();
-        }
     }
 }

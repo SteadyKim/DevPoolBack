@@ -1,14 +1,14 @@
 package dev.devpool.repository;
 
 import dev.devpool.domain.Member;
-import dev.devpool.exception.PersistenceIssueSaveException;
+import dev.devpool.exception.member.create.PersistenceIssueSaveException;
+import dev.devpool.exception.member.read.MemberNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import java.net.ConnectException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +36,13 @@ public class MemberRepository {
 
     //조회
     public Member findOneById(Long memberId) {
-        return em.find(Member.class, memberId);
+        Member findMember = em.find(Member.class, memberId);
+        if (findMember == null) {
+            throw new MemberNotFoundException();
+        }
+
+        return findMember;
+
     }
 
     public Optional<Member> findOneByEmail(String email) {

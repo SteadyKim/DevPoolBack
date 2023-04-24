@@ -52,13 +52,12 @@ public class TeamService {
     }
 
     @Transactional
-    public Team update(Long teamId, String name, String title, String body, int total_num) {
+    public Team update(Long teamId, Team newTeam) {
         Team findTeam = teamRepository.findOneById(teamId);
         // 변경감지를 활용해 Update 쿼리
-        findTeam.setName(name);
-        findTeam.setTitle(title);
-        findTeam.setBody(body);
-        findTeam.setTotal_num(total_num);
+        findTeam.setTitle(newTeam.getTitle());
+        findTeam.setBody(newTeam.getBody());
+        findTeam.setTotal_num(newTeam.getTotal_num());
 
         return findTeam;
     }

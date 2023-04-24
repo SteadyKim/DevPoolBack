@@ -39,7 +39,6 @@ class TeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setName("fsdf");
             team.setTotal_num(4);
 
             teamService.join(team);
@@ -64,7 +63,6 @@ class TeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setName("fsdf");
             team.setTotal_num(4);
 
             teamService.join(team);
@@ -91,7 +89,6 @@ class TeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setName("fsdf");
             team.setTotal_num(4);
 
             teamService.join(team);
@@ -115,7 +112,6 @@ class TeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setName("fsdf");
             team.setTotal_num(4);
 
             teamService.join(team);
@@ -126,13 +122,18 @@ class TeamServiceTest {
             String newBody = "asdasd";
             int newTotalNum = 4;
 
+            Team newTeam = new Team();
+            newTeam.setTitle(newTitle);
+            newTeam.setBody(newBody);
+            newTeam.setTotal_num(newTotalNum);
+
             em.flush();
             em.clear();
 
             //then
-            Team findTeam = teamService.update(team.getId(), newTeamName, newTitle, newBody, newTotalNum);
+            Team findTeam = teamService.update(team.getId(), newTeam);
 
-            assertEquals(findTeam.getName(), newTeamName);
+            assertEquals(findTeam.getTitle(), newTitle);
             return null;
         });
     }

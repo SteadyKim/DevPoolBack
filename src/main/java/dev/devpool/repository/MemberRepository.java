@@ -2,6 +2,7 @@ package dev.devpool.repository;
 
 import dev.devpool.domain.Member;
 import dev.devpool.exception.member.create.PersistenceIssueSaveException;
+import dev.devpool.exception.member.delete.DeleteMemberNotFound;
 import dev.devpool.exception.member.read.MemberNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,7 +38,8 @@ public class MemberRepository {
     //조회
     public Member findOneById(Long memberId) {
         Member findMember = em.find(Member.class, memberId);
-        if (findMember == null) {
+
+            if (findMember == null) {
             throw new MemberNotFoundException();
         }
 
@@ -61,7 +63,10 @@ public class MemberRepository {
 
     public void deleteById(Long memberId) {
         Member findMember = em.find(Member.class, memberId);
-        if (findMember != null) {
+        if (findMember == null) {
+            throw new DeleteMemberNotFound();
+        }
+        else {
             Query query = em.createQuery("delete from Certificate c where c.member.id=:memberId")
                     .setParameter("memberId", findMember.getId());
             query.executeUpdate();

@@ -4,6 +4,7 @@ import dev.devpool.domain.Member;
 import dev.devpool.dto.CreateMemberDto;
 import dev.devpool.dto.MemberDto;
 import dev.devpool.service.*;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name="회원", description = "회원 Controller")
+@Tag(name="회원", description = "회원 관련 Controller")
 @RestController
 @RequestMapping("/api/member")
 @RequiredArgsConstructor
@@ -54,7 +55,7 @@ public class MemberController {
             @ApiResponse(code = 200, message = "멤버 조회 - 성공"),
             @ApiResponse(code = 404, message = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
     })
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<GetMemberResponse> getMember(@PathVariable("id") Long id) {
         Member findMember = memberService.findOneById(id);
         MemberDto memberDto = MemberDto.convertToMemberDto(findMember);
@@ -66,6 +67,24 @@ public class MemberController {
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(getMemberResponse);
+    }
+
+    @Operation(summary = "회원정보삭제", description = "회원의 정보를 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "멤버 삭제 - 성공"),
+            @ApiResponse(code = 404, message = "멤버 삭제 실패 - 멤버가 DB에 없습니다.")
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DeleteMemberResponse> deleteMember(@PathVariable("id") Long id) {
+        memberService.deleteById(id);
+
+        DeleteMemberResponse deleteMemberResponse = DeleteMemberResponse.builder()
+                .status(200)
+                .message("멤버 삭제에 성공하였습니다.")
+                .id(id)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(deleteMemberResponse);
     }
 
 
@@ -87,5 +106,17 @@ public class MemberController {
         private String message;
         private MemberDto memberDto;
     }
+
+    @Data
+    @AllArgsConstructor
+    @Builder
+    public static class DeleteMemberResponse {
+        private int status;
+        private String message;
+        private Long id;
+    }
+
+
+
 
 }

@@ -4,6 +4,9 @@ import dev.devpool.domain.Member;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import dev.devpool.exception.GlobalExceptionHandler;
+import dev.devpool.exception.member.create.DuplicateMemberException;
+import dev.devpool.exception.member.read.MemberNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +76,13 @@ public class MemberServiceTest {
 
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(DuplicateMemberException.class, () -> {
             memberService.join(member2);
         });
     }
 
     @Test
     public void 멤버삭제ById () {
-        transactionTemplate.execute(status -> {
 
             //given
             Member member = new Member();
@@ -92,15 +94,12 @@ public class MemberServiceTest {
 
             //when
             memberService.deleteById(member.getId());
-            em.flush();
-            em.clear();
+
 
             //then
-            Member findMember = memberService.findOneById(member.getId());
-            assertNull(findMember);
-
-            return null;
-        });
+            assertThrows(MemberNotFoundException.class, () -> {
+                memberService.findOneById(member.getId());
+            });
     }
 
     @Test
@@ -122,9 +121,15 @@ public class MemberServiceTest {
             String Email = "rerewrw2112";
             String password = "asdasd";
 
+            Member newMember = new Member();
+            newMember.setName(newName);
+            newMember.setNickName(newNickName);
+            newMember.setEmail(Email);
+            newMember.setPassword(password);
+
             em.flush();
             em.clear();
-            Member findMember = memberService.update(member.getId(), newName, newNickName, Email, password);
+            Member findMember = memberService.update(member.getId(), newMember);
 
             //then
             assertEquals(findMember.getEmail(), Email);

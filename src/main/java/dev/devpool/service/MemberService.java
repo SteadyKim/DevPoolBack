@@ -32,7 +32,7 @@ public class MemberService {
     public void validateMember(Member member) {
         Optional<Member> findMember = memberRepository.findOneByEmail(member.getEmail());
 
-        if (!(findMember.isEmpty())) {
+        if (findMember.isPresent()) {
             throw new DuplicateMemberException();
         }
     }
@@ -51,7 +51,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void deleteById(long memberId) {
+    public void deleteById(Long memberId) {
     memberRepository.deleteById(memberId);
     }
 
@@ -61,13 +61,14 @@ public class MemberService {
     }
 
     @Transactional
-    public Member update(Long memberId, String name, String nickName, String mail, String password) {
-        Member findMember = memberRepository.findOneById(memberId);
+    public Member update(Long id, Member member) {
+        Member findMember = memberRepository.findOneById(id);
         // 변경 감지 사용하기
-        findMember.setName(name);
-        findMember.setNickName(nickName);
-        findMember.setEmail(mail);
-        findMember.setPassword(password);
+        findMember.setName(member.getName());
+        findMember.setNickName(member.getNickName());
+        findMember.setEmail(member.getEmail());
+        findMember.setPassword(member.getPassword());
+        findMember.setImageUrl(member.getImageUrl());
 
         return findMember;
     }

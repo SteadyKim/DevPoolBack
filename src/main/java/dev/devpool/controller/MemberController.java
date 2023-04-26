@@ -87,6 +87,28 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(deleteMemberResponse);
     }
 
+    @Operation(summary = "회원정보수정", description = "회원의 정보를 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "멤버 수정 - 성공"),
+            @ApiResponse(code = 404, message = "멤버 수정 실패")
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdateMemberResponse> updateMember(@PathVariable("id") Long id, @RequestBody @Valid MemberDto memberDto) {
+        Member updateMember = memberService.update(id, memberDto.toEntity());
+
+        MemberDto updateMemberDto = MemberDto.convertToMemberDto(updateMember);
+
+        UpdateMemberResponse updateMemberResponse = UpdateMemberResponse.builder()
+                .status(200)
+                .message("멤버 수정에 성공하였습니다.")
+                .memberDto(updateMemberDto)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateMemberResponse);
+    }
+
+
+
 
 
     @Data
@@ -116,6 +138,14 @@ public class MemberController {
         private Long id;
     }
 
+    @Data
+    @AllArgsConstructor
+    @Builder
+    public static class UpdateMemberResponse {
+        private int status;
+        private String message;
+        private MemberDto memberDto;
+    }
 
 
 

@@ -22,7 +22,7 @@ public class Team {
 
     private String body;
 
-    private int total_num;
+    private int totalNum;
 
     public Long getId() {
         return id;
@@ -48,11 +48,11 @@ public class Team {
         this.body = body;
     }
 
-    public int getTotal_num() {
-        return total_num;
+    public int getTotalNum() {
+        return totalNum;
     }
 
-    public void setTotal_num(int total_num) {
-        this.total_num = total_num;
+    public void setTotalNum(int total_num) {
+        this.totalNum = total_num;
     }
 }

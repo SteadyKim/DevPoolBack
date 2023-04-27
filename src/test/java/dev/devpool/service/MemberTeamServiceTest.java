@@ -4,11 +4,9 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.MemberTeam;
 import dev.devpool.domain.Team;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
@@ -60,8 +58,7 @@ public class MemberTeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setName("fsdf");
-            team.setTotal_num(4);
+            team.setTotalNum(4);
 
             MemberTeam memberTeam = new MemberTeam();
             memberTeam.addMemberTeam(member, team);
@@ -112,8 +109,7 @@ public class MemberTeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setName("fsdf");
-            team.setTotal_num(4);
+            team.setTotalNum(4);
 
             MemberTeam memberTeam = new MemberTeam();
             memberTeam.setMember(member);
@@ -186,8 +182,7 @@ public class MemberTeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setName("fsdf");
-            team.setTotal_num(4);
+            team.setTotalNum(4);
 
             MemberTeam memberTeam = new MemberTeam();
             memberTeam.setMember(member);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TeamRepository {
@@ -32,6 +33,16 @@ public class TeamRepository {
         List<Team> teamList = em.createQuery("select t from Team t", Team.class).getResultList();
 
         return teamList;
+    }
+
+    public Optional<Team> findOneByTitle(String title) {
+        Optional<Team> findTeam = em.createQuery("select t from Team  t where t.title=:title", Team.class)
+                .setParameter("title", title)
+                .getResultList()
+                .stream()
+                .findAny();
+
+        return findTeam;
     }
 
     public void deleteById(long teamId) {

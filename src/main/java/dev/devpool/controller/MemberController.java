@@ -107,10 +107,6 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(updateMemberResponse);
     }
 
-
-
-
-
     @Data
     @AllArgsConstructor
     @Builder
@@ -146,7 +142,5 @@ public class MemberController {
         private String message;
         private MemberDto memberDto;
     }
-
-
 
 }

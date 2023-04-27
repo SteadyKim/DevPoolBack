@@ -3,12 +3,14 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.MemberTeam;
 import dev.devpool.domain.Team;
+import dev.devpool.exception.member.create.DuplicateMemberException;
+import dev.devpool.exception.team.create.DuplicateTeamException;
 import dev.devpool.repository.TeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,6 +23,8 @@ public class TeamService {
 
     @Transactional
     public long join(Team team) {
+        validateTeam(team);
+
         teamRepository.save(team);
         return team.getId();
     }
@@ -36,6 +40,13 @@ public class TeamService {
         return teamList;
     }
 
+    public void validateTeam(Team team) {
+        Optional<Team> findTeam = teamRepository.findOneByTitle(team.getTitle());
+
+        if (findTeam.isPresent()) {
+            throw new DuplicateTeamException();
+        }
+    }
     @Transactional
     public void deleteById(long teamId) {
         teamRepository.deleteById(teamId);
@@ -57,7 +68,7 @@ public class TeamService {
         // 변경감지를 활용해 Update 쿼리
         findTeam.setTitle(newTeam.getTitle());
         findTeam.setBody(newTeam.getBody());
-        findTeam.setTotal_num(newTeam.getTotal_num());
+        findTeam.setTotalNum(newTeam.getTotalNum());
 
         return findTeam;
     }

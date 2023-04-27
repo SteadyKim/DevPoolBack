@@ -1,14 +1,10 @@
 package dev.devpool.service;
 
-import dev.devpool.domain.Member;
 import dev.devpool.domain.Team;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManager;
@@ -39,7 +35,7 @@ class TeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setTotal_num(4);
+            team.setTotalNum(4);
 
             teamService.join(team);
 
@@ -63,7 +59,7 @@ class TeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setTotal_num(4);
+            team.setTotalNum(4);
 
             teamService.join(team);
 
@@ -89,7 +85,7 @@ class TeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setTotal_num(4);
+            team.setTotalNum(4);
 
             teamService.join(team);
 
@@ -112,7 +108,7 @@ class TeamServiceTest {
             Team team = new Team();
             team.setBody("asdasdas");
             team.setTitle("A팀");
-            team.setTotal_num(4);
+            team.setTotalNum(4);
 
             teamService.join(team);
 
@@ -125,7 +121,7 @@ class TeamServiceTest {
             Team newTeam = new Team();
             newTeam.setTitle(newTitle);
             newTeam.setBody(newBody);
-            newTeam.setTotal_num(newTotalNum);
+            newTeam.setTotalNum(newTotalNum);
 
             em.flush();
             em.clear();

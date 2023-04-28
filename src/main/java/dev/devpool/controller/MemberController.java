@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Tag(name="회원", description = "회원 관련 Controller")
 @RestController
 @RequestMapping("/api/member")
 @RequiredArgsConstructor

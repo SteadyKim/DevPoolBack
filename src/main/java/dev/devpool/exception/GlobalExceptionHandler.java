@@ -4,6 +4,7 @@ import dev.devpool.exception.member.create.DuplicateMemberException;
 import dev.devpool.exception.member.delete.DeleteMemberNotFound;
 import dev.devpool.exception.member.read.MemberNotFoundException;
 import dev.devpool.exception.member.create.PersistenceIssueSaveException;
+import dev.devpool.exception.team.create.DuplicateTeamException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +33,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DeleteMemberNotFound.class)
     public ResponseEntity<ErrorResponse> handleDeleteMemberNotFoundException(DeleteMemberNotFound ex) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(DuplicateTeamException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateTeamException(DuplicateTeamException ex) {
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }

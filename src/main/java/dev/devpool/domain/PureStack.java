@@ -1,11 +1,21 @@
 package dev.devpool.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 /**
  * 나중에 쿼리로 insert만 해둘 예정
  */
+
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class PureStack {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PURESTACK_ID")

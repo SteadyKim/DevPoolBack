@@ -1,5 +1,9 @@
 package dev.devpool.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -7,7 +11,12 @@ import java.time.LocalDate;
 
 import static javax.persistence.FetchType.*;
 
+
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

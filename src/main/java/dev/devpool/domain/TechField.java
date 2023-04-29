@@ -1,10 +1,18 @@
 package dev.devpool.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.*;
-
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class TechField {
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "TECHFIELD_ID")

@@ -1,10 +1,20 @@
 package dev.devpool.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 
+
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Certificate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

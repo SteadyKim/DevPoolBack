@@ -1,6 +1,10 @@
 package dev.devpool;
 
-import dev.devpool.domain.Member;
+import dev.devpool.domain.*;
+import dev.devpool.service.MemberService;
+import dev.devpool.service.StackService;
+import dev.devpool.service.TeamService;
+import dev.devpool.service.TechFieldService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +17,40 @@ import javax.persistence.EntityManager;
 public class InitDb {
 
     private final InitService initService;
+    private final MemberService memberService;
+
+    private final StackService stackService;
+
+    private final TechFieldService techFieldService;
+    private final TeamService teamService;
 
     @PostConstruct
     public void init() {
         initService.ss();
+
+        Team team = Team.builder()
+                .title("aa팀을 모집합니디.")
+                .totalNum(4)
+                .body("ㅗ디ㅣㅐ 째깅!")
+                .build();
+
+        Member findMember = memberService.findOneById(1L);
+
+        MemberTeam memberTeam = new MemberTeam();
+        memberTeam.addMemberTeam(findMember, team);
+
+        teamService.join(team);
+
+        Stack stack = new Stack();
+        stack.setName("AWS");
+        stack.setTeam(team);
+        stackService.join(stack);
+
+        TechField techField = new TechField();
+        techField.setName("AI");
+        techField.setTeam(team);
+        techFieldService.join(techField);
+
     }
 
     @Component
@@ -25,6 +59,7 @@ public class InitDb {
     static class InitService {
 
         private final EntityManager em;
+
 
         public void ss() {
             Member member = Member.builder()

@@ -1,6 +1,10 @@
 package dev.devpool.domain;
 
 import dev.devpool.domain.enums.IsCheck;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -8,7 +12,12 @@ import java.time.LocalDate;
 
 import static javax.persistence.EnumType.STRING;
 
+
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Latter {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LATTER_ID")

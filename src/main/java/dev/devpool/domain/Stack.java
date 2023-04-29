@@ -1,12 +1,21 @@
 package dev.devpool.domain;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Stack {
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "stack_id")

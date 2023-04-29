@@ -5,6 +5,10 @@ import dev.devpool.domain.Project;
 import dev.devpool.domain.Stack;
 import dev.devpool.domain.Team;
 import dev.devpool.repository.StackRepository;
+import dev.devpool.repository.TeamRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,13 +17,11 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class StackService {
 
     private final StackRepository stackRepository;
-
-    public StackService(StackRepository stackRepository) {
-        this.stackRepository = stackRepository;
-    }
+    private final TeamRepository teamRepository;
 
     @Transactional
     // 저장
@@ -76,14 +78,20 @@ public class StackService {
 
     // 수정
     @Transactional
-    public void updateByTeam(Team team, ArrayList<Stack> newStacks) {
+    public void updateByTeam(Long teamId, List<String> stackNameList) {
+        Team findTeam = teamRepository.findOneById(teamId);
+
         // 지우기
-        stackRepository.deleteByTeamId(team.getId());
+        stackRepository.deleteByTeamId(findTeam.getId());
 
         // 추가
-        for (Stack newStack : newStacks) {
-            newStack.setTeam(team);
-            stackRepository.save(newStack);
+        for (String stackName : stackNameList) {
+            Stack stack = Stack.builder()
+                    .team(findTeam)
+                    .name(stackName)
+                    .build();
+
+            stackRepository.save(stack);
         }
     }
 

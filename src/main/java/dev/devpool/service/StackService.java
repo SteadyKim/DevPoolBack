@@ -34,14 +34,14 @@ public class StackService {
         return stackRepository.findOneById(stackId);
     }
 
-    public List<Stack> findStacksByTeamId(Long teamId){
+    public List<Stack> findAllByTeamId(Long teamId){
         return stackRepository.findStacksByTeamId(teamId);
     };
 
-    public List<Stack> findStacksByMemberId(Long memberId){
+    public List<Stack> findAllByMemberId(Long memberId){
         return stackRepository.findStacksByMemberId(memberId);
     };
-    public List<Stack> findStacksByProjectId(Long projectId){
+    public List<Stack> findAllByProjectId(Long projectId){
         return stackRepository.findStacksByProjectId(projectId);
     };
 

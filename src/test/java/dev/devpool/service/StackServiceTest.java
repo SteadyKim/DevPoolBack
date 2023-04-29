@@ -5,7 +5,6 @@ import dev.devpool.domain.Project;
 import dev.devpool.domain.Stack;
 import dev.devpool.domain.Team;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -82,7 +81,7 @@ class StackServiceTest {
             em.clear();
 
             //then
-            List<Stack> findStacks = stackService.findStacksByTeamId(team.getId());
+            List<Stack> findStacks = stackService.findAllByTeamId(team.getId());
 
             // 길이 체크
             assertEquals(2, findStacks.size());
@@ -120,7 +119,7 @@ class StackServiceTest {
             em.clear();
 
             //then
-            List<Stack> findStacks = stackService.findStacksByMemberId(member.getId());
+            List<Stack> findStacks = stackService.findAllByMemberId(member.getId());
 
             // 길이 체크
             assertEquals(2, findStacks.size());
@@ -160,7 +159,7 @@ class StackServiceTest {
             em.clear();
 
             //then
-            List<Stack> findStacks = stackService.findStacksByProjectId(project.getId());
+            List<Stack> findStacks = stackService.findAllByProjectId(project.getId());
 
             // 길이 체크
             assertEquals(2, findStacks.size());
@@ -227,7 +226,7 @@ class StackServiceTest {
             em.flush();
             em.clear();
 
-            List<Stack> findStacks = stackService.findStacksByTeamId(team.getId());
+            List<Stack> findStacks = stackService.findAllByTeamId(team.getId());
 
             assertEquals(findStacks.size(), 0);
             return null;
@@ -259,7 +258,7 @@ class StackServiceTest {
             em.flush();
             em.clear();
 
-            List<Stack> findStacks = stackService.findStacksByMemberId(member.getId());
+            List<Stack> findStacks = stackService.findAllByMemberId(member.getId());
 
             assertEquals(findStacks.size(), 0);
             return null;
@@ -290,7 +289,7 @@ class StackServiceTest {
             em.flush();
             em.clear();
 
-            List<Stack> findStacks = stackService.findStacksByProjectId(project.getId());
+            List<Stack> findStacks = stackService.findAllByProjectId(project.getId());
 
             assertEquals(findStacks.size(), 0);
             return null;
@@ -326,7 +325,7 @@ class StackServiceTest {
             em.clear();
 
             //then
-            List<Stack> findStacks = stackService.findStacksByTeamId(team.getId());
+            List<Stack> findStacks = stackService.findAllByTeamId(team.getId());
 
             // 길이
             assertEquals(findStacks.size(), 2);
@@ -372,7 +371,7 @@ class StackServiceTest {
             em.clear();
 
             //then
-            List<Stack> findStacks = stackService.findStacksByMemberId(member.getId());
+            List<Stack> findStacks = stackService.findAllByMemberId(member.getId());
 
             // 길이
             assertEquals(findStacks.size(), 2);
@@ -418,7 +417,7 @@ class StackServiceTest {
             em.clear();
 
             //then
-            List<Stack> findStacks = stackService.findStacksByProjectId(project.getId());
+            List<Stack> findStacks = stackService.findAllByProjectId(project.getId());
 
             // 길이
             assertEquals(findStacks.size(), 2);

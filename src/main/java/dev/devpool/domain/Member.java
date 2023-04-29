@@ -1,10 +1,18 @@
 package dev.devpool.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@ToString
+
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
@@ -22,27 +30,10 @@ public class Member {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public List<Site> getSites() {
         return sites;
     }
 
-    public void setSites(List<Site> sites) {
-        this.sites = sites;
-    }
-
-    public Member() {
-    }
-
-    public Member(String name, String nickName, String email, String password) {
-        this.name = name;
-        this.nickName = nickName;
-        this.email = email;
-        this.password = password;
-    }
 
     @OneToMany(mappedBy = "member")
     private List<Certificate> certificates = new ArrayList<>();
@@ -57,62 +48,8 @@ public class Member {
         return latters;
     }
 
-    public void setLatters(List<Latter> latters) {
-        this.latters = latters;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public List<Certificate> getCertificates() {
         return certificates;
-    }
-
-    public void setCertificates(List<Certificate> certificates) {
-        this.certificates = certificates;
-    }
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
 
@@ -132,5 +69,16 @@ public class Member {
     public void addSite(Site site){
         site.setMember(this);
         sites.add(site);
+    }
+
+    /**
+     * 비지니스 로직
+     */
+    public void update(Member newMember) {
+        name = newMember.getName();
+        nickName = newMember.getNickName();
+        email = newMember.getEmail();
+        password = newMember.getPassword();
+        imageUrl = newMember.getImageUrl();
     }
 }

@@ -64,11 +64,7 @@ public class MemberService {
     public Member update(Long id, Member member) {
         Member findMember = memberRepository.findOneById(id);
         // 변경 감지 사용하기
-        findMember.setName(member.getName());
-        findMember.setNickName(member.getNickName());
-        findMember.setEmail(member.getEmail());
-        findMember.setPassword(member.getPassword());
-        findMember.setImageUrl(member.getImageUrl());
+        findMember.update(member);
 
         return findMember;
     }

@@ -37,11 +37,12 @@ public class MemberServiceTest {
     public void 멤버저장_조회 () {
         transactionTemplate.execute(status -> {
             //given
-            Member member = new Member();
-            member.setName("김dsa우");
-            member.setEmail("redasdsas11@ner.com");
-            member.setPassword("tasdaasd16");
-            member.setNickName("귀미");
+            Member member = Member.builder()
+                    .name("김태우")
+                    .email("redsas11@ner.com")
+                    .password("asdas")
+                    .nickName("귀미")
+                    .build();
             memberService.join(member);
 
             //when
@@ -59,21 +60,21 @@ public class MemberServiceTest {
     @Test
     public void 멤버중복예외() {
         //given
-        Member member = new Member();
-        member.setName("김우");
-        member.setEmail("redsas11@ner.com");
-        member.setPassword("taasd16");
-        member.setNickName("귀미");
+        Member member = Member.builder()
+                .name("김태우")
+                .email("redsas11@ner.com")
+                .password("asdas")
+                .nickName("귀미")
+                .build();
         memberService.join(member);
 
 
         //when
-        Member member2 = new Member();
-        member2.setName("김우");
-        member2.setEmail("redsas11@ner.com");
-        member2.setPassword("taasd16");
-        member2.setNickName("귀미");
-
+        Member member2 = Member.builder()
+                .email("redsas11@ner.com")
+                .password("tsfd")
+                .nickName("귀미")
+                .build();
 
         //then
         assertThrows(DuplicateMemberException.class, () -> {
@@ -85,11 +86,12 @@ public class MemberServiceTest {
     public void 멤버삭제ById () {
 
             //given
-            Member member = new Member();
-            member.setName("김태우");
-            member.setEmail("rereeasd11sax@xver.com");
-            member.setPassword("taeasd16");
-            member.setNickName("귀요미");
+        Member member = Member.builder()
+                .name("김태우")
+                .email("redsas11@ner.com")
+                .password("asdas")
+                .nickName("귀미")
+                .build();
             memberService.join(member);
 
             //when
@@ -107,11 +109,13 @@ public class MemberServiceTest {
         transactionTemplate.execute(status -> {
 
             //given
-            Member member = new Member();
-            member.setName("김태우");
-            member.setEmail("re1125@ner.com");
-            member.setPassword("taed");
-            member.setNickName("귀요미");
+            Member member = Member.builder()
+                    .name("김태우")
+                    .email("redsas11@ner.com")
+                    .password("asdas")
+                    .nickName("귀미")
+                    .build();
+
             memberService.join(member);
 
             //when
@@ -121,11 +125,12 @@ public class MemberServiceTest {
             String Email = "rerewrw2112";
             String password = "asdasd";
 
-            Member newMember = new Member();
-            newMember.setName(newName);
-            newMember.setNickName(newNickName);
-            newMember.setEmail(Email);
-            newMember.setPassword(password);
+            Member newMember = Member.builder()
+                    .name(newName)
+                    .email(Email)
+                    .password(password)
+                    .nickName(newNickName)
+                    .build();
 
             em.flush();
             em.clear();

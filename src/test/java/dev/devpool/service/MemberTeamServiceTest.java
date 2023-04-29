@@ -41,24 +41,28 @@ public class MemberTeamServiceTest {
 
         transactionTemplate.execute(status -> {
             //given
-            Member member = new Member();
-            member.setName("김태우");
-            member.setEmail("re@naver.com");
-            member.setPassword("tae16");
-            member.setNickName("귀요미");
+            Member member = Member.builder()
+                    .name("김태우")
+                    .nickName("asd")
+                    .email("reree1@naver.com")
+                    .password("asdas")
+                    .build();
             memberService.join(member);
 
-            Member member2 = new Member();
-            member2.setName("이영진");
-            member2.setEmail("eloo@naver.com");
-            member2.setPassword("taeu4616");
-            member2.setNickName("귀요미2");
+            Member member2 = Member.builder()
+                    .name("이영진")
+                    .nickName("asㅁㄴㅇd")
+                    .email("reree1@naㄴver.com")
+                    .password("asdaㅁs")
+                    .build();
+
             memberService.join(member2);
 
-            Team team = new Team();
-            team.setBody("asdasdas");
-            team.setTitle("A팀");
-            team.setTotalNum(4);
+            Team team = Team.builder()
+                    .title("A팀")
+                    .body("asdasd")
+                    .totalNum(4)
+                    .build();
 
             MemberTeam memberTeam = new MemberTeam();
             memberTeam.addMemberTeam(member, team);
@@ -92,24 +96,27 @@ public class MemberTeamServiceTest {
     public void 멤버_팀삭제 () {
         transactionTemplate.execute(status -> {
             //given
-            Member member = new Member();
-            member.setName("김태우");
-            member.setEmail("reres25@nar.com");
-            member.setPassword("taeu16");
-            member.setNickName("귀요미");
+            Member member = Member.builder()
+                    .name("김태우")
+                    .nickName("asd")
+                    .email("reree1@naver.com")
+                    .password("asdas")
+                    .build();
             memberService.join(member);
 
-            Member member2 = new Member();
-            member2.setName("이영진");
-            member2.setEmail("eloo@naver.com");
-            member2.setPassword("tae616");
-            member2.setNickName("귀요미2");
+            Member member2 = Member.builder()
+                    .name("이영진")
+                    .nickName("asㅁㄴㅇd")
+                    .email("reree1@naㄴver.com")
+                    .password("asdaㅁs")
+                    .build();
             memberService.join(member2);
 
-            Team team = new Team();
-            team.setBody("asdasdas");
-            team.setTitle("A팀");
-            team.setTotalNum(4);
+            Team team = Team.builder()
+                    .title("A팀")
+                    .body("asdasd")
+                    .totalNum(4)
+                    .build();
 
             MemberTeam memberTeam = new MemberTeam();
             memberTeam.setMember(member);
@@ -150,39 +157,48 @@ public class MemberTeamServiceTest {
     public void 멤버팀수정() {
         transactionTemplate.execute(status -> {
             //given
-            Member member = new Member();
-            member.setName("김태우");
-            member.setEmail("reres25@nar.com");
-            member.setPassword("taeu16");
-            member.setNickName("귀요미");
+            Member member = Member.builder()
+                    .name("김태우")
+                    .nickName("asd")
+                    .email("reree1@naver.com")
+                    .password("asdas")
+                    .build();
             memberService.join(member);
 
-            Member member2 = new Member();
-            member2.setName("이영진");
-            member2.setEmail("eloo@naver.com");
-            member2.setPassword("tae616");
-            member2.setNickName("귀요미2");
+            Member member2 = Member.builder()
+                    .name("이영진")
+                    .nickName("asㅁㄴㅇd")
+                    .email("reree1@naㄴver.com")
+                    .password("asdaㅁs")
+                    .build();
             memberService.join(member2);
 
-            Member newMember1 = new Member();
-            newMember1.setNickName("asda");
-            newMember1.setName("asd");
-            newMember1.setPassword("asda");
-            newMember1.setEmail("asdasd");
+
+            Member newMember1 = Member.builder()
+                    .name("asasdas")
+                    .nickName("asdsa")
+                    .email("asd")
+                    .password("asd")
+                    .build();
+
             memberService.join(newMember1);
 
-            Member newMember2 = new Member();
-            newMember2.setNickName("asdasda");
-            newMember2.setName("asasdasdd");
-            newMember2.setPassword("aasdsda");
-            newMember2.setEmail("asdaasdassd");
+
+            Member newMember2 = Member.builder()
+                    .name("asasdas")
+                    .nickName("asdsa")
+                    .email("asd")
+                    .password("asd")
+                    .build();
+
             memberService.join(newMember2);
 
 
-            Team team = new Team();
-            team.setBody("asdasdas");
-            team.setTitle("A팀");
-            team.setTotalNum(4);
+            Team team = Team.builder()
+                    .title("A팀")
+                    .body("asdasd")
+                    .totalNum(4)
+                    .build();
 
             MemberTeam memberTeam = new MemberTeam();
             memberTeam.setMember(member);

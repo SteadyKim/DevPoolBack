@@ -2,6 +2,7 @@ package dev.devpool.repository;
 
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Team;
+import dev.devpool.exception.team.delete.DeleteTeamNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,24 +48,43 @@ public class TeamRepository {
 
     public void deleteById(long teamId) {
         Team findTeam = em.find(Team.class, teamId);
-        em.remove(findTeam);
-    }
+        if (findTeam == null) {
+            throw new DeleteTeamNotFoundException();
+        }
+        /**
+         * 영속성 컨텍스트를 사용하는 queryDsl로 리팩토링 할 예정
+         */
+        em.createQuery("delete from MemberTeam mt where mt.team.id=:teamId")
+                .setParameter("teamId", teamId).executeUpdate();
 
-    public void delete(Team team) {
-        em.remove(team);
+        em.createQuery("delete from Stack s where s.team.id=:teamId")
+                .setParameter("teamId", teamId).executeUpdate();
+
+        em.createQuery("delete from TechField tf where tf.team.id=:teamId")
+                .setParameter("teamId", teamId).executeUpdate();
+        em.createQuery("delete from Comment c where c.team.id=:teamId")
+                .setParameter("teamId", teamId).executeUpdate();
+
+        em.createQuery("delete from Team t where t.id=:teamId").
+                setParameter("teamId", teamId).executeUpdate();
+
     }
 
     public void deleteAll() {
         List<Team> findTeams = em.createQuery("select t from Team t", Team.class).getResultList();
         for (Team findTeam : findTeams) {
             Long teamId = findTeam.getId();
-            Query query = em.createQuery("delete from MemberTeam mt where mt.team.id=:teamId")
-                    .setParameter("teamId", teamId);
-            query.executeUpdate();
-        }
+            em.createQuery("delete from Stack s where s.team.id=:teamId")
+                    .setParameter("teamId", teamId).executeUpdate();
 
-        Query query = em.createQuery("delete from Team t");
-        query.executeUpdate();
+            em.createQuery("delete from TechField tf where tf.team.id=:teamId")
+                    .setParameter("teamId", teamId).executeUpdate();
+
+            em.createQuery("delete from Comment c where c.team.id=:teamId")
+                    .setParameter("teamId", teamId).executeUpdate();
+        }
+        em.createQuery("delete from MemberTeam mt").executeUpdate();
+        em.createQuery("delete from Team t").executeUpdate();
     }
 
     /**

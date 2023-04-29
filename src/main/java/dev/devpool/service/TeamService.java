@@ -53,11 +53,6 @@ public class TeamService {
     }
 
     @Transactional
-    public void delete(Team team) {
-        teamRepository.delete(team);
-    }
-
-    @Transactional
     public void deleteAll() {
         teamRepository.deleteAll();
     }
@@ -69,6 +64,7 @@ public class TeamService {
         findTeam.setTitle(newTeam.getTitle());
         findTeam.setBody(newTeam.getBody());
         findTeam.setTotalNum(newTeam.getTotalNum());
+
 
         return findTeam;
     }

@@ -19,9 +19,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
@@ -32,7 +34,7 @@ public class MemberController {
             @ApiResponse(code = 409, message = "멤버 저장 실패 - 중복된 멤버가 있습니다."),
             @ApiResponse(code = 500, message = "멤버 저장 실패 - 인터넷 에러")
     })
-    @PostMapping()
+    @PostMapping("/member")
     public ResponseEntity<CreateMemberResponse> saveMember(@RequestBody @Valid CreateMemberDto createMemberDto) {
         // 저장
         Member member = createMemberDto.toEntity();
@@ -54,7 +56,7 @@ public class MemberController {
             @ApiResponse(code = 200, message = "멤버 조회 - 성공"),
             @ApiResponse(code = 404, message = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
     })
-    @GetMapping("/{id}")
+    @GetMapping("/member/{id}")
     public ResponseEntity<GetMemberResponse> getMember(@PathVariable("id") Long id) {
         Member findMember = memberService.findOneById(id);
         MemberDto memberDto = MemberDto.convertToMemberDto(findMember);
@@ -68,12 +70,35 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(getMemberResponse);
     }
 
+    @Operation(summary = "회원정보리스트조회", description = "모든 회원의 정보를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "멤버 조회 - 성공"),
+            @ApiResponse(code = 404, message = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
+    })
+    @GetMapping("/members")
+    public ResponseEntity<GetMemberListResponse> getMemberList() {
+        List<Member> memberList = memberService.findMembers();
+        ArrayList<MemberDto> memberDtoList = new ArrayList<MemberDto>();
+
+        for (Member member : memberList) {
+            MemberDto memberDto = MemberDto.convertToMemberDto(member);
+            memberDtoList.add(memberDto);
+        }
+
+        GetMemberListResponse getMemberListResponse = GetMemberListResponse.builder()
+                .status(200)
+                .message("멤버 리스트 조회에 성공하였습니다.")
+                .memberDtoList(memberDtoList)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(getMemberListResponse);
+    }
+
     @Operation(summary = "회원정보삭제", description = "회원의 정보를 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "멤버 삭제 - 성공"),
             @ApiResponse(code = 404, message = "멤버 삭제 실패 - 멤버가 DB에 없습니다.")
     })
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/member/{id}")
     public ResponseEntity<DeleteMemberResponse> deleteMember(@PathVariable("id") Long id) {
         memberService.deleteById(id);
 
@@ -122,6 +147,15 @@ public class MemberController {
         private int status;
         private String message;
         private MemberDto memberDto;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @Builder
+    public static class GetMemberListResponse {
+        private int status;
+        private String message;
+        private List<MemberDto> memberDtoList;
     }
 
     @Data

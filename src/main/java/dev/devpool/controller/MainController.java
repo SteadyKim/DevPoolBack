@@ -14,14 +14,4 @@ public class MainController {
         return "home";
     }
 
-    @GetMapping("/api")
-    public Member getMember() {
-        Member member = new Member();
-        member.setName("김");
-        member.setEmail("rereer5@navom");
-        member.setNickName("테디");
-        member.setPassword("tae125");
-
-        return member;
-    }
 }

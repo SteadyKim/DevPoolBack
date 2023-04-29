@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import dev.devpool.dto.MemberDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -80,5 +81,15 @@ public class Member {
         email = newMember.getEmail();
         password = newMember.getPassword();
         imageUrl = newMember.getImageUrl();
+    }
+
+    public MemberDto.Response toDto() {
+        return MemberDto.Response.builder()
+                .name(this.name)
+                .nickName(this.nickName)
+                .email(this.email)
+                .password(this.password)
+                .imageUrl(this.imageUrl)
+                .build();
     }
 }

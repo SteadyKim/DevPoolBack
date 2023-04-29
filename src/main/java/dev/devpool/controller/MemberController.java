@@ -1,8 +1,7 @@
 package dev.devpool.controller;
 
 import dev.devpool.domain.Member;
-import dev.devpool.dto.CreateMemberDto;
-import dev.devpool.dto.MemberDto;
+import dev.devpool.dto.*;
 import dev.devpool.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
@@ -35,14 +34,14 @@ public class MemberController {
             @ApiResponse(code = 500, message = "멤버 저장 실패 - 인터넷 에러")
     })
     @PostMapping("/member")
-    public ResponseEntity<CreateMemberResponse> saveMember(@RequestBody @Valid CreateMemberDto createMemberDto) {
+    public ResponseEntity<CommonResponseDto<Object>> saveMember(@RequestBody @Valid MemberDto.Save memberSaveRequestDto) {
         // 저장
-        Member member = createMemberDto.toEntity();
+        Member member = memberSaveRequestDto.toEntity();
         Long id = memberService.join(member);
         
         
         // 응답
-        CreateMemberResponse createMemberResponse = CreateMemberResponse.builder()
+        CommonResponseDto<Object> createMemberResponse = CommonResponseDto.builder()
                 .id(member.getId())
                 .status(201)
                 .message("회원 저장에 성공하였습니다.")
@@ -57,17 +56,17 @@ public class MemberController {
             @ApiResponse(code = 404, message = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
     })
     @GetMapping("/member/{id}")
-    public ResponseEntity<GetMemberResponse> getMember(@PathVariable("id") Long id) {
+    public ResponseEntity<CommonDataResponseDto<Object>> getMember(@PathVariable("id") Long id) {
         Member findMember = memberService.findOneById(id);
-        MemberDto memberDto = MemberDto.convertToMemberDto(findMember);
+        MemberDto.Response memberDto = findMember.toDto();
 
-        GetMemberResponse getMemberResponse = GetMemberResponse.builder()
+        CommonDataResponseDto<Object> responseDto = CommonDataResponseDto.builder()
+                .data(memberDto)
                 .status(200)
                 .message("멤버 조회에 성공하였습니다.")
-                .memberDto(memberDto)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(getMemberResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
     @Operation(summary = "회원정보리스트조회", description = "모든 회원의 정보를 조회합니다.")
@@ -76,21 +75,24 @@ public class MemberController {
             @ApiResponse(code = 404, message = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
     })
     @GetMapping("/members")
-    public ResponseEntity<GetMemberListResponse> getMemberList() {
+    public ResponseEntity<CommonDataListResponseDto<Object>> getMemberList() {
         List<Member> memberList = memberService.findMembers();
-        ArrayList<MemberDto> memberDtoList = new ArrayList<MemberDto>();
+        ArrayList<Object> memberDtoList = new ArrayList<Object>();
 
         for (Member member : memberList) {
-            MemberDto memberDto = MemberDto.convertToMemberDto(member);
+            MemberDto.Response memberDto = member.toDto();
             memberDtoList.add(memberDto);
         }
 
-        GetMemberListResponse getMemberListResponse = GetMemberListResponse.builder()
+
+        CommonDataListResponseDto<Object> listResponseDto = CommonDataListResponseDto.builder()
                 .status(200)
                 .message("멤버 리스트 조회에 성공하였습니다.")
-                .memberDtoList(memberDtoList)
+                .dataList(memberDtoList)
                 .build();
-        return ResponseEntity.status(HttpStatus.OK).body(getMemberListResponse);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(listResponseDto);
     }
 
     @Operation(summary = "회원정보삭제", description = "회원의 정보를 삭제합니다.")
@@ -99,16 +101,16 @@ public class MemberController {
             @ApiResponse(code = 404, message = "멤버 삭제 실패 - 멤버가 DB에 없습니다.")
     })
     @DeleteMapping("/member/{id}")
-    public ResponseEntity<DeleteMemberResponse> deleteMember(@PathVariable("id") Long id) {
+    public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("id") Long id) {
         memberService.deleteById(id);
 
-        DeleteMemberResponse deleteMemberResponse = DeleteMemberResponse.builder()
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
                 .status(200)
                 .message("멤버 삭제에 성공하였습니다.")
                 .id(id)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(deleteMemberResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
     @Operation(summary = "회원정보수정", description = "회원의 정보를 수정합니다.")
@@ -116,64 +118,18 @@ public class MemberController {
             @ApiResponse(code = 200, message = "멤버 수정 - 성공"),
             @ApiResponse(code = 404, message = "멤버 수정 실패")
     })
-    @PutMapping("/{id}")
-    public ResponseEntity<UpdateMemberResponse> updateMember(@PathVariable("id") Long id, @RequestBody @Valid MemberDto memberDto) {
+    @PutMapping("/member/{id}")
+    public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("id") Long id, @RequestBody @Valid MemberDto.Save memberDto) {
         Member updateMember = memberService.update(id, memberDto.toEntity());
 
-        MemberDto updateMemberDto = MemberDto.convertToMemberDto(updateMember);
-
-        UpdateMemberResponse updateMemberResponse = UpdateMemberResponse.builder()
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
                 .status(200)
                 .message("멤버 수정에 성공하였습니다.")
-                .memberDto(updateMemberDto)
+                .id(updateMember.getId())
                 .build();
 
-        return ResponseEntity.status(HttpStatus.OK).body(updateMemberResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
-    @Data
-    @AllArgsConstructor
-    @Builder
-    public static class CreateMemberResponse {
-        private int status;
-        private String message;
-        private Long id;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @Builder
-    public static class GetMemberResponse {
-        private int status;
-        private String message;
-        private MemberDto memberDto;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @Builder
-    public static class GetMemberListResponse {
-        private int status;
-        private String message;
-        private List<MemberDto> memberDtoList;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @Builder
-    public static class DeleteMemberResponse {
-        private int status;
-        private String message;
-        private Long id;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @Builder
-    public static class UpdateMemberResponse {
-        private int status;
-        private String message;
-        private MemberDto memberDto;
-    }
 
 }

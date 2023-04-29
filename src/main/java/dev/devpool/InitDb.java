@@ -35,7 +35,20 @@ public class InitDb {
                     .imageUrl("asdojasdsa/.sdfsdjfnj")
                     .build();
 
+
+
             em.persist(member);
+
+            Member member2 = Member.builder()
+                    .name("이영진")
+                    .nickName("ㄴ빵")
+                    .email("ㄱㄷㄴㄴㄷ@naver.com")
+                    .password("rter141")
+                    .imageUrl("asdㅌㅌㄴjasdsa/.sdfsdjfnj")
+                    .build();
+
+            em.persist(member2);
+
         }
     }
 

@@ -2,37 +2,55 @@ package dev.devpool.dto;
 
 import dev.devpool.domain.Member;
 import dev.devpool.exception.member.read.MemberNotFoundException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
 import java.util.Optional;
 
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@Schema(description = "member dto")
 public class MemberDto {
 
-    private Long id;
-    private String name;
-    private String nickName;
-    private String email;
-    private String password;
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @Schema(name = "member response dto")
+    public static class Response {
+        private String name;
+        private String nickName;
+        private String email;
+        private String password;
+        private String imageUrl;
 
-    private String imageUrl;
-
-    public Member toEntity() {
-        Member member = new Member();
-        member.setName(name);
-        member.setNickName(nickName);
-        member.setEmail(email);
-        member.setPassword(password);
-        member.setImageUrl(imageUrl);
-
-        return member;
     }
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @Schema(name = "member save request dto")
+    public static class Save {
 
-    public static MemberDto convertToMemberDto(Member member) {
-            return new MemberDto(member.getId(), member.getName(), member.getNickName(), member.getEmail(), member.getPassword(), member.getImageUrl());
+        public Save() {
+        }
+
+        private String name;
+        private String nickName;
+        private String email;
+        private String password;
+        private String imageUrl;
+
+
+        public Member toEntity() {
+            Member member = Member.builder()
+                    .name(this.name)
+                    .nickName(this.nickName)
+                    .email(this.email)
+                    .password(this.password)
+                    .imageUrl(this.imageUrl)
+                    .build();
+
+            return member;
+        }
     }
 }

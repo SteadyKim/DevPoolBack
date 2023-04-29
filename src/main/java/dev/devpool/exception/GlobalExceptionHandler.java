@@ -6,6 +6,7 @@ import dev.devpool.exception.member.delete.DeleteMemberNotFound;
 import dev.devpool.exception.member.read.MemberNotFoundException;
 import dev.devpool.exception.member.create.PersistenceIssueSaveException;
 import dev.devpool.exception.team.create.DuplicateTeamException;
+import dev.devpool.exception.team.delete.DeleteTeamNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +16,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponseDto<Object>> handleException(Exception e){
-        log.info("[handleException] 모든 예외 처리");
-        CommonResponseDto<Object> respDto= CommonResponseDto.builder()
-                .message(e.getMessage())
-                .build();
-        return ResponseEntity.badRequest()
-                .body(respDto);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<CommonResponseDto<Object>> handleException(Exception e){
+//        log.info("[handleException] 모든 예외 처리");
+//        CommonResponseDto<Object> respDto= CommonResponseDto.builder()
+//                .message(e.getMessage())
+//                .build();
+//        return ResponseEntity.badRequest()
+//                .body(respDto);
+//    }
 
+    /**
+     * 멤버
+     */
     @ExceptionHandler(MemberNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleMemberNotFoundException(MemberNotFoundException ex) {
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
@@ -49,8 +53,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    /**
+     * 팀
+     */
     @ExceptionHandler(DuplicateTeamException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateTeamException(DuplicateTeamException ex) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(DeleteTeamNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleDeleteTeamNotFoundException(DeleteTeamNotFoundException ex) {
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }

@@ -90,7 +90,7 @@ class TeamServiceTest {
             teamService.join(team);
 
             //when
-            teamService.delete(team);
+            teamService.deleteById(team.getId());
             em.flush();
             em.clear();
 

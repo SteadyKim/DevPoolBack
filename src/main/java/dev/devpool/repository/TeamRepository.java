@@ -62,6 +62,7 @@ public class TeamRepository {
 
         em.createQuery("delete from TechField tf where tf.team.id=:teamId")
                 .setParameter("teamId", teamId).executeUpdate();
+
         em.createQuery("delete from Comment c where c.team.id=:teamId")
                 .setParameter("teamId", teamId).executeUpdate();
 
@@ -84,6 +85,7 @@ public class TeamRepository {
                     .setParameter("teamId", teamId).executeUpdate();
         }
         em.createQuery("delete from MemberTeam mt").executeUpdate();
+
         em.createQuery("delete from Team t").executeUpdate();
     }
 

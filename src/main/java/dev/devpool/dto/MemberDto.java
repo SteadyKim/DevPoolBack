@@ -1,11 +1,8 @@
 package dev.devpool.dto;
 
 import dev.devpool.domain.Member;
-import dev.devpool.exception.member.read.MemberNotFoundException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-
-import java.util.Optional;
 
 @Data
 @Builder
@@ -28,7 +25,6 @@ public class MemberDto {
     @Data
     @Builder
     @AllArgsConstructor
-    @Schema(name = "member save request dto")
     public static class Save {
 
         public Save() {

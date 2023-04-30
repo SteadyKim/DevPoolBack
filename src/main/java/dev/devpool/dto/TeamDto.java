@@ -12,12 +12,11 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
-@Schema(description = "team dto")
 public class TeamDto {
     @Data
     @Builder
     @AllArgsConstructor
-    @Schema(name = "team response dto")
+    @Schema(description = "team response dto")
     public static class Response {
 
         private String title;
@@ -38,7 +37,7 @@ public class TeamDto {
     @Data
     @Builder
     @AllArgsConstructor
-    @Schema(name = "team save request dto")
+    @Schema(description = "team save request dto")
     public static class Save {
 
         public Save() {

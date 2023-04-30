@@ -1,36 +1,60 @@
 package dev.devpool.config.swagger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.core.jackson.ModelResolver;
+import io.swagger.v3.core.jackson.TypeNameResolver;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.RequestHandler;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 public class SwaggerConfig {
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Bean
-    public Docket api() {
-
-        return new Docket(DocumentationType.OAS_30)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("dev.devpool.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
-
+    public GroupedOpenApi publicApi(){
+        return GroupedOpenApi.builder()
+                .group("devPool")
+                .pathsToMatch("/**")
+                .build();
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("데브풀 Swagger")
-                .description("여기서 API 스펙을 확인할 수 있습니다.")
-                .version("1.0")
-                .build();
+    @Bean
+    public OpenAPI springShopOpenAPI(){
+
+        Info info = new Info()
+                .title("devPool API")
+                .description("devPool 프로젝트 v1 API 명세서입니다.")
+                .version("v0.0.1");
+
+        return new OpenAPI()
+                .info(info);
+    }
+
+
+    @PostConstruct
+    public void initialize() {
+
+        TypeNameResolver innerClassAwareTypeNameResolver = new TypeNameResolver() {
+            @Override
+            public String getNameOfClass(Class<?> cls) {
+                return cls.getName()
+                        .substring(cls.getName().lastIndexOf(".") + 1)
+                        .replace("$", "");
+            }
+        };
+
+        ModelConverters.getInstance()
+                .addConverter(new ModelResolver(objectMapper, innerClassAwareTypeNameResolver));
+
     }
 
 }

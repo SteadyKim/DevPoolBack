@@ -10,9 +10,11 @@ import dev.devpool.service.MemberService;
 import dev.devpool.service.StackService;
 import dev.devpool.service.TeamService;
 import dev.devpool.service.TechFieldService;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+//import io.swagger.annotations.ApiResponse;
+//import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +37,8 @@ public class TeamController {
 
     @Operation(summary = "팀등록", description = "팀을 저장합니다.")
     @ApiResponses({
-            @ApiResponse(code = 201, message = "팀을 성공적으로 저장하였습니다."),
-            @ApiResponse(code = 409, message = "팀 저장 실패 - 중복된 팀이름이 있습니다."),
+            @ApiResponse(responseCode = "201", description = "팀을 성공적으로 저장하였습니다."),
+            @ApiResponse(responseCode = "409", description = "팀 저장 실패 - 중복된 팀이름이 있습니다."),
     })
     @PostMapping("/team")
     public ResponseEntity<CommonResponseDto<Object>> saveTeam(@RequestBody @Valid TeamDto.Save teamSaveRequestDto ) {
@@ -83,8 +85,8 @@ public class TeamController {
     // 조회
     @Operation(summary = "팀조회", description = "팀을 팀 Id로 조회 합니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "팀을 성공적으로 조회 하였습니다."),
-            @ApiResponse(code = 404, message = "팀 조회 실패 - 팀이 DB에 없습니다."),
+            @ApiResponse(responseCode = "200", description = "팀을 성공적으로 조회 하였습니다."),
+            @ApiResponse(responseCode = "404", description = "팀 조회 실패 - 팀이 DB에 없습니다."),
     })
     @GetMapping("/team/{id}")
     public ResponseEntity<CommonDataResponseDto<Object>> getTeamById(@PathVariable("id") Long teamId) {
@@ -114,7 +116,7 @@ public class TeamController {
     //
     @Operation(summary = "팀 모두 조회", description = "팀을 모두 조회합니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "팀 List를 성공적으로 조회하였습니다.")
+            @ApiResponse(responseCode = "200", description = "팀 List를 성공적으로 조회하였습니다.")
     })
     @GetMapping("/teams")
     public ResponseEntity<CommonDataListResponseDto<Object>> getTeamList() {
@@ -147,7 +149,7 @@ public class TeamController {
 
     @Operation(summary = "팀 삭제", description = "팀을 삭제합니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "팀 삭제에 성공하였습니다.")
+            @ApiResponse(responseCode = "200", description = "팀 삭제에 성공하였습니다.")
     })
     @DeleteMapping("/team/{id}")
     public ResponseEntity<CommonResponseDto<Object>> deleteTeam(@PathVariable("id") Long id) {
@@ -163,7 +165,7 @@ public class TeamController {
 
     @Operation(summary = "팀 수정", description = "팀을 수정합니다.")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "팀 수정에 성공하였습니다.")
+            @ApiResponse(responseCode = "200", description = "팀 수정에 성공하였습니다.")
     })
     @PutMapping("/team/{id}")
     public ResponseEntity<CommonResponseDto<Object>> updateTeam(@PathVariable("id") Long id, @RequestBody @Valid TeamDto.Update newTeamDto) {

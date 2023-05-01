@@ -41,10 +41,11 @@ class ProjectServiceTest {
     public void 프로젝트저장_조희() {
         transactionTemplate.execute(status -> {
             //given
-            Project project = new Project();
-            project.setStartDate(LocalDate.now());
-            project.setEndDate(LocalDate.now());
-            project.setName("JPA 프로젝트");
+            Project project = Project.builder()
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now())
+                    .name("JPA")
+                    .build();
 
             projectService.join(project);
 
@@ -63,20 +64,22 @@ class ProjectServiceTest {
     public void 멤버아이디로_프로젝트저장조회() {
         transactionTemplate.execute(status -> {
             //given
-            Project project = new Project();
-            project.setStartDate(LocalDate.now());
-            project.setEndDate(LocalDate.now());
-            project.setName("JPA 프로젝트");
-
-            Project project2 = new Project();
-            project2.setStartDate(LocalDate.now());
-            project2.setEndDate(LocalDate.now());
-            project2.setName("JPA 프로젝트2");
-
             Member member = new Member();
 
-            project.setMember(member);
-            project2.setMember(member);
+            Project project = Project.builder()
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now())
+                    .name("JPA")
+                    .member(member)
+                    .build();
+
+            Project project2 = Project.builder()
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now())
+                    .name("JPA")
+                    .member(member)
+                    .build();
+
 
             memberService.join(member);
 
@@ -128,11 +131,19 @@ class ProjectServiceTest {
             //given
             Member member1 = new Member();
 
-            Project project = new Project();
-            project.setMember(member1);
+            Project project = Project.builder()
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now())
+                    .name("JPA")
+                    .member(member1)
+                    .build();
 
-            Project project2 = new Project();
-            project2.setMember(member1);
+            Project project2 = Project.builder()
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now())
+                    .name("JPA")
+                    .member(member1)
+                    .build();
 
             memberService.join(member1);
             projectService.join(project);

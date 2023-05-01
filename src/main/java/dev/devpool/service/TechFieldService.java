@@ -4,22 +4,23 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Team;
 import dev.devpool.domain.TechField;
+import dev.devpool.repository.MemberRepository;
+import dev.devpool.repository.TeamRepository;
 import dev.devpool.repository.TechFieldRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class TechFieldService {
 
     private final TechFieldRepository techFieldRepository;
-
-    public TechFieldService(TechFieldRepository techFieldRepository) {
-        this.techFieldRepository = techFieldRepository;
-    }
+    private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
 
     // 저장
     @Transactional
@@ -67,23 +68,32 @@ public class TechFieldService {
 
     // 수정
     @Transactional
-    public void updateWithMember(Member member, ArrayList<TechField> techFields) {
+    public void updateByMember(Long memberId, List<String> techFieldNameList) {
+        Member findMember = memberRepository.findOneById(memberId);
         // 지우기
-        techFieldRepository.deleteAllByMemberId(member.getId());
-        // 추가
-        for (TechField techField : techFields) {
-            techField.setMember(member);
+        techFieldRepository.deleteAllByMemberId(findMember.getId());
+
+        for (String techFieldName : techFieldNameList) {
+            TechField techField = TechField.builder()
+                    .member(findMember)
+                    .name(techFieldName)
+                    .build();
             techFieldRepository.save(techField);
         }
     }
 
     @Transactional
-    public void updateWithTeam(Team team, ArrayList<TechField> techFields) {
+    public void updateByTeam(Long teamId, List<String> techFieldNameList) {
+        Team findTeam = teamRepository.findOneById(teamId);
         // 지우기
-        techFieldRepository.deleteAllByTeamId(team.getId());
-        // 추가
-        for (TechField techField : techFields) {
-            techField.setTeam(team);
+        techFieldRepository.deleteAllByTeamId(findTeam.getId());
+
+        for (String techFieldName : techFieldNameList) {
+            TechField techField = TechField.builder()
+                    .team(findTeam)
+                    .name(techFieldName)
+                    .build();
+
             techFieldRepository.save(techField);
         }
     }

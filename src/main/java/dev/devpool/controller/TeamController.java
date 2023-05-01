@@ -57,18 +57,21 @@ public class TeamController {
         // 스택
         List<String> stackNameList = teamSaveRequestDto.getStackNameList();
         for (String stackName : stackNameList) {
-            Stack stack = new Stack();
-            stack.setName(stackName);
-            stack.setTeam(team);
+            Stack stack = Stack.builder()
+                    .name(stackName)
+                    .team(team)
+                    .build();
+
             stackService.join(stack);
         }
 
         // TechField
         List<String> techFieldNameList = teamSaveRequestDto.getTechFieldNameList();
         for (String techFieldName : techFieldNameList) {
-            TechField techField = new TechField();
-            techField.setName(techFieldName);
-            techField.setTeam(team);
+            TechField techField = TechField.builder()
+                    .name(techFieldName)
+                    .team(team)
+                    .build();
             techFieldService.join(techField);
         }
 

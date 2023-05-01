@@ -1,8 +1,6 @@
 package dev.devpool.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +10,8 @@ import static javax.persistence.FetchType.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@Getter
 public class MemberTeam {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,31 +26,16 @@ public class MemberTeam {
 
     public void addMemberTeam(Member member, Team team) {
         team.getMemberTeams().add(this);
-        this.setTeam(team);
-        this.setMember(member);
+        addTeam(team);
+        addMember(member);
     }
 
-    public Long getId() {
-        return id;
+    public void addTeam(Team team) {
+        this.team = team;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
+    public void addMember(Member member) {
         this.member = member;
     }
 
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
 }

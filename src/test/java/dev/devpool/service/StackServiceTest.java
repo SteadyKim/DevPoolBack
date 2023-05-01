@@ -13,6 +13,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,12 +66,15 @@ class StackServiceTest {
     public void 팀아이디로스택조회() {
         transactionTemplate.execute(status -> {
             //given
-            Stack stack = new Stack();
-            Stack stack2 = new Stack();
             Team team = new Team();
 
-            stack.setTeam(team);
-            stack2.setTeam(team);
+            Stack stack = Stack.builder()
+                    .team(team)
+                    .build();
+
+            Stack stack2 = Stack.builder()
+                    .team(team)
+                    .build();
 
             //when
             teamService.join(team);
@@ -103,12 +107,15 @@ class StackServiceTest {
     public void 멤버아이디로스택조회() {
         transactionTemplate.execute(status -> {
             //given
-            Stack stack = new Stack();
-            Stack stack2 = new Stack();
             Member member = new Member();
 
-            stack.setMember(member);
-            stack2.setMember(member);
+            Stack stack = Stack.builder()
+                    .member(member)
+                    .build();
+            Stack stack2 = Stack.builder()
+                    .member(member)
+                    .build();
+
 
             //when
             memberService.join(member);
@@ -141,12 +148,15 @@ class StackServiceTest {
     public void 프로젝트아이디로스택조회() {
         transactionTemplate.execute(status -> {
             //given
-            Stack stack = new Stack();
-            Stack stack2 = new Stack();
             Project project = new Project();
 
-            stack.setProject(project);
-            stack2.setProject(project);
+            Stack stack = Stack.builder()
+                    .project(project)
+                    .build();
+
+            Stack stack2 = Stack.builder()
+                    .project(project)
+                    .build();
 
 
 
@@ -205,12 +215,18 @@ class StackServiceTest {
     public void 팀아이디로삭제() {
         transactionTemplate.execute(status -> {
             //given
-            Stack stack = new Stack();
-            Stack stack2 = new Stack();
             Team team = new Team();
 
-            stack.setTeam(team);
-            stack2.setTeam(team);
+            Stack stack = Stack.builder()
+                    .team(team)
+                    .build();
+
+            Stack stack2 = Stack.builder()
+                    .team(team)
+                    .build();
+
+
+
 
 
             //when
@@ -237,12 +253,17 @@ class StackServiceTest {
     public void 멤버아이디로삭제() {
         transactionTemplate.execute(status -> {
             //given
-            Stack stack = new Stack();
-            Stack stack2 = new Stack();
             Member member = new Member();
 
-            stack.setMember(member);
-            stack2.setMember(member);
+
+            Stack stack = Stack.builder()
+                    .member(member)
+                    .build();
+
+
+            Stack stack2 = Stack.builder()
+                    .member(member)
+                    .build();
 
 
             //when
@@ -269,12 +290,17 @@ class StackServiceTest {
     public void 프로젝트아이디로삭제() {
         transactionTemplate.execute(status -> {
             //given
-            Stack stack = new Stack();
-            Stack stack2 = new Stack();
             Project project = new Project();
 
-            stack.setProject(project);
-            stack2.setProject(project);
+            Stack stack = Stack.builder()
+                    .project(project)
+                    .build();
+
+            Stack stack2 = Stack.builder()
+                    .project(project)
+                    .build();
+
+
 
             //when
             projectService.join(project);
@@ -304,22 +330,36 @@ class StackServiceTest {
             Team team = new Team();
             teamService.join(team);
 
-            Stack stack1 = new Stack();
-            Stack stack2 = new Stack();
-            stack1.setTeam(team);
-            stack2.setTeam(team);
+
+            Stack stack1 = Stack.builder()
+                    .name("A")
+                    .team(team)
+                    .build();
+
+            Stack stack2 = Stack.builder()
+                    .name("B")
+                    .team(team)
+                    .build();
 
             stackService.join(stack1);
             stackService.join(stack2);
 
             //when
-            Stack newStack1 = new Stack();
-            Stack newStack2 = new Stack();
+            Stack newStack1 = Stack.builder()
+                    .name("C")
+                    .team(team)
+                    .build();
+
+            Stack newStack2 = Stack.builder()
+                    .name("D")
+                    .team(team)
+                    .build();
 
             ArrayList<Stack> stacks = new ArrayList<>();
             stacks.add(newStack1);
             stacks.add(newStack2);
-            stackService.updateByTeam(team, stacks);
+
+            stackService.updateByTeam(team.getId(), stacks.stream().map(Stack::getName).collect(Collectors.toList()));
 
             em.flush();
             em.clear();
@@ -331,12 +371,12 @@ class StackServiceTest {
             assertEquals(findStacks.size(), 2);
 
             // 변화 체크
-            ArrayList<Long> stackIds = new ArrayList<>();
-            stackIds.add(newStack1.getId());
-            stackIds.add(newStack2.getId());
+            ArrayList<String> stackNames = new ArrayList<>();
+            stackNames.add(newStack1.getName());
+            stackNames.add(newStack2.getName());
 
             for (Stack findStack : findStacks) {
-                assertTrue(stackIds.contains(findStack.getId()));
+                assertTrue(stackNames.contains(findStack.getName()));
             }
 
             return null;
@@ -350,10 +390,14 @@ class StackServiceTest {
             Member member = new Member();
             memberService.join(member);
 
-            Stack stack1 = new Stack();
-            Stack stack2 = new Stack();
-            stack1.setMember(member);
-            stack2.setMember(member);
+            Stack stack1 = Stack.builder()
+                    .member(member)
+                    .build();
+
+            Stack stack2 = Stack.builder()
+                    .member(member)
+                    .build();
+
 
             stackService.join(stack1);
             stackService.join(stack2);
@@ -362,10 +406,11 @@ class StackServiceTest {
             Stack newStack1 = new Stack();
             Stack newStack2 = new Stack();
 
-            ArrayList<Stack> stacks = new ArrayList<>();
-            stacks.add(newStack1);
-            stacks.add(newStack2);
-            stackService.updateByMember(member, stacks);
+            List<String> stackNames = new ArrayList<>();
+            stackNames.add(newStack1.getName());
+            stackNames.add(newStack2.getName());
+
+            stackService.updateByMember(member.getId(), stackNames);
 
             em.flush();
             em.clear();
@@ -382,7 +427,7 @@ class StackServiceTest {
             stackIds.add(newStack2.getId());
 
             for (Stack findStack : findStacks) {
-                assertTrue(stackIds.contains(findStack.getId()));
+                assertTrue(stackIds.contains(findStack.getName()));
             }
 
             return null;
@@ -396,10 +441,15 @@ class StackServiceTest {
             Project project = new Project();
             projectService.join(project);
 
-            Stack stack1 = new Stack();
-            Stack stack2 = new Stack();
-            stack1.setProject(project);
-            stack2.setProject(project);
+
+            Stack stack1 = Stack.builder()
+                    .project(project)
+                    .build();
+
+            Stack stack2 = Stack.builder()
+                    .project(project)
+                    .build();
+
 
             stackService.join(stack1);
             stackService.join(stack2);
@@ -408,10 +458,11 @@ class StackServiceTest {
             Stack newStack1 = new Stack();
             Stack newStack2 = new Stack();
 
-            ArrayList<Stack> stacks = new ArrayList<>();
-            stacks.add(newStack1);
-            stacks.add(newStack2);
-            stackService.updateByProject(project, stacks);
+            List<String> stackNames = new ArrayList<>();
+            stackNames.add(newStack1.getName());
+            stackNames.add(newStack2.getName());
+
+            stackService.updateByProject(project.getId(), stackNames);
 
             em.flush();
             em.clear();
@@ -420,7 +471,7 @@ class StackServiceTest {
             List<Stack> findStacks = stackService.findAllByProjectId(project.getId());
 
             // 길이
-            assertEquals(findStacks.size(), 2);
+            assertEquals(2, findStacks.size());
 
             // 변화 체크
             ArrayList<Long> stackIds = new ArrayList<>();
@@ -428,7 +479,7 @@ class StackServiceTest {
             stackIds.add(newStack2.getId());
 
             for (Stack findStack : findStacks) {
-                assertTrue(stackIds.contains(findStack.getId()));
+                assertTrue(stackIds.contains(findStack.getName()));
             }
 
             return null;

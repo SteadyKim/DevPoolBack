@@ -41,14 +41,17 @@ public class InitDb {
 
         teamService.join(team);
 
-        Stack stack = new Stack();
-        stack.setName("AWS");
-        stack.setTeam(team);
+        Stack stack = Stack.builder()
+                .name("AWS")
+                .team(team)
+                .build();
         stackService.join(stack);
 
-        TechField techField = new TechField();
-        techField.setName("AI");
-        techField.setTeam(team);
+        TechField techField = TechField.builder()
+                .name("AI")
+                .team(team)
+                .build();
+
         techFieldService.join(techField);
 
     }

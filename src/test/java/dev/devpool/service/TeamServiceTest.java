@@ -32,10 +32,12 @@ class TeamServiceTest {
     @Test
     public void 팀_저장_조회() {
         transactionTemplate.execute(status -> {
-            Team team = new Team();
-            team.setBody("asdasdas");
-            team.setTitle("A팀");
-            team.setTotalNum(4);
+
+            Team team = Team.builder()
+                    .body("asdasdas")
+                    .title("A팀")
+                    .totalNum(4)
+                    .build();
 
             teamService.join(team);
 
@@ -56,10 +58,11 @@ class TeamServiceTest {
     public void 팀삭제ById () {
         transactionTemplate.execute(status -> {
             //given
-            Team team = new Team();
-            team.setBody("asdasdas");
-            team.setTitle("A팀");
-            team.setTotalNum(4);
+            Team team = Team.builder()
+                    .body("asdasdas")
+                    .title("A팀")
+                    .totalNum(4)
+                    .build();
 
             teamService.join(team);
 
@@ -82,10 +85,11 @@ class TeamServiceTest {
 
         transactionTemplate.execute(status -> {
             //given
-            Team team = new Team();
-            team.setBody("asdasdas");
-            team.setTitle("A팀");
-            team.setTotalNum(4);
+            Team team = Team.builder()
+                    .body("asdasdas")
+                    .title("A팀")
+                    .totalNum(4)
+                    .build();
 
             teamService.join(team);
 
@@ -105,23 +109,25 @@ class TeamServiceTest {
     public void 팀수정() {
         transactionTemplate.execute(status -> {
             //given
-            Team team = new Team();
-            team.setBody("asdasdas");
-            team.setTitle("A팀");
-            team.setTotalNum(4);
+
+            Team team = Team.builder()
+                    .body("asdasdas")
+                    .title("A팀")
+                    .totalNum(4)
+                    .build();
 
             teamService.join(team);
 
             //when
-            String newTeamName = "sadasd";
             String newTitle = "sadad";
             String newBody = "asdasd";
             int newTotalNum = 4;
+            Team newTeam = Team.builder()
+                    .body(newBody)
+                    .title(newTitle)
+                    .totalNum(4)
+                    .build();
 
-            Team newTeam = new Team();
-            newTeam.setTitle(newTitle);
-            newTeam.setBody(newBody);
-            newTeam.setTotalNum(newTotalNum);
 
             em.flush();
             em.clear();

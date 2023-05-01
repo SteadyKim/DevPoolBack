@@ -1,10 +1,7 @@
 package dev.devpool.domain;
 
 import dev.devpool.dto.TeamDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Getter
 public class Team {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TEAM_ID")
@@ -41,7 +39,14 @@ public class Team {
 
     @Builder.Default
     private LocalDateTime createTime = LocalDateTime.now();
-
+    /**
+     * 비지니스 로직
+     */
+    public void update(Team team) {
+        title = team.getTitle();
+        body = team.getBody();
+        totalNum = team.getTotalNum();
+    }
 
     public TeamDto.Response toDto(List<Stack> stackList, List<TechField> techFieldList) {
         List<String> stackNameList = stackList.stream()
@@ -64,48 +69,4 @@ public class Team {
         return response;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public int getTotalNum() {
-        return totalNum;
-    }
-
-    public void setTotalNum(int total_num) {
-        this.totalNum = total_num;
-    }
 }

@@ -29,6 +29,7 @@ public class MemberTeamServiceTest {
 
     @Autowired
     TransactionTemplate transactionTemplate;
+    private MemberTeam memberTeam;
 
     @AfterEach
     public void deleteAll() {
@@ -119,12 +120,12 @@ public class MemberTeamServiceTest {
                     .build();
 
             MemberTeam memberTeam = new MemberTeam();
-            memberTeam.setMember(member);
-            memberTeam.setTeam(team);
+            memberTeam.addMember(member);
+            memberTeam.addTeam(team);
 
             MemberTeam memberTeam2 = new MemberTeam();
-            memberTeam2.setMember(member2);
-            memberTeam2.setTeam(team);
+            memberTeam2.addMember(member2);
+            memberTeam2.addTeam(team);
 
             team.getMemberTeams().add(memberTeam);
             team.getMemberTeams().add(memberTeam2);
@@ -137,13 +138,14 @@ public class MemberTeamServiceTest {
             System.out.println("=================");
             Team findTeam = teamService.findOneById(team.getId());
             System.out.println("=================");
-            teamService.delete(findTeam);
+            teamService.deleteById(findTeam.getId());
             System.out.println("=================");
 
-            System.out.println(em.contains(findTeam));
+            em.flush();
+            em.clear();
 
             //then
-            assertNull(teamService.findOneById(team.getId())); // team도 없고
+            assertNull(teamService.findOneById(findTeam.getId())); // team도 없고
 //        select mt from MemberTeam mt where mt.team.id=:teamId
             List<MemberTeam> memberTeamList = em.createQuery("select mt from MemberTeam mt where mt.team.id=:teamId", MemberTeam.class)
                     .setParameter("teamId", team.getId())
@@ -177,7 +179,7 @@ public class MemberTeamServiceTest {
             Member newMember1 = Member.builder()
                     .name("asasdas")
                     .nickName("asdsa")
-                    .email("asd")
+                    .email("assadd")
                     .password("asd")
                     .build();
 
@@ -187,7 +189,7 @@ public class MemberTeamServiceTest {
             Member newMember2 = Member.builder()
                     .name("asasdas")
                     .nickName("asdsa")
-                    .email("asd")
+                    .email("asasdsadd")
                     .password("asd")
                     .build();
 
@@ -200,15 +202,17 @@ public class MemberTeamServiceTest {
                     .totalNum(4)
                     .build();
 
-            MemberTeam memberTeam = new MemberTeam();
-            memberTeam.setMember(member);
-            memberTeam.setTeam(team);
 
-            MemberTeam memberTeam2 = new MemberTeam();
-            memberTeam2.setMember(member2);
-            memberTeam2.setTeam(team);
+            MemberTeam memberTeam1 = MemberTeam.builder()
+                    .build();
+            memberTeam1.addMemberTeam(member, team);
 
-            team.getMemberTeams().add(memberTeam);
+            MemberTeam memberTeam2 = MemberTeam.builder()
+                    .build();
+
+            memberTeam2.addMemberTeam(member2, team);
+
+            team.getMemberTeams().add(memberTeam1);
             team.getMemberTeams().add(memberTeam2);
 
             teamService.join(team);

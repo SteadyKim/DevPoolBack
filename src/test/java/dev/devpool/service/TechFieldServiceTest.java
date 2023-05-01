@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,11 +67,12 @@ class TechFieldServiceTest {
             //given
             Member member = new Member();
 
-            TechField techField1 = new TechField();
-            TechField techField2 = new TechField();
-
-            techField1.setMember(member);
-            techField2.setMember(member);
+            TechField techField1 = TechField.builder()
+                    .member(member)
+                    .build();
+            TechField techField2 = TechField.builder()
+                    .member(member)
+                    .build();
 
             memberService.join(member);
 
@@ -103,11 +105,15 @@ class TechFieldServiceTest {
             //given
             Team team = new Team();
 
-            TechField techField1 = new TechField();
-            TechField techField2 = new TechField();
 
-            techField1.setTeam(team);
-            techField2.setTeam(team);
+            TechField techField1 = TechField.builder()
+                    .team(team)
+                    .build();
+
+            TechField techField2 = TechField.builder()
+                    .team(team)
+                    .build();
+
 
             teamService.join(team);
 
@@ -237,19 +243,16 @@ class TechFieldServiceTest {
             //when
             TechField techField3 = new TechField();
             TechField techField4 = new TechField();
-            ArrayList<TechField> techFields = new ArrayList<>();
-            techFields.add(techField3);
-            techFields.add(techField4);
+            ArrayList<String> techFieldNames = new ArrayList<>();
+            techFieldNames.add(techField3.getName());
+            techFieldNames.add(techField4.getName());
 
             em.flush();
             em.clear();
 
             Member findMember = memberService.findOneById(member.getId());
-            techFieldService.updateWithMember(findMember, techFields);
+            techFieldService.updateByMember(findMember.getId(), techFieldNames);
 
-            ArrayList<Long> ids = new ArrayList<>();
-            ids.add(techField3.getId());
-            ids.add(techField4.getId());
 
             em.flush();
             em.clear();
@@ -257,7 +260,7 @@ class TechFieldServiceTest {
             //then
             List<TechField> findTechFields = techFieldService.findAllByMemberId(findMember.getId());
             for (TechField findTechField : findTechFields) {
-                assertTrue(ids.contains(findTechField.getId()));
+                assertTrue(techFieldNames.contains(findTechField.getName()));
             }
 
             return null;

@@ -44,10 +44,14 @@ class LatterServiceTest {
             //given
             Member member = new Member();
 
-            Latter latter1 = new Latter();
+            Latter latter1 = Latter.builder()
+                    .isCheck(TRUE)
+                    .build();
 
-            latter1.setIsCheck(TRUE);
-            Latter latter2 = new Latter();
+            Latter latter2 = Latter.builder()
+                    .build();
+
+
             member.addLatter(latter1);
             member.addLatter(latter2);
 //

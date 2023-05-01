@@ -4,6 +4,8 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.Project;
 import dev.devpool.domain.Stack;
 import dev.devpool.domain.Team;
+import dev.devpool.repository.MemberRepository;
+import dev.devpool.repository.ProjectRepository;
 import dev.devpool.repository.StackRepository;
 import dev.devpool.repository.TeamRepository;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,10 @@ public class StackService {
 
     private final StackRepository stackRepository;
     private final TeamRepository teamRepository;
+
+    private final MemberRepository memberRepository;
+
+    private final ProjectRepository projectRepository;
 
     @Transactional
     // 저장
@@ -97,26 +103,36 @@ public class StackService {
 
 
     @Transactional
-    public void updateByMember(Member member, ArrayList<Stack> newStacks) {
+    public void updateByMember(Long memberId, List<String> StackNameList) {
         // 지우기
-        stackRepository.deleteByMemberId(member.getId());
+        stackRepository.deleteByMemberId(memberId);
+
+        Member member = memberRepository.findOneById(memberId);
 
         // 추가
-        for (Stack newStack : newStacks) {
-            newStack.setMember(member);
-            stackRepository.save(newStack);
+        for (String stackName : StackNameList) {
+            Stack stack = Stack.builder()
+                    .name(stackName)
+                    .member(member)
+                    .build();
+
+            stackRepository.save(stack);
         }
     }
 
     @Transactional
-    public void updateByProject(Project project, ArrayList<Stack> newStacks) {
+    public void updateByProject(Long projectId, List<String> stackNameList) {
         // 지우기
-        stackRepository.deleteByProjectId(project.getId());
+        stackRepository.deleteByProjectId(projectId);
 
         // 추가
-        for (Stack newStack : newStacks) {
-            newStack.setProject(project);
-            stackRepository.save(newStack);
+        Project project = projectRepository.findOneById(projectId);
+        for (String stackName : stackNameList) {
+            Stack stack = Stack.builder()
+                    .name(stackName)
+                    .project(project)
+                    .build();
+            stackRepository.save(stack);
         }
     }
 }

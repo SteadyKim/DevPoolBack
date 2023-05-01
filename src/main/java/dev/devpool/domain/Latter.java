@@ -1,10 +1,7 @@
 package dev.devpool.domain;
 
 import dev.devpool.domain.enums.IsCheck;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -18,6 +15,7 @@ import static javax.persistence.EnumType.STRING;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Getter
 public class Latter {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LATTER_ID")
@@ -34,35 +32,10 @@ public class Latter {
     @Enumerated(STRING)
     private IsCheck isCheck;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
+    /**
+     * Set 메서드
+     */
+    public void addMember(Member member) {
         this.member = member;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public IsCheck getIsCheck() {
-        return isCheck;
-    }
-
-    public void setIsCheck(IsCheck isCheck) {
-        this.isCheck = isCheck;
     }
 }

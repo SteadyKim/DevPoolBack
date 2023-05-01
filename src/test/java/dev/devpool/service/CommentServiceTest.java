@@ -46,8 +46,8 @@ class CommentServiceTest {
 
             Comment parentComment1 = new Comment();
             Comment parentComment2 = new Comment();
-            parentComment1.setTeam(team);
-            parentComment2.setTeam(team);
+            parentComment1.addTeam(team);
+            parentComment2.addTeam(team);
 
             teamService.join(team);
             commentService.join(parentComment1);
@@ -80,8 +80,8 @@ class CommentServiceTest {
             Comment childComment1 = new Comment();
             Comment childComment2 = new Comment();
 
-            childComment1.setParent(parentComment);
-            childComment2.setParent(parentComment);
+            childComment1.addParent(parentComment);
+            childComment2.addParent(parentComment);
 
             commentService.join(parentComment);
             commentService.join(childComment1);
@@ -142,18 +142,18 @@ class CommentServiceTest {
             Comment parentComment1 = new Comment();
             Comment parentComment2 = new Comment();
 
-            parentComment1.setTeam(team);
-            parentComment2.setTeam(team);
+            parentComment1.addTeam(team);
+            parentComment2.addTeam(team);
 
             Comment childComment1 = new Comment();
             Comment childComment2 = new Comment();
             Comment childComment3 = new Comment();
             Comment childComment4 = new Comment();
 
-            childComment1.setParent(parentComment1);
-            childComment2.setParent(parentComment1);
-            childComment3.setParent(parentComment2);
-            childComment4.setParent(parentComment2);
+            childComment1.addParent(parentComment1);
+            childComment2.addParent(parentComment1);
+            childComment3.addParent(parentComment2);
+            childComment4.addParent(parentComment2);
 
             teamService.join(team);
             commentService.join(parentComment1);
@@ -208,7 +208,7 @@ class CommentServiceTest {
 
             Comment parentComment = new Comment();
             Comment childComment = new Comment();
-            childComment.setParent(parentComment);
+            childComment.addParent(parentComment);
 
             commentService.join(parentComment);
             commentService.join(childComment);
@@ -267,7 +267,7 @@ class CommentServiceTest {
 
             Comment parentComment = new Comment();
             Comment childComment = new Comment();
-            childComment.setParent(parentComment);
+            childComment.addParent(parentComment);
 
             commentService.join(parentComment);
             commentService.join(childComment);
@@ -299,14 +299,14 @@ class CommentServiceTest {
             Comment parentComment1 = new Comment();
             Comment parentComment2 = new Comment();
 
-            parentComment1.setTeam(team);
-            parentComment2.setTeam(team);
+            parentComment1.addTeam(team);
+            parentComment2.addTeam(team);
 
             Comment childComment1 = new Comment();
             Comment childComment2 = new Comment();
 
-            childComment1.setParent(parentComment1);
-            childComment2.setParent(parentComment2);
+            childComment1.addParent(parentComment1);
+            childComment2.addParent(parentComment2);
 
             teamService.join(team);
             commentService.join(parentComment1);
@@ -330,10 +330,13 @@ class CommentServiceTest {
     public void 댓글수정() {
         transactionTemplate.execute(status -> {
             // given
-            Comment oldComment = new Comment();
-            oldComment.setBody("old");
-            Comment newComment = new Comment();
-            newComment.setBody("new");
+            Comment oldComment = Comment.builder()
+                    .body("old")
+                    .build();
+
+            Comment newComment = Comment.builder()
+                    .body("new")
+                    .build();
 
             commentService.join(oldComment);
             // when

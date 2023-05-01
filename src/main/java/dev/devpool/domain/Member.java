@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @ToString
-
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
@@ -58,17 +57,17 @@ public class Member {
      * 편의 메서드
      */
     public void addCertificate(Certificate certificate) {
-        certificate.setMember(this);
+        certificate.addMember(this);
         certificates.add(certificate);
     }
 
     public void addLatter(Latter latter) {
-        latter.setMember(this);
+        latter.addMember(this);
         latters.add(latter);
     }
 
     public void addSite(Site site){
-        site.setMember(this);
+        site.addMember(this);
         sites.add(site);
     }
 

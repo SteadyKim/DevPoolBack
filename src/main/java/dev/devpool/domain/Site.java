@@ -1,9 +1,6 @@
 package dev.devpool.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,6 +12,7 @@ import static javax.persistence.FetchType.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Getter
 public class Site {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SITE_ID")
@@ -28,35 +26,10 @@ public class Site {
     @JoinColumn(name = "MEMBER_ID")
     Member member;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
+    /**
+     * Set 메서드
+     */
+    public void addMember(Member member) {
         this.member = member;
     }
 }

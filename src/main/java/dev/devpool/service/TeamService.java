@@ -61,9 +61,7 @@ public class TeamService {
     public Team update(Long teamId, Team newTeam) {
         Team findTeam = teamRepository.findOneById(teamId);
         // 변경감지를 활용해 Update 쿼리
-        findTeam.setTitle(newTeam.getTitle());
-        findTeam.setBody(newTeam.getBody());
-        findTeam.setTotalNum(newTeam.getTotalNum());
+        findTeam.update(newTeam);
 
 
         return findTeam;
@@ -80,10 +78,8 @@ public class TeamService {
 
         for (Member member : members) {
             MemberTeam memberTeam = new MemberTeam();
-            memberTeam.setTeam(findTeam);
-            memberTeam.setMember(member);
 
-            findTeam.getMemberTeams().add(memberTeam);
+            memberTeam.addMemberTeam(member, findTeam);
         }
 
         return findTeam;

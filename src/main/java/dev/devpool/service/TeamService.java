@@ -3,7 +3,6 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.MemberTeam;
 import dev.devpool.domain.Team;
-import dev.devpool.exception.member.create.DuplicateMemberException;
 import dev.devpool.exception.team.create.DuplicateTeamException;
 import dev.devpool.repository.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,7 @@ public class TeamService {
     }
 
     public void validateTeam(Team team) {
-        Optional<Team> findTeam = teamRepository.findOneByTitle(team.getTitle());
+        Optional<Team> findTeam = teamRepository.findOneByName(team.getName());
 
         if (findTeam.isPresent()) {
             throw new DuplicateTeamException();

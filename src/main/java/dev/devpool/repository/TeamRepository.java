@@ -1,6 +1,5 @@
 package dev.devpool.repository;
 
-import dev.devpool.domain.Member;
 import dev.devpool.domain.Team;
 import dev.devpool.exception.team.delete.DeleteTeamNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,9 @@ public class TeamRepository {
         return teamList;
     }
 
-    public Optional<Team> findOneByTitle(String title) {
-        Optional<Team> findTeam = em.createQuery("select t from Team  t where t.title=:title", Team.class)
-                .setParameter("title", title)
+    public Optional<Team> findOneByName(String name) {
+        Optional<Team> findTeam = em.createQuery("select t from Team  t where t.name=:name", Team.class)
+                .setParameter("name", name)
                 .getResultList()
                 .stream()
                 .findAny();

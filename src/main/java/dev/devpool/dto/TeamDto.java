@@ -19,7 +19,7 @@ public class TeamDto {
     @Schema(description = "team response dto")
     public static class Response {
 
-        private String title;
+        private String name;
 
         private String body;
 
@@ -44,7 +44,7 @@ public class TeamDto {
         }
 
         private Long memberId;
-        private String title;
+        private String name;
 
         private String body;
 
@@ -59,7 +59,7 @@ public class TeamDto {
         public Team toEntity() {
 
             Team team = Team.builder()
-                    .title(this.title)
+                    .name(this.name)
                     .body(this.body)
                     .build();
 
@@ -76,7 +76,7 @@ public class TeamDto {
         public Update() {
         }
 
-        private String title;
+        private String name;
 
         private String body;
 
@@ -91,7 +91,7 @@ public class TeamDto {
         public Team toEntity() {
 
             Team team = Team.builder()
-                    .title(this.title)
+                    .name(this.name)
                     .body(this.body)
                     .build();
 

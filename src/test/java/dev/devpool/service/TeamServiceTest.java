@@ -135,7 +135,7 @@ class TeamServiceTest {
             //then
             Team findTeam = teamService.update(team.getId(), newTeam);
 
-            assertEquals(findTeam.getTitle(), newTitle);
+            assertEquals(findTeam.getName(), newTitle);
             return null;
         });
     }

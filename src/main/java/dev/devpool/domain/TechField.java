@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import dev.devpool.dto.TechFieldDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,5 +26,14 @@ public class TechField {
     private Team team;
 
     private String name;
+
+    public TechFieldDto.Response toDto() {
+        TechFieldDto.Response dto = TechFieldDto.Response
+                .builder()
+                .name(this.name)
+                .build();
+
+        return dto;
+    }
 
 }

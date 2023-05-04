@@ -29,7 +29,7 @@ public class InitDb {
         initService.ss();
 
         Team team = Team.builder()
-                .title("aa팀을 모집합니디.")
+                .name("aa팀을 모집합니디.")
                 .totalNum(4)
                 .body("ㅗ디ㅣㅐ 째깅!")
                 .build();
@@ -72,7 +72,6 @@ public class InitDb {
                     .password("rter141")
                     .imageUrl("asdojasdsa/.sdfsdjfnj")
                     .build();
-
 
 
             em.persist(member);

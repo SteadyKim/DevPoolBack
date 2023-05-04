@@ -1,7 +1,6 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Project;
-import dev.devpool.domain.Stack;
 import dev.devpool.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,7 @@ public class ProjectService {
         return findProjects;
     }
 
-    public List<Project> findProjectsByMemberId(Long memberId) {
+    public List<Project> findAllbyMemberId(Long memberId) {
         List<Project> findProjects = projectRepository.findAllByMemberId(memberId);
         return findProjects;
     }

@@ -7,6 +7,7 @@ import dev.devpool.exception.member.read.MemberNotFoundException;
 import dev.devpool.exception.member.create.PersistenceIssueSaveException;
 import dev.devpool.exception.team.create.DuplicateTeamException;
 import dev.devpool.exception.team.delete.DeleteTeamNotFoundException;
+import dev.devpool.exception.team.read.TeamNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +65,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DeleteTeamNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleDeleteTeamNotFoundException(DeleteTeamNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(TeamNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleTeamNotFoundException(TeamNotFoundException ex) {
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }

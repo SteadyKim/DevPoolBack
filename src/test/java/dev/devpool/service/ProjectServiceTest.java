@@ -3,7 +3,6 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Project;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,7 +90,7 @@ class ProjectServiceTest {
             em.flush();
             em.clear();
 
-            List<Project> projectsByMemberId = projectService.findProjectsByMemberId(member.getId());
+            List<Project> projectsByMemberId = projectService.findAllbyMemberId(member.getId());
 
 
             //then
@@ -159,7 +158,7 @@ class ProjectServiceTest {
             em.flush();
             em.clear();
 
-            List<Project> projectsByMemberId = projectService.findProjectsByMemberId(member1.getId());
+            List<Project> projectsByMemberId = projectService.findAllbyMemberId(member1.getId());
 
             assertEquals(0, projectsByMemberId.size());
             return null;

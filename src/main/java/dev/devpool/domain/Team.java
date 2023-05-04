@@ -28,8 +28,8 @@ public class Team {
         return memberTeams;
     }
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "body")
     private String body;
@@ -43,7 +43,7 @@ public class Team {
      * 비지니스 로직
      */
     public void update(Team team) {
-        title = team.getTitle();
+        name = team.getName();
         body = team.getBody();
         totalNum = team.getTotalNum();
     }
@@ -58,7 +58,7 @@ public class Team {
                 .collect(Collectors.toList());
 
         TeamDto.Response response = TeamDto.Response.builder()
-                .title(this.title)
+                .name(this.name)
                 .body(this.body)
                 .totalNum(this.totalNum)
                 .createTime(this.createTime)

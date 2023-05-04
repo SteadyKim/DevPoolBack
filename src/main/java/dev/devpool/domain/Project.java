@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import dev.devpool.dto.ProjectDto;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -37,4 +38,14 @@ public class Project {
 
     String url;
 
+    public ProjectDto.Response toDto() {
+
+        ProjectDto.Response dto = ProjectDto.Response.builder()
+                .name(this.name)
+                .startDate(this.startDate)
+                .endDate(this.endDate)
+                .build();
+
+        return dto;
+    }
 }

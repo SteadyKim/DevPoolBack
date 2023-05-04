@@ -114,7 +114,7 @@ public class MemberController {
             @ApiResponse(responseCode = "200", description = "멤버 수정 - 성공"),
             @ApiResponse(responseCode = "404", description = "멤버 수정 실패")
     })
-    @PutMapping("/member/{id}")
+    @PatchMapping("/member/{id}")
     public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("id") Long id, @RequestBody @Valid MemberDto.Save memberDto) {
         Member updateMember = memberService.update(id, memberDto.toEntity());
 

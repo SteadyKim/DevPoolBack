@@ -4,8 +4,10 @@ import dev.devpool.dto.MemberDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.Comment;
 
 @Entity
 @Builder
@@ -26,6 +28,9 @@ public class Member {
 
     private String imageUrl;
 
+    @Comment("생성시간")
+    private LocalDateTime createTime;
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -44,13 +49,11 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Site> sites = new ArrayList<>();
 
-    public List<Latter> getLatters() {
-        return latters;
-    }
+    @OneToMany(mappedBy = "member")
+    private List<TechField> techFields = new ArrayList<>();
 
-    public List<Certificate> getCertificates() {
-        return certificates;
-    }
+    @OneToMany(mappedBy = "member")
+    private List<Project> projects = new ArrayList<>();
 
 
     /**
@@ -82,6 +85,10 @@ public class Member {
         imageUrl = newMember.getImageUrl();
     }
 
+    public void setMemberPoolCreateTime() {
+        this.createTime = LocalDateTime.now();
+    }
+
     public MemberDto.Response toDto() {
         return MemberDto.Response.builder()
                 .name(this.name)
@@ -90,5 +97,9 @@ public class Member {
                 .password(this.password)
                 .imageUrl(this.imageUrl)
                 .build();
+    }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

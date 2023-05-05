@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -61,6 +62,7 @@ public class ProjectRepository {
 
         query.executeUpdate();
     }
+
 
     //수정
 }

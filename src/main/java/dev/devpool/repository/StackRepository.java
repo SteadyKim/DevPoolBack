@@ -28,21 +28,21 @@ public class StackRepository {
         return em.find(Stack.class, stackId);
     }
 
-    public List<Stack> findStacksByTeamId(Long teamId) {
+    public List<Stack> findAllByTeamId(Long teamId) {
         List<Stack> stackList = em.createQuery("select s from Stack s where s.team.id=:teamId", Stack.class)
                 .setParameter("teamId", teamId)
                 .getResultList();
         return stackList;
     }
 
-    public List<Stack> findStacksByMemberId(Long memberId) {
+    public List<Stack> findAllByMemberId(Long memberId) {
         List<Stack> stackList = em.createQuery("select s from Stack s where s.member.id=:memberId", Stack.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
         return stackList;
     }
 
-    public List<Stack> findStacksByProjectId(Long projectId) {
+    public List<Stack> findAllByProjectId(Long projectId) {
         List<Stack> stackList = em.createQuery("select s from Stack s where s.project.id=:projectId", Stack.class)
                 .setParameter("projectId", projectId)
                 .getResultList();
@@ -85,6 +85,7 @@ public class StackRepository {
 
         query.executeUpdate();
     }
+
 
     //수정
 }

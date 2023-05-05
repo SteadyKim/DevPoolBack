@@ -8,13 +8,10 @@ import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.ProjectRepository;
 import dev.devpool.repository.StackRepository;
 import dev.devpool.repository.TeamRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,14 +40,14 @@ public class StackService {
     }
 
     public List<Stack> findAllByTeamId(Long teamId){
-        return stackRepository.findStacksByTeamId(teamId);
+        return stackRepository.findAllByTeamId(teamId);
     };
 
     public List<Stack> findAllByMemberId(Long memberId){
-        return stackRepository.findStacksByMemberId(memberId);
+        return stackRepository.findAllByMemberId(memberId);
     };
     public List<Stack> findAllByProjectId(Long projectId){
-        return stackRepository.findStacksByProjectId(projectId);
+        return stackRepository.findAllByProjectId(projectId);
     };
 
 

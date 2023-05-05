@@ -16,5 +16,5 @@ public class CommonDataListResponseDto<T> {
 
     String message;
 
-    ArrayList<T> dataList;
+    List<T> dataList;
 }

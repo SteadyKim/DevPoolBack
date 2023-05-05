@@ -72,7 +72,7 @@ public class MemberController {
     })
     @GetMapping("/members")
     public ResponseEntity<CommonDataListResponseDto<Object>> getMemberList() {
-        List<Member> memberList = memberService.findMembers();
+        List<Member> memberList = memberService.findAll();
         ArrayList<Object> memberDtoList = new ArrayList<Object>();
 
         for (Member member : memberList) {

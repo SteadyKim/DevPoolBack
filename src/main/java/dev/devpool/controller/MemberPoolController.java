@@ -47,7 +47,7 @@ public class MemberPoolController {
     @Operation(summary = "멤버 풀 조회", description = "특정 멤버 풀을 조회합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "멤버 풀 조회 - 성공"),
-            @ApiResponse(responseCode = "404", description = "멤버 풀  조회 실패 - 멤버가 DB에 없습니다.")
+            @ApiResponse(responseCode = "404", description = "멤버 풀 조회 실패 - 멤버 풀이 DB에 없습니다.")
     })
     @GetMapping("/member_pool/{memberId}")
     public ResponseEntity<CommonDataResponseDto<Object>> getMemberPool(@PathVariable("memberId") Long memberId) {
@@ -63,31 +63,23 @@ public class MemberPoolController {
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
-//    @Operation(summary = "회원정보리스트조회", description = "모든 회원의 정보를 조회합니다.")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "멤버 조회 - 성공"),
-//            @ApiResponse(responseCode = "404", description = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
-//    })
-//    @GetMapping("/members")
-//    public ResponseEntity<CommonDataListResponseDto<Object>> getMemberList() {
-//        List<Member> memberList = memberService.findMembers();
-//        ArrayList<Object> memberDtoList = new ArrayList<Object>();
-//
-//        for (Member member : memberList) {
-//            MemberDto.Response memberDto = member.toDto();
-//            memberDtoList.add(memberDto);
-//        }
-//
-//
-//        CommonDataListResponseDto<Object> listResponseDto = CommonDataListResponseDto.builder()
-//                .status(200)
-//                .message("멤버 리스트 조회에 성공하였습니다.")
-//                .dataList(memberDtoList)
-//                .build();
-//
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(listResponseDto);
-//    }
+    @Operation(summary = "멤버 풀 리스트 조회", description = "모든 멤버 풀의 정보를 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "멤버 풀 멤버 풀 조회 - 성공"),
+    })
+    @GetMapping("/member_pools")
+    public ResponseEntity<CommonDataListResponseDto<Object>> getMemberPoolList() {
+        List<Object> memberPoolDtoList = memberPoolService.findMemberPools();
+
+
+        CommonDataListResponseDto<Object> listResponseDto = CommonDataListResponseDto.builder()
+                .status(200)
+                .message("멤버 풀 리스트 조회에 성공하였습니다.")
+                .dataList(memberPoolDtoList)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(listResponseDto);
+    }
 //
 //    @Operation(summary = "회원정보삭제", description = "회원의 정보를 삭제합니다.")
 //    @ApiResponses({

@@ -65,21 +65,21 @@ public class StackRepository {
         deleteAll.executeUpdate();
     }
 
-    public void deleteByTeamId(Long teamId) {
+    public void deleteAllByTeamId(Long teamId) {
         Query query = em.createQuery("delete from Stack s where s.team.id =:teamId")
                 .setParameter("teamId", teamId);
 
         query.executeUpdate();
     }
 
-    public void deleteByMemberId(Long memberId) {
+    public void deleteAllByMemberId(Long memberId) {
         Query query = em.createQuery("delete from Stack s where s.member.id =:memberId")
                 .setParameter("memberId", memberId);
 
         query.executeUpdate();
     }
 
-    public void deleteByProjectId(Long projectId) {
+    public void deleteAllByProjectId(Long projectId) {
         Query query = em.createQuery("delete from Stack s where s.project.id =:projectId")
                 .setParameter("projectId", projectId);
 

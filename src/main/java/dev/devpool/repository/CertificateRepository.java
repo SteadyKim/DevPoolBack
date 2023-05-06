@@ -39,7 +39,7 @@ public class CertificateRepository {
         em.remove(certificate);
     }
 
-    public void deleteByMemberId(Long memberId) {
+    public void deleteAllByMemberId(Long memberId) {
         Query query = em.createQuery("delete from Certificate c where c.member.id=:memberId")
                 .setParameter("memberId", memberId);
         query.executeUpdate();

@@ -1,6 +1,5 @@
 package dev.devpool.repository;
 
-import dev.devpool.domain.Latter;
 import dev.devpool.domain.Site;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -45,7 +44,7 @@ public class SiteRepository {
         em.remove(findSite);
     }
 
-    public void deleteByMemberId(Long memberId) {
+    public void deleteAllByMemberId(Long memberId) {
         Query query = em.createQuery("delete from Site s where s.member.id=:memberId")
                 .setParameter("memberId", memberId);
         query.executeUpdate();

@@ -47,7 +47,7 @@ public class CertificateService {
 
     @Transactional
     public void deleteByMemberId(Long memberId) {
-        certificateRepository.deleteByMemberId(memberId);
+        certificateRepository.deleteAllByMemberId(memberId);
     }
     @Transactional
     public void deleteAll() {
@@ -58,7 +58,7 @@ public class CertificateService {
     @Transactional
     public void update(Member member, ArrayList<Certificate> certificates) {
         // 지우고
-        certificateRepository.deleteByMemberId(member.getId());
+        certificateRepository.deleteAllByMemberId(member.getId());
         // 추가
         for (Certificate certificate : certificates) {
             member.addCertificate(certificate);

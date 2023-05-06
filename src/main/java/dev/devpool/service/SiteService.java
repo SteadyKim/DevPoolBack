@@ -1,9 +1,7 @@
 package dev.devpool.service;
 
-import dev.devpool.domain.Latter;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Site;
-import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.SiteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +48,7 @@ public class SiteService {
 
     @Transactional
     public void deleteByMemberId(Long memberId) {
-        siteRepository.deleteByMemberId(memberId);
+        siteRepository.deleteAllByMemberId(memberId);
     }
     @Transactional
     public void deleteAll() {
@@ -61,7 +59,7 @@ public class SiteService {
     @Transactional
     public void update(Member member, ArrayList<Site> sites) {
         // 지우고
-        siteRepository.deleteByMemberId(member.getId());
+        siteRepository.deleteAllByMemberId(member.getId());
         // 추가
         for (Site site : sites) {
             member.addSite(site);

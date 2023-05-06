@@ -65,17 +65,17 @@ public class StackService {
 
     @Transactional
     public void deleteByTeamId(Long teamId) {
-        stackRepository.deleteByTeamId(teamId);
+        stackRepository.deleteAllByTeamId(teamId);
     }
 
     @Transactional
     public void deleteByMemberId(Long memberId) {
-        stackRepository.deleteByMemberId(memberId);
+        stackRepository.deleteAllByMemberId(memberId);
     }
 
     @Transactional
     public void deleteByProjectId(Long projectId) {
-        stackRepository.deleteByProjectId(projectId);
+        stackRepository.deleteAllByProjectId(projectId);
     }
 
 
@@ -85,7 +85,7 @@ public class StackService {
         Team findTeam = teamRepository.findOneById(teamId);
 
         // 지우기
-        stackRepository.deleteByTeamId(findTeam.getId());
+        stackRepository.deleteAllByTeamId(findTeam.getId());
 
         // 추가
         for (String stackName : stackNameList) {
@@ -102,7 +102,7 @@ public class StackService {
     @Transactional
     public void updateByMember(Long memberId, List<String> StackNameList) {
         // 지우기
-        stackRepository.deleteByMemberId(memberId);
+        stackRepository.deleteAllByMemberId(memberId);
 
         Member member = memberRepository.findOneById(memberId);
 
@@ -120,7 +120,7 @@ public class StackService {
     @Transactional
     public void updateByProject(Long projectId, List<String> stackNameList) {
         // 지우기
-        stackRepository.deleteByProjectId(projectId);
+        stackRepository.deleteAllByProjectId(projectId);
 
         // 추가
         Project project = projectRepository.findOneById(projectId);

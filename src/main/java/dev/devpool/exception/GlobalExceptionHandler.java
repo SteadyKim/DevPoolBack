@@ -5,6 +5,7 @@ import dev.devpool.exception.member.create.DuplicateMemberException;
 import dev.devpool.exception.member.delete.DeleteMemberNotFound;
 import dev.devpool.exception.member.read.MemberNotFoundException;
 import dev.devpool.exception.member.create.PersistenceIssueSaveException;
+import dev.devpool.exception.member.read.MemberPoolNotFoundException;
 import dev.devpool.exception.team.create.DuplicateTeamException;
 import dev.devpool.exception.team.delete.DeleteTeamNotFoundException;
 import dev.devpool.exception.team.read.TeamNotFoundException;
@@ -36,6 +37,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(MemberPoolNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleMemberPoolNotFoundException(MemberPoolNotFoundException ex) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
     @ExceptionHandler(DuplicateMemberException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateMemberException(DuplicateMemberException ex) {
         ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());

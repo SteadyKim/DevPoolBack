@@ -2,12 +2,14 @@ package dev.devpool.service;
 
 import dev.devpool.domain.*;
 import dev.devpool.dto.*;
+import dev.devpool.exception.member.read.MemberPoolNotFoundException;
 import dev.devpool.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -36,7 +38,7 @@ public class MemberPoolService {
         public void join(MemberPoolDto.Save memberPoolDto) {
                 Long memberId = memberPoolDto.getMemberId();
                 Member findMember = memberRepository.findOneById(memberId);
-                findMember.setMemberPoolCreateTime();
+                findMember.setMemberPoolCreateTime(LocalDateTime.now());
 
                 List<TechFieldDto.Save> techFieldDtoList = memberPoolDto.getTechFieldDtoList();
                 for (TechFieldDto.Save techFieldDto : techFieldDtoList) {
@@ -78,6 +80,9 @@ public class MemberPoolService {
 
                 Member findMember = memberRepository.findOneById(memberId);
 
+                if (findMember.getCreateTime() == null) {
+                        throw new MemberPoolNotFoundException();
+                }
                 List<TechFieldDto.Response> techFieldDtoList = techFieldRepository.findAllByMemberId(memberId)
                         .stream()
                         .map(TechField::toDto)
@@ -136,5 +141,31 @@ public class MemberPoolService {
                 }
 
                 return memberPoolDtoList;
+        }
+
+        @Transactional
+        public void deleteById(Long memberId) {
+                Member findMember = memberRepository.findOneById(memberId);
+                findMember.setMemberPoolCreateTime(null);
+                techFieldRepository.deleteAllByMemberId(memberId);
+                stackRepository.deleteAllByMemberId(memberId);
+                projectRepository.deleteByMemberId(memberId);
+                certificateRepository.deleteAllByMemberId(memberId);
+                siteRepository.deleteAllByMemberId(memberId);
+        }
+
+        @Transactional
+        public void update(MemberPoolDto.Save memberPoolDto) {
+                Long memberId = memberPoolDto.getMemberId();
+                /**
+                 * 삭제
+                 */
+                deleteById(memberId);
+
+                /**
+                 * 삽입
+                 */
+                join(memberPoolDto);
+
         }
 }

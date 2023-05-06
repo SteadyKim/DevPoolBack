@@ -85,8 +85,8 @@ public class Member {
         imageUrl = newMember.getImageUrl();
     }
 
-    public void setMemberPoolCreateTime() {
-        this.createTime = LocalDateTime.now();
+    public void setMemberPoolCreateTime(LocalDateTime localDateTime) {
+        this.createTime = localDateTime;
     }
 
     public MemberDto.Response toDto() {

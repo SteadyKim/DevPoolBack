@@ -80,41 +80,41 @@ public class MemberPoolController {
 
         return ResponseEntity.status(HttpStatus.OK).body(listResponseDto);
     }
-//
-//    @Operation(summary = "회원정보삭제", description = "회원의 정보를 삭제합니다.")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "멤버 삭제 - 성공"),
-//            @ApiResponse(responseCode = "404", description = "멤버 삭제 실패 - 멤버가 DB에 없습니다.")
-//    })
-//    @DeleteMapping("/member/{id}")
-//    public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("id") Long id) {
-//        memberService.deleteById(id);
-//
-//        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
-//                .status(200)
-//                .message("멤버 삭제에 성공하였습니다.")
-//                .id(id)
-//                .build();
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-//    }
-//
-//    @Operation(summary = "회원정보수정", description = "회원의 정보를 수정합니다.")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "멤버 수정 - 성공"),
-//            @ApiResponse(responseCode = "404", description = "멤버 수정 실패")
-//    })
-//    @PutMapping("/member/{id}")
-//    public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("id") Long id, @RequestBody @Valid MemberDto.Save memberDto) {
-//        Member updateMember = memberService.update(id, memberDto.toEntity());
-//
-//        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
-//                .status(200)
-//                .message("멤버 수정에 성공하였습니다.")
-//                .id(updateMember.getId())
-//                .build();
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-//    }
+
+    @Operation(summary = "멤버 풀 정보 삭제", description = "멤버 풀의 정보를 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "멤버 삭제 - 성공"),
+            @ApiResponse(responseCode = "404", description = "멤버 삭제 실패 - 멤버가 DB에 없습니다.")
+    })
+    @DeleteMapping("/member_pool/{memberId}")
+    public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("memberId") Long memberId) {
+        memberPoolService.deleteById(memberId);
+
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
+                .status(200)
+                .message("멤버 풀 삭제에 성공하였습니다.")
+                .id(memberId)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @Operation(summary = "회원정보수정", description = "회원의 정보를 수정합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "멤버 수정 - 성공"),
+            @ApiResponse(responseCode = "404", description = "멤버 수정 - 실패")
+    })
+    @PutMapping("/member_pool/{memberId}")
+    public ResponseEntity<CommonResponseDto<Object>> updateMemberPool(@PathVariable("memberId") Long memberId, @RequestBody @Valid MemberPoolDto.Save memberPoolDto) {
+        memberPoolService.update(memberPoolDto);
+
+        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
+                .status(200)
+                .message("멤버 풀 수정에 성공하였습니다.")
+                .id(memberId)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
 
 }

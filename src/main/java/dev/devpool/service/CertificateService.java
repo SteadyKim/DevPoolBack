@@ -58,6 +58,9 @@ public class CertificateService {
     @Transactional
     public void update(Member member, ArrayList<Certificate> certificates) {
         // 지우고
+        /**
+         * 리팩 해야함
+         */
         certificateRepository.deleteAllByMemberId(member.getId());
         // 추가
         for (Certificate certificate : certificates) {

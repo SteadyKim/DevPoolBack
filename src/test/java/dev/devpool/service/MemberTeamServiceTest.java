@@ -60,7 +60,7 @@ public class MemberTeamServiceTest {
             memberService.join(member2);
 
             Team team = Team.builder()
-                    .title("A팀")
+                    .name("A팀")
                     .body("asdasd")
                     .totalNum(4)
                     .build();
@@ -114,7 +114,7 @@ public class MemberTeamServiceTest {
             memberService.join(member2);
 
             Team team = Team.builder()
-                    .title("A팀")
+                    .name("A팀")
                     .body("asdasd")
                     .totalNum(4)
                     .build();
@@ -197,7 +197,7 @@ public class MemberTeamServiceTest {
 
 
             Team team = Team.builder()
-                    .title("A팀")
+                    .name("A팀")
                     .body("asdasd")
                     .totalNum(4)
                     .build();

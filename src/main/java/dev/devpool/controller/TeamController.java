@@ -6,10 +6,7 @@ import dev.devpool.dto.CommonDataListResponseDto;
 import dev.devpool.dto.CommonDataResponseDto;
 import dev.devpool.dto.CommonResponseDto;
 import dev.devpool.dto.TeamDto;
-import dev.devpool.service.MemberService;
-import dev.devpool.service.StackService;
-import dev.devpool.service.TeamService;
-import dev.devpool.service.TechFieldService;
+import dev.devpool.service.*;
 //import io.swagger.annotations.ApiResponse;
 //import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +31,7 @@ public class TeamController {
     private final TechFieldService techFieldService;
     private final StackService stackService;
 
+    private final CategoryService categoryService;
 
     @Operation(summary = "팀등록", description = "팀을 저장합니다.")
     @ApiResponses({
@@ -55,7 +53,7 @@ public class TeamController {
         teamService.join(team);
 
         // 스택
-        List<String> stackNameList = teamSaveRequestDto.getStackNameList();
+        List<String> stackNameList = teamSaveRequestDto.getRecruitStackNameList();
         for (String stackName : stackNameList) {
             Stack stack = Stack.builder()
                     .name(stackName)
@@ -66,7 +64,7 @@ public class TeamController {
         }
 
         // TechField
-        List<String> techFieldNameList = teamSaveRequestDto.getTechFieldNameList();
+        List<String> techFieldNameList = teamSaveRequestDto.getRecruitFieldNameList();
         for (String techFieldName : techFieldNameList) {
             TechField techField = TechField.builder()
                     .name(techFieldName)
@@ -81,12 +79,19 @@ public class TeamController {
                 .id(team.getId())
                 .build();
 
+        // Category
+        String categoryName = teamSaveRequestDto.getCategoryName();
+        Category category = Category.builder()
+                .name(categoryName)
+                .team(team)
+                .build();
+        categoryService.join(category);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createTeamResponse);
     }
 
     // 조회
-    @Operation(summary = "팀조회", description = "팀을 팀 Id로 조회 합니다.")
+    @Operation(summary = "팀조회", description = "팀을 팀 id로 조회 합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "팀을 성공적으로 조회 하였습니다."),
             @ApiResponse(responseCode = "404", description = "팀 조회 실패 - 팀이 DB에 없습니다."),
@@ -103,17 +108,18 @@ public class TeamController {
         // TechField
         List<TechField> techFieldList = techFieldService.findAllByTeamId(teamId);
 
-        TeamDto.Response teamResponseDto = findTeam.toDto(stackList, techFieldList);
+        // Category
+        Category category = categoryService.findOneByTeamId(teamId);
 
-        CommonDataResponseDto<Object> teamDtoResponse = CommonDataResponseDto
+        TeamDto.Response teamResponseDto = findTeam.toDto(stackList, techFieldList, category);
+        CommonDataResponseDto<Object> response = CommonDataResponseDto
                 .builder()
                 .status(200)
                 .message("팀 조회에 성공하였습니다.")
                 .data(teamResponseDto)
                 .build();
 
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(teamDtoResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     //
@@ -135,8 +141,9 @@ public class TeamController {
 
             //Tech Field 가져오기
             List<TechField> techFieldList = techFieldService.findAllByTeamId(team.getId());
-
-            TeamDto.Response teamDto = team.toDto(stackList, techFieldList);
+            //category 가져오기
+            Category category = categoryService.findOneByTeamId(team.getId());
+            TeamDto.Response teamDto = team.toDto(stackList, techFieldList,category);
 
             responseList.add(teamDto);
         }
@@ -171,22 +178,26 @@ public class TeamController {
             @ApiResponse(responseCode = "200", description = "팀 수정에 성공하였습니다.")
     })
     @PutMapping("/team/{id}")
-    public ResponseEntity<CommonResponseDto<Object>> updateTeam(@PathVariable("id") Long id, @RequestBody @Valid TeamDto.Update newTeamDto) {
+    public ResponseEntity<CommonResponseDto<Object>> updateTeam(@PathVariable("id") Long teamId, @RequestBody @Valid TeamDto.Update newTeamDto) {
 
         Team newTeam = newTeamDto.toEntity();
 
         // 팀
-        teamService.update(id, newTeam);
+        teamService.update(teamId, newTeam);
 
         // stack
         List<String> stackNameList = newTeamDto.getStackNameList();
-        stackService.updateByTeam(id, stackNameList);
+        stackService.updateByTeam(teamId, stackNameList);
+
         // techField
         List<String> techFieldNameList = newTeamDto.getTechFieldNameList();
-        techFieldService.updateByTeam(id, techFieldNameList);
+        techFieldService.updateByTeam(teamId, techFieldNameList);
 
+        //Category
+        String categoryName = newTeamDto.getCategoryName();
+        categoryService.update(teamId, categoryName);
         CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
-                .id(id)
+                .id(teamId)
                 .message("팀 수정에 성공하였습니다.")
                 .build();
 

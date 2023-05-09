@@ -65,6 +65,9 @@ public class TeamRepository {
         em.createQuery("delete from Comment c where c.team.id=:teamId")
                 .setParameter("teamId", teamId).executeUpdate();
 
+        em.createQuery("delete from Category cg where cg.team.id=:teamId")
+                .setParameter("teamId", teamId).executeUpdate();
+
         em.createQuery("delete from Team t where t.id=:teamId").
                 setParameter("teamId", teamId).executeUpdate();
 
@@ -74,18 +77,10 @@ public class TeamRepository {
         List<Team> findTeams = em.createQuery("select t from Team t", Team.class).getResultList();
         for (Team findTeam : findTeams) {
             Long teamId = findTeam.getId();
-            em.createQuery("delete from Stack s where s.team.id=:teamId")
-                    .setParameter("teamId", teamId).executeUpdate();
 
-            em.createQuery("delete from TechField tf where tf.team.id=:teamId")
-                    .setParameter("teamId", teamId).executeUpdate();
-
-            em.createQuery("delete from Comment c where c.team.id=:teamId")
-                    .setParameter("teamId", teamId).executeUpdate();
+            deleteById(teamId);
         }
-        em.createQuery("delete from MemberTeam mt").executeUpdate();
 
-        em.createQuery("delete from Team t").executeUpdate();
     }
 
     /**

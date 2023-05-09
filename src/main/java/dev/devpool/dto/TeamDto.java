@@ -1,5 +1,6 @@
 package dev.devpool.dto;
 
+import dev.devpool.domain.Category;
 import dev.devpool.domain.Team;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,8 @@ public class TeamDto {
 
         private String body;
 
+        private int currentNum;
+
         private int totalNum;
 
         private LocalDateTime createTime;
@@ -31,6 +34,7 @@ public class TeamDto {
 
         private List<String> stackNameList;
 
+        private String categoryName;
 
     }
 
@@ -45,22 +49,22 @@ public class TeamDto {
 
         private Long memberId;
         private String name;
-
         private String body;
 
-        private int totalNum;
+        private int recruitNum;
 
-        private LocalDateTime createTime;
+        private String categoryName;
 
-        private List<String> techFieldNameList;
+        private List<String> recruitFieldNameList;
 
-        private List<String> stackNameList;
+        private List<String> recruitStackNameList;
 
         public Team toEntity() {
 
             Team team = Team.builder()
                     .name(this.name)
                     .body(this.body)
+                    .createTime(LocalDateTime.now())
                     .build();
 
             return team;
@@ -84,6 +88,8 @@ public class TeamDto {
 
         private LocalDateTime createTime;
 
+        private String categoryName;
+
         private List<String> techFieldNameList;
 
         private List<String> stackNameList;
@@ -93,6 +99,8 @@ public class TeamDto {
             Team team = Team.builder()
                     .name(this.name)
                     .body(this.body)
+                    .totalNum(this.totalNum)
+                    .createTime(this.getCreateTime())
                     .build();
 
             return team;

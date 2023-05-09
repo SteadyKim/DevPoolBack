@@ -1,6 +1,5 @@
 package dev.devpool.dto;
 
-import dev.devpool.domain.Category;
 import dev.devpool.domain.Team;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -22,17 +21,17 @@ public class TeamDto {
 
         private String name;
 
-        private String body;
+        private String content;
 
-        private int currentNum;
+        private int currentCount;
 
-        private int totalNum;
+        private int recruitCount;
 
         private LocalDateTime createTime;
 
-        private List<String> techFieldNameList;
+        private List<String> recruitTechFieldNameList;
 
-        private List<String> stackNameList;
+        private List<String> recruitStackNameList;
 
         private String categoryName;
 
@@ -49,13 +48,13 @@ public class TeamDto {
 
         private Long memberId;
         private String name;
-        private String body;
+        private String content;
 
         private int recruitNum;
 
         private String categoryName;
 
-        private List<String> recruitFieldNameList;
+        private List<String> recruitTechFieldNameList;
 
         private List<String> recruitStackNameList;
 
@@ -63,7 +62,7 @@ public class TeamDto {
 
             Team team = Team.builder()
                     .name(this.name)
-                    .body(this.body)
+                    .content(this.content)
                     .createTime(LocalDateTime.now())
                     .build();
 
@@ -82,24 +81,24 @@ public class TeamDto {
 
         private String name;
 
-        private String body;
+        private String content;
 
-        private int totalNum;
+        private int recruitCount;
 
         private LocalDateTime createTime;
 
         private String categoryName;
 
-        private List<String> techFieldNameList;
+        private List<String> recruitTechFieldNameList;
 
-        private List<String> stackNameList;
+        private List<String> recruitStackNameList;
 
         public Team toEntity() {
 
             Team team = Team.builder()
                     .name(this.name)
-                    .body(this.body)
-                    .totalNum(this.totalNum)
+                    .content(this.content)
+                    .totalNum(this.recruitCount)
                     .createTime(this.getCreateTime())
                     .build();
 

@@ -64,7 +64,7 @@ public class TeamController {
         }
 
         // TechField
-        List<String> techFieldNameList = teamSaveRequestDto.getRecruitFieldNameList();
+        List<String> techFieldNameList = teamSaveRequestDto.getRecruitTechFieldNameList();
         for (String techFieldName : techFieldNameList) {
             TechField techField = TechField.builder()
                     .name(techFieldName)
@@ -186,11 +186,11 @@ public class TeamController {
         teamService.update(teamId, newTeam);
 
         // stack
-        List<String> stackNameList = newTeamDto.getStackNameList();
+        List<String> stackNameList = newTeamDto.getRecruitStackNameList();
         stackService.updateByTeam(teamId, stackNameList);
 
         // techField
-        List<String> techFieldNameList = newTeamDto.getTechFieldNameList();
+        List<String> techFieldNameList = newTeamDto.getRecruitTechFieldNameList();
         techFieldService.updateByTeam(teamId, techFieldNameList);
 
         //Category

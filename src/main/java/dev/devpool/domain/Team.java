@@ -1,10 +1,8 @@
 package dev.devpool.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.dto.TeamDto;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -35,8 +33,8 @@ public class Team {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "body")
-    private String body;
+    @Column(name = "content")
+    private String content;
 
     @Column(name = "total_num")
     private int totalNum;
@@ -48,7 +46,7 @@ public class Team {
      */
     public void update(Team team) {
         name = team.getName();
-        body = team.getBody();
+        content = team.getContent();
         totalNum = team.getTotalNum();
     }
 
@@ -71,13 +69,13 @@ public class Team {
 
         TeamDto.Response response = TeamDto.Response.builder()
                 .name(this.name)
-                .body(this.body)
+                .content(this.content)
                 .categoryName(categoryName)
-                .currentNum(memberTeams.size())
-                .totalNum(this.totalNum)
+                .currentCount(memberTeams.size())
+                .recruitCount(this.totalNum)
                 .createTime(this.createTime)
-                .stackNameList(stackNameList)
-                .techFieldNameList(techFieldNameList)
+                .recruitStackNameList(stackNameList)
+                .recruitTechFieldNameList(techFieldNameList)
                 .build();
         return response;
     }

@@ -347,7 +347,7 @@ class CommentServiceTest {
             em.clear();
             // then
             Comment findComment = commentService.findById(oldComment.getId());
-            assertEquals("new", findComment.getBody());
+            assertEquals("new", findComment.getContent());
 
             return null;
         });

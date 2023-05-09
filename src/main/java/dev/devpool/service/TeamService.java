@@ -4,6 +4,7 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.MemberTeam;
 import dev.devpool.domain.Team;
 import dev.devpool.exception.team.create.DuplicateTeamException;
+import dev.devpool.exception.team.read.TeamNotFoundException;
 import dev.devpool.repository.TeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,10 @@ public class TeamService {
 
     public Team findOneById(long teamId) {
         Team findTeam = teamRepository.findOneById(teamId);
+
+        if (findTeam == null) {
+            throw new TeamNotFoundException();
+        }
 
         return findTeam;
     }

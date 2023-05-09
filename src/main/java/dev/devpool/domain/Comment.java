@@ -29,12 +29,12 @@ public class Comment {
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
-    private String body;
+    private String content;
 
     private LocalDate createDate;
 
     public void updateComment(Comment comment) {
-        this.body = comment.getBody();
+        this.content = comment.getContent();
         this.createDate = LocalDate.now();
     }
 

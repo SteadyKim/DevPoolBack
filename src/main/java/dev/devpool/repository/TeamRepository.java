@@ -2,6 +2,7 @@ package dev.devpool.repository;
 
 import dev.devpool.domain.Team;
 import dev.devpool.exception.team.delete.DeleteTeamNotFoundException;
+import dev.devpool.exception.team.read.TeamNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

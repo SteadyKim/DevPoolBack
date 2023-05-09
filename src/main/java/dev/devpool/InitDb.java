@@ -32,7 +32,7 @@ public class InitDb {
         Team team = Team.builder()
                 .name("aa팀을 모집합니디.")
                 .totalNum(4)
-                .body("ㅗ디ㅣㅐ 째깅!")
+                .content("ㅗ디ㅣㅐ 째깅!")
                 .build();
 
         Member findMember = memberService.findOneById(1L);

@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,6 @@ import static javax.persistence.FetchType.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Getter
 public class MemberTeam {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,11 @@ public class MemberTeam {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
 
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 

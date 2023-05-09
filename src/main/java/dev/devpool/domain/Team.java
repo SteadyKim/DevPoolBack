@@ -1,7 +1,10 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.dto.TeamDto;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +25,7 @@ public class Team {
 
     @Builder.Default
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<MemberTeam> memberTeams = new ArrayList<>();
 
     public List<MemberTeam> getMemberTeams() {
@@ -48,7 +52,7 @@ public class Team {
         totalNum = team.getTotalNum();
     }
 
-    public TeamDto.Response toDto(List<Stack> stackList, List<TechField> techFieldList) {
+    public TeamDto.Response toDto(List<Stack> stackList, List<TechField> techFieldList, Category category) {
         List<String> stackNameList = stackList.stream()
                 .map(Stack::getName)
                 .collect(Collectors.toList());
@@ -57,15 +61,24 @@ public class Team {
                 .map(TechField::getName)
                 .collect(Collectors.toList());
 
+        String categoryName;
+        // 카테고리 체크
+        if (category == null) {
+            categoryName = null;
+        } else {
+            categoryName = category.getName();
+        }
+
         TeamDto.Response response = TeamDto.Response.builder()
                 .name(this.name)
                 .body(this.body)
+                .categoryName(categoryName)
+                .currentNum(memberTeams.size())
                 .totalNum(this.totalNum)
                 .createTime(this.createTime)
                 .stackNameList(stackNameList)
                 .techFieldNameList(techFieldNameList)
                 .build();
-
         return response;
     }
 

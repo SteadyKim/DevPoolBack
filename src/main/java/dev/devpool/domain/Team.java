@@ -68,6 +68,7 @@ public class Team {
         }
 
         TeamDto.Response response = TeamDto.Response.builder()
+                .teamId(this.id)
                 .name(this.name)
                 .content(this.content)
                 .categoryName(categoryName)

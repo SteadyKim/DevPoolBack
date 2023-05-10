@@ -18,6 +18,7 @@ public class TeamDto {
     @AllArgsConstructor
     @Schema(description = "team response dto")
     public static class Response {
+        private Long teamId;
 
         private String name;
 

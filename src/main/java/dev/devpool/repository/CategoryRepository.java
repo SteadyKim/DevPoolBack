@@ -1,7 +1,6 @@
 package dev.devpool.repository;
 
 import dev.devpool.domain.Category;
-import dev.devpool.exception.team.read.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,7 @@
 package dev.devpool.repository;
 
 import dev.devpool.domain.Team;
-import dev.devpool.exception.team.delete.DeleteTeamNotFoundException;
-import dev.devpool.exception.team.read.TeamNotFoundException;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -46,10 +45,10 @@ public class TeamRepository {
         return findTeam;
     }
 
-    public void deleteById(long teamId) {
+    public void deleteById(Long teamId) {
         Team findTeam = em.find(Team.class, teamId);
         if (findTeam == null) {
-            throw new DeleteTeamNotFoundException();
+            throw new CustomEntityNotFoundException(Team.class.getName(), teamId);
         }
         /**
          * 영속성 컨텍스트를 사용하는 queryDsl로 리팩토링 할 예정

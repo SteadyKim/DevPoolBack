@@ -2,7 +2,7 @@ package dev.devpool.service;
 
 import dev.devpool.domain.*;
 import dev.devpool.dto.*;
-import dev.devpool.exception.member.read.MemberPoolNotFoundException;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +81,7 @@ public class MemberPoolService {
                 Member findMember = memberRepository.findOneById(memberId);
 
                 if (findMember.getCreateTime() == null) {
-                        throw new MemberPoolNotFoundException();
+                        throw new CustomEntityNotFoundException("MemberPool", memberId);
                 }
                 List<TechFieldDto.Response> techFieldDtoList = techFieldRepository.findAllByMemberId(memberId)
                         .stream()

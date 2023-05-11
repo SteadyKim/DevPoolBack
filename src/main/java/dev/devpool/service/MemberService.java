@@ -1,7 +1,7 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Member;
-import dev.devpool.exception.member.create.DuplicateMemberException;
+import dev.devpool.exception.CustomDuplicateException;
 import dev.devpool.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class MemberService {
         Optional<Member> findMember = memberRepository.findOneByEmail(member.getEmail());
 
         if (findMember.isPresent()) {
-            throw new DuplicateMemberException();
+            throw new CustomDuplicateException(Member.class.getName(), member.getId());
         }
     }
 

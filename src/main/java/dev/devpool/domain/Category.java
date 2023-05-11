@@ -21,4 +21,5 @@ public class Category {
     Team team;
 
     private String name;
+
 }

@@ -1,9 +1,7 @@
 package dev.devpool.repository;
 
 import dev.devpool.domain.Member;
-import dev.devpool.exception.member.create.PersistenceIssueSaveException;
-import dev.devpool.exception.member.delete.DeleteMemberNotFound;
-import dev.devpool.exception.member.read.MemberNotFoundException;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,11 +26,7 @@ public class MemberRepository {
 
     // 저장
     public void save(Member member) {
-        try {
             em.persist(member);
-        } catch (PersistenceException e) {
-            throw new PersistenceIssueSaveException();
-        }
     }
 
     //조회
@@ -40,7 +34,7 @@ public class MemberRepository {
         Member findMember = em.find(Member.class, memberId);
 
             if (findMember == null) {
-            throw new MemberNotFoundException();
+            throw new CustomEntityNotFoundException(Member.class.getName(), memberId);
         }
 
         return findMember;
@@ -64,7 +58,7 @@ public class MemberRepository {
     public void deleteById(Long memberId) {
         Member findMember = em.find(Member.class, memberId);
         if (findMember == null) {
-            throw new DeleteMemberNotFound();
+            throw new CustomEntityNotFoundException(Member.class.getName(), memberId);
         }
         else {
             Query query = em.createQuery("delete from Certificate c where c.member.id=:memberId")

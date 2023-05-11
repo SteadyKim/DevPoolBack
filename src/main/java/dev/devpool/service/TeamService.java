@@ -3,8 +3,8 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.MemberTeam;
 import dev.devpool.domain.Team;
-import dev.devpool.exception.team.create.DuplicateTeamException;
-import dev.devpool.exception.team.read.TeamNotFoundException;
+import dev.devpool.exception.CustomDuplicateException;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.TeamRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +29,11 @@ public class TeamService {
         return team.getId();
     }
 
-    public Team findOneById(long teamId) {
+    public Team findOneById(Long teamId) {
         Team findTeam = teamRepository.findOneById(teamId);
 
         if (findTeam == null) {
-            throw new TeamNotFoundException();
+            throw new CustomEntityNotFoundException(Team.class.getName(), teamId);
         }
 
         return findTeam;
@@ -48,7 +48,7 @@ public class TeamService {
         Optional<Team> findTeam = teamRepository.findOneByName(team.getName());
 
         if (findTeam.isPresent()) {
-            throw new DuplicateTeamException();
+            throw new CustomDuplicateException(Team.class.getName(), team.getId());
         }
     }
     @Transactional

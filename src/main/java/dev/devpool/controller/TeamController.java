@@ -73,12 +73,6 @@ public class TeamController {
             techFieldService.join(techField);
         }
 
-        CommonResponseDto<Object> createTeamResponse = CommonResponseDto.builder()
-                .status(201)
-                .message("팀 저장에 성공하였습니다.")
-                .id(team.getId())
-                .build();
-
         // Category
         String categoryName = teamSaveRequestDto.getCategoryName();
         Category category = Category.builder()
@@ -86,6 +80,12 @@ public class TeamController {
                 .team(team)
                 .build();
         categoryService.join(category);
+
+        CommonResponseDto<Object> createTeamResponse = CommonResponseDto.builder()
+                .status(201)
+                .message("팀 저장에 성공하였습니다.")
+                .id(team.getId())
+                .build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createTeamResponse);
     }

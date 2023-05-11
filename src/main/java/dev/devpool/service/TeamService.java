@@ -1,47 +1,107 @@
 package dev.devpool.service;
 
-import dev.devpool.domain.Member;
-import dev.devpool.domain.MemberTeam;
-import dev.devpool.domain.Team;
+import dev.devpool.domain.*;
+import dev.devpool.dto.*;
 import dev.devpool.exception.CustomDuplicateException;
 import dev.devpool.exception.CustomEntityNotFoundException;
-import dev.devpool.repository.TeamRepository;
+import dev.devpool.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class TeamService {
     private final TeamRepository teamRepository;
+    private final MemberRepository memberRepository;
+    private final StackRepository stackRepository;
+    private final TechFieldRepository techFieldRepository;
+    private final CategoryRepository categoryRepository;
 
-    public TeamService(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
-    }
+    private final  StackService stackService;
+    private final TechFieldService techFieldService;
+    private final CategoryService categoryService;
+
 
     @Transactional
-    public long join(Team team) {
+    public CommonResponseDto<Object> join(TeamDto.Save teamSaveDto) {
+        Team team = teamSaveDto.toEntity();
+
         validateTeam(team);
 
+        Long memberId = teamSaveDto.getMemberId();
+
+        Member member = memberRepository.findOneById(memberId);
+
+
+        //MemberTeam Save -> 추후 repo, service 만들어야 할 듯??
+        MemberTeam memberTeam = MemberTeam.builder()
+                .build();
+
+        // 양방향 연관관계 메서드가 있어서 build에서 넣지 않음
+        memberTeam.addMemberTeam(member, team);
+
         teamRepository.save(team);
-        return team.getId();
+
+        // stack
+        teamSaveDto.getRecruitStackNameList()
+                .stream()
+                .map( dto -> dto.toEntity(team))
+                .forEach(stackRepository::save);
+
+
+        // TechField
+        teamSaveDto.getRecruitTechFieldNameList()
+                .stream()
+                .map(dto -> dto.toEntity(team))
+                .forEach(techFieldRepository::save);
+
+        // category
+        CategoryDto.Save categoryName = teamSaveDto.getCategoryName();
+        Category category = categoryName.toEntity(team);
+        categoryRepository.save(category);
+
+        return CommonResponseDto.builder()
+                .status(201)
+                .message("팀 저장에 성공하였습니다.")
+                .id(team.getId())
+                .build();
     }
 
-    public Team findOneById(Long teamId) {
+    public TeamDto.Response findOneById(Long teamId) {
         Team findTeam = teamRepository.findOneById(teamId);
-
         if (findTeam == null) {
             throw new CustomEntityNotFoundException(Team.class.getName(), teamId);
         }
 
-        return findTeam;
+        // stack
+        List<Stack> stackList = stackRepository.findAllByTeamId(teamId);
+
+        // techfield
+        List<TechField> techFieldList = techFieldRepository.findAllByTeamId(teamId);
+        // category
+        Category category = categoryRepository.findByTeamId(teamId);
+
+        TeamDto.Response responseDto = findTeam.toDto(stackList, techFieldList, category);
+
+
+        return responseDto;
     }
 
-    public List<Team> findAll() {
-        List<Team> teamList = teamRepository.findAll();
-        return teamList;
+    public List<TeamDto.Response> findAll() {
+        List<TeamDto.Response> responseDtoList = teamRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Team::getCreateTime))
+                .map(team -> findOneById(team.getId()))
+                .collect(Collectors.toList());
+
+        return responseDtoList;
     }
 
     public void validateTeam(Team team) {
@@ -52,23 +112,45 @@ public class TeamService {
         }
     }
     @Transactional
-    public void deleteById(long teamId) {
+    public CommonResponseDto<Object> deleteById(Long teamId) {
         teamRepository.deleteById(teamId);
+
+        return CommonResponseDto.builder().id(teamId)
+                .message("팀 삭제에 성공하였습니다.").
+                build();
+
     }
 
     @Transactional
-    public void deleteAll() {
+    public CommonResponseDto<Object> deleteAll() {
         teamRepository.deleteAll();
+
+        return CommonResponseDto.builder().
+                message("모든 팀 삭제에 성공하였습니다.").build();
     }
 
     @Transactional
-    public Team update(Long teamId, Team newTeam) {
+    public CommonResponseDto<Object> update(Long teamId, TeamDto.Update newTeamDto) {
         Team findTeam = teamRepository.findOneById(teamId);
+
+        Team team = newTeamDto.toEntity();
+
         // 변경감지를 활용해 Update 쿼리
-        findTeam.update(newTeam);
+        findTeam.update(team);
 
+        List<StackDto.Save> stackDtoList = newTeamDto.getRecruitStackNameList();
+        stackService.updateByTeam(teamId, stackDtoList);
 
-        return findTeam;
+        List<TechFieldDto.Save> techFieldDtoList = newTeamDto.getRecruitTechFieldNameList();
+        techFieldService.updateByTeam(teamId, techFieldDtoList);
+
+        CategoryDto.Save categoryDto = newTeamDto.getCategoryName();
+        categoryService.update(teamId, categoryDto);
+
+        return CommonResponseDto.builder()
+                .id(teamId)
+                .message("팀 수정에 성공하였습니다.")
+                .build();
     }
 
     /**

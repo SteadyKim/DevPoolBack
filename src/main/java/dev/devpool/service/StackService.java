@@ -4,6 +4,7 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.Project;
 import dev.devpool.domain.Stack;
 import dev.devpool.domain.Team;
+import dev.devpool.dto.StackDto;
 import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.ProjectRepository;
 import dev.devpool.repository.StackRepository;
@@ -81,19 +82,16 @@ public class StackService {
 
     // 수정
     @Transactional
-    public void updateByTeam(Long teamId, List<String> stackNameList) {
+    public void updateByTeam(Long teamId, List<StackDto.Save> stackDtoList) {
         Team findTeam = teamRepository.findOneById(teamId);
 
         // 지우기
         stackRepository.deleteAllByTeamId(findTeam.getId());
 
         // 추가
-        for (String stackName : stackNameList) {
-            Stack stack = Stack.builder()
-                    .team(findTeam)
-                    .name(stackName)
-                    .build();
+        for (StackDto.Save stackDto : stackDtoList) {
 
+            Stack stack = stackDto.toEntity(findTeam);
             stackRepository.save(stack);
         }
     }

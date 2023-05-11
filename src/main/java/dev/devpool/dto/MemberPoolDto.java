@@ -62,5 +62,26 @@ public class MemberPoolDto {
         private List<SiteDto.Save> siteDtoList;
 
     }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @Schema(name = "memberPool update request dto")
+    public static class Update {
+
+        public Update() {
+        }
+
+        private List<TechFieldDto.Save> techFieldDtoList;
+
+        private List<StackDto.Save> stackDtoList;
+
+        private List<ProjectDto.Save> projectDtoList;
+
+        private List<CertificateDto.Save> certificateDtoList;
+
+        private List<SiteDto.Save> siteDtoList;
+
+    }
 }
 

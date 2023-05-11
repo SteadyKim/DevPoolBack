@@ -1,6 +1,5 @@
 package dev.devpool.controller;
 
-import dev.devpool.domain.Member;
 import dev.devpool.dto.*;
 import dev.devpool.service.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "member", description = "member")
@@ -32,18 +30,12 @@ public class MemberController {
     @PostMapping("/member")
     public ResponseEntity<CommonResponseDto<Object>> saveMember(@RequestBody @Valid MemberDto.Save memberSaveRequestDto) {
         // 저장
-        Member member = memberSaveRequestDto.toEntity();
-        Long id = memberService.join(member);
+        CommonResponseDto<Object> responseDto = memberService.join(memberSaveRequestDto);
 
 
-        // 응답
-        CommonResponseDto<Object> createMemberResponse = CommonResponseDto.builder()
-                .id(member.getId())
-                .status(201)
-                .message("회원 저장에 성공하였습니다.")
-                .build();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(createMemberResponse);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(responseDto);
     }
 
     @Operation(summary = "회원정보조회", description = "본인의 회원정보를 조회합니다.")
@@ -52,11 +44,10 @@ public class MemberController {
             @ApiResponse(responseCode = "404", description = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
     })
     @GetMapping("/member/{id}")
-    public ResponseEntity<CommonDataResponseDto<Object>> getMember(@PathVariable("id") Long id) {
-        Member findMember = memberService.findOneById(id);
-        MemberDto.Response memberDto = findMember.toDto();
+    public ResponseEntity<CommonDataResponseDto<MemberDto.Response>> findMember(@PathVariable("id") Long id) {
+        MemberDto.Response memberDto = memberService.findOneById(id);
 
-        CommonDataResponseDto<Object> responseDto = CommonDataResponseDto.builder()
+        CommonDataResponseDto<MemberDto.Response> responseDto = CommonDataResponseDto.<MemberDto.Response>builder()
                 .data(memberDto)
                 .status(200)
                 .message("멤버 조회에 성공하였습니다.")
@@ -71,17 +62,12 @@ public class MemberController {
             @ApiResponse(responseCode = "404", description = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
     })
     @GetMapping("/members")
-    public ResponseEntity<CommonDataListResponseDto<Object>> getMemberList() {
-        List<Member> memberList = memberService.findAll();
-        ArrayList<Object> memberDtoList = new ArrayList<Object>();
-
-        for (Member member : memberList) {
-            MemberDto.Response memberDto = member.toDto();
-            memberDtoList.add(memberDto);
-        }
+    public ResponseEntity<CommonDataListResponseDto<MemberDto.Response>> findMemberList() {
+        List<MemberDto.Response> memberDtoList = memberService.findAll();
 
 
-        CommonDataListResponseDto<Object> listResponseDto = CommonDataListResponseDto.builder()
+
+        CommonDataListResponseDto<MemberDto.Response> listResponseDto = CommonDataListResponseDto.<MemberDto.Response>builder()
                 .status(200)
                 .message("멤버 리스트 조회에 성공하였습니다.")
                 .dataList(memberDtoList)
@@ -98,13 +84,7 @@ public class MemberController {
     })
     @DeleteMapping("/member/{id}")
     public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("id") Long id) {
-        memberService.deleteById(id);
-
-        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
-                .status(200)
-                .message("멤버 삭제에 성공하였습니다.")
-                .id(id)
-                .build();
+        CommonResponseDto<Object> responseDto = memberService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
@@ -112,17 +92,11 @@ public class MemberController {
     @Operation(summary = "회원정보수정", description = "회원의 정보를 수정합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "멤버 수정 - 성공"),
-            @ApiResponse(responseCode = "404", description = "멤버 수정 실패")
+            @ApiResponse(responseCode = "404", description = "멤버 수정 - 실패")
     })
     @PatchMapping("/member/{id}")
     public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("id") Long id, @RequestBody @Valid MemberDto.Save memberDto) {
-        Member updateMember = memberService.update(id, memberDto.toEntity());
-
-        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
-                .status(200)
-                .message("멤버 수정에 성공하였습니다.")
-                .id(updateMember.getId())
-                .build();
+        CommonResponseDto<Object> responseDto = memberService.update(id, memberDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }

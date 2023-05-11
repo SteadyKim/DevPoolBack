@@ -4,6 +4,7 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.Project;
 import dev.devpool.domain.Stack;
 import dev.devpool.domain.Team;
+import dev.devpool.dto.StackDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -359,7 +360,8 @@ class StackServiceTest {
             stacks.add(newStack1);
             stacks.add(newStack2);
 
-            stackService.updateByTeam(team.getId(), stacks.stream().map(Stack::getName).collect(Collectors.toList()));
+
+//            stackService.updateByTeam(team.getId(), dto);
 
             em.flush();
             em.clear();

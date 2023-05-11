@@ -35,7 +35,7 @@ public class MemberPoolService {
 
 
         @Transactional
-        public void join(MemberPoolDto.Save memberPoolDto) {
+        public CommonResponseDto<Object> join(MemberPoolDto.Save memberPoolDto) {
                 Long memberId = memberPoolDto.getMemberId();
                 Member findMember = memberRepository.findOneById(memberId);
                 findMember.setMemberPoolCreateTime(LocalDateTime.now());
@@ -74,7 +74,11 @@ public class MemberPoolService {
                         siteRepository.save(site);
                 }
 
-        }
+        return CommonResponseDto.builder()
+                .status(201)
+                .message("멤버 풀 저장에 성공하였습니다.")
+                .build();
+}
 
         public MemberPoolDto.Response findOneById(Long memberId) {
 
@@ -125,14 +129,14 @@ public class MemberPoolService {
 
         }
 
-        public List<Object> findMemberPools() {
+        public List<MemberPoolDto.Response> findMemberPools() {
                 List<Member> memberList = memberRepository.findAll()
                         .stream()
                         .filter(s -> s.getCreateTime() != null)
                         .sorted(Comparator.comparing(Member::getCreateTime))
                         .collect(Collectors.toList());
 
-                List<Object> memberPoolDtoList = new ArrayList<>();
+                List<MemberPoolDto.Response> memberPoolDtoList = new ArrayList<>();
 
                 for (Member findMember : memberList) {
                         Long memberId = findMember.getId();
@@ -144,7 +148,7 @@ public class MemberPoolService {
         }
 
         @Transactional
-        public void deleteById(Long memberId) {
+        public CommonResponseDto<Object> deleteById(Long memberId) {
                 Member findMember = memberRepository.findOneById(memberId);
                 findMember.setMemberPoolCreateTime(null);
                 techFieldRepository.deleteAllByMemberId(memberId);
@@ -152,10 +156,16 @@ public class MemberPoolService {
                 projectRepository.deleteByMemberId(memberId);
                 certificateRepository.deleteAllByMemberId(memberId);
                 siteRepository.deleteAllByMemberId(memberId);
+
+                return CommonResponseDto.builder()
+                        .status(200)
+                        .message("멤버 풀 삭제에 성공하였습니다.")
+                        .id(memberId)
+                        .build();
         }
 
         @Transactional
-        public void update(MemberPoolDto.Save memberPoolDto) {
+        public CommonResponseDto<Object> update(MemberPoolDto.Save memberPoolDto) {
                 Long memberId = memberPoolDto.getMemberId();
                 /**
                  * 삭제
@@ -167,5 +177,10 @@ public class MemberPoolService {
                  */
                 join(memberPoolDto);
 
+                return CommonResponseDto.builder()
+                        .status(200)
+                        .message("멤버 풀 수정에 성공하였습니다.")
+                        .id(memberId)
+                        .build();
         }
 }

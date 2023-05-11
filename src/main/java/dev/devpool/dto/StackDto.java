@@ -2,6 +2,7 @@ package dev.devpool.dto;
 
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Stack;
+import dev.devpool.domain.Team;
 import dev.devpool.domain.TechField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,15 @@ public class StackDto {
         public Stack toEntity(Member member) {
             Stack stack = Stack.builder()
                     .member(member)
+                    .name(this.name)
+                    .build();
+
+            return stack;
+        }
+
+        public Stack toEntity(Team team) {
+            Stack stack = Stack.builder()
+                    .team(team)
                     .name(this.name)
                     .build();
 

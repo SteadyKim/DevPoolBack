@@ -35,25 +35,31 @@ public class Member {
         return imageUrl;
     }
 
-    public List<Site> getSites() {
-        return sites;
+    public List<Site> getSiteList() {
+        return siteList;
     }
 
 
-    @OneToMany(mappedBy = "member")
-    private List<Certificate> certificates = new ArrayList<>();
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<Certificate> certificateList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Latter> latters = new ArrayList<>();
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<Latter> latterList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Site> sites = new ArrayList<>();
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<Site> siteList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<TechField> techFields = new ArrayList<>();
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<TechField> techFieldList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<Project> projects = new ArrayList<>();
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<Project> projectList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    public List<MemberTeam> memberTeamList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    public List<Stack> stackList = new ArrayList<>();
 
 
     /**
@@ -61,17 +67,17 @@ public class Member {
      */
     public void addCertificate(Certificate certificate) {
         certificate.addMember(this);
-        certificates.add(certificate);
+        certificateList.add(certificate);
     }
 
     public void addLatter(Latter latter) {
         latter.addMember(this);
-        latters.add(latter);
+        latterList.add(latter);
     }
 
     public void addSite(Site site){
         site.addMember(this);
-        sites.add(site);
+        siteList.add(site);
     }
 
     /**

@@ -24,36 +24,12 @@ public class InitDb {
 
     private final TechFieldService techFieldService;
     private final TeamService teamService;
-
+    private final EntityManager em;
     @PostConstruct
     public void init() {
         initService.ss();
 
-        Team team = Team.builder()
-                .name("aa팀을 모집합니디.")
-                .totalNum(4)
-                .content("ㅗ디ㅣㅐ 째깅!")
-                .build();
 
-        Member findMember = memberService.findOneById(1L);
-
-        MemberTeam memberTeam = new MemberTeam();
-        memberTeam.addMemberTeam(findMember, team);
-
-        teamService.join(team);
-
-        Stack stack = Stack.builder()
-                .name("AWS")
-                .team(team)
-                .build();
-        stackService.join(stack);
-
-        TechField techField = TechField.builder()
-                .name("AI")
-                .team(team)
-                .build();
-
-        techFieldService.join(techField);
 
     }
 
@@ -188,9 +164,41 @@ public class InitDb {
 
             em.persist(member3);
 
+            Team team = Team.builder()
+                    .name("aa팀을 모집합니디.")
+                    .totalNum(4)
+                    .content("ㅗ디ㅣㅐ 째깅!")
+                    .build();
+
+            em.persist(team);
 
 
+            MemberTeam memberTeam = new MemberTeam();
+            memberTeam.addMemberTeam(member, team);
 
+            em.persist(memberTeam);
+
+
+            Stack stack = Stack.builder()
+                    .name("AWS")
+                    .team(team)
+                    .build();
+
+            em.persist(stack);
+
+            TechField techField = TechField.builder()
+                    .name("AI")
+                    .team(team)
+                    .build();
+
+            em.persist(techField);
+
+            Category category = Category.builder()
+                    .name("카테고리1")
+                    .team(team)
+                    .build();
+
+            em.persist(category);
         }
     }
 

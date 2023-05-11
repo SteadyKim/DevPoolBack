@@ -2,7 +2,6 @@ package dev.devpool.service;
 
 import dev.devpool.domain.Certificate;
 import dev.devpool.domain.Member;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,6 @@ import javax.persistence.EntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -145,7 +143,7 @@ class CertificateServiceTest {
 
             // then
             Member findedMember = memberService.findOneById(member.getId());
-            List<Certificate> certificates = findedMember.getCertificates();
+            List<Certificate> certificates = findedMember.getCertificateList();
             if (certificates.size() == 0){
                 fail("값이 존재해야 합니다");
             }

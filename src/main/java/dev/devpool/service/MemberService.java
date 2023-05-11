@@ -1,6 +1,8 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Member;
+import dev.devpool.dto.CommonResponseDto;
+import dev.devpool.dto.MemberDto;
 import dev.devpool.exception.CustomDuplicateException;
 import dev.devpool.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,11 +25,17 @@ public class MemberService {
 
     @Transactional
     // 회원가입
-    public Long join(Member member) {
+    public CommonResponseDto<Object> join(MemberDto.Save memberDto) {
+        Member member = memberDto.toEntity();
+
         validateMember(member);
         memberRepository.save(member);
 
-        return member.getId();
+        return CommonResponseDto.builder()
+                .id(member.getId())
+                .status(201)
+                .message("회원 저장에 성공하였습니다.")
+                .build();
     }
 
     public void validateMember(Member member) {
@@ -38,21 +47,31 @@ public class MemberService {
     }
 
     //조회
-    public Member findOneById(Long memberId) {
+    public MemberDto.Response findOneById(Long memberId) {
         Member findMember = memberRepository.findOneById(memberId);
 
-        return findMember;
+        MemberDto.Response dto = findMember.toDto();
+        return dto;
     }
 
-    public List<Member> findAll() {
-        List<Member> members = memberRepository.findAll();
+    public List<MemberDto.Response> findAll() {
+        List<MemberDto.Response> dtoList = memberRepository.findAll()
+                .stream()
+                .map(Member::toDto)
+                .collect(Collectors.toList());
 
-        return members;
+        return dtoList;
     }
 
     @Transactional
-    public void deleteById(Long memberId) {
+    public CommonResponseDto<Object> deleteById(Long memberId) {
     memberRepository.deleteById(memberId);
+
+    return CommonResponseDto.builder()
+            .status(200)
+            .message("멤버 삭제에 성공하였습니다.")
+            .id(memberId)
+            .build();
     }
 
     @Transactional
@@ -61,11 +80,17 @@ public class MemberService {
     }
 
     @Transactional
-    public Member update(Long id, Member member) {
+    public CommonResponseDto<Object> update(Long id, MemberDto.Save memberDto) {
         Member findMember = memberRepository.findOneById(id);
-        // 변경 감지 사용하기
-        findMember.update(member);
+        Member newMember = memberDto.toEntity();
 
-        return findMember;
+        // 변경 감지 사용하기
+        findMember.update(newMember);
+
+        return CommonResponseDto.builder()
+                .status(200)
+                .id(id)
+                .message("멤버 수정에 성공하였습니다.")
+                .build();
     }
 }

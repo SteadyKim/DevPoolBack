@@ -3,6 +3,7 @@ package dev.devpool.service;
 import dev.devpool.domain.Category;
 import dev.devpool.domain.Certificate;
 import dev.devpool.domain.Team;
+import dev.devpool.dto.CategoryDto;
 import dev.devpool.repository.CategoryRepository;
 import dev.devpool.repository.TeamRepository;
 import org.springframework.stereotype.Service;
@@ -44,16 +45,13 @@ public class CategoryService {
 
     // 수정
     @Transactional
-    public void update(Long teamId, String newName) {
+    public void update(Long teamId, CategoryDto.Save categoryDto) {
         // 지우고
         Team findTeam = teamRepository.findOneById(teamId);
         categoryRepository.deleteByTeamId(findTeam.getId());
 
         // 추가
-        Category newCategory = Category.builder()
-                .name(newName)
-                .team(findTeam)
-                .build();
+        Category newCategory = categoryDto.toEntity(findTeam);
 
         categoryRepository.save(newCategory);
 

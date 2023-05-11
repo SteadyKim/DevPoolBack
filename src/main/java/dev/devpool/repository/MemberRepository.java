@@ -61,20 +61,6 @@ public class MemberRepository {
             throw new CustomEntityNotFoundException(Member.class.getName(), memberId);
         }
         else {
-            Query query = em.createQuery("delete from Certificate c where c.member.id=:memberId")
-                    .setParameter("memberId", findMember.getId());
-            query.executeUpdate();
-
-            Query query2 = em.createQuery("delete from Latter l where l.member.id=:memberId")
-                    .setParameter("memberId", findMember.getId());
-
-            query2.executeUpdate();
-
-            Query query3 = em.createQuery("delete from Site s where s.member.id=:memberId")
-                    .setParameter("memberId", findMember.getId());
-
-            query3.executeUpdate();
-
             em.remove(findMember);
         }
     }
@@ -85,21 +71,8 @@ public class MemberRepository {
 
         for (Member findMember : findMembers) {
             Long memberId = findMember.getId();
-            Query query = em.createQuery("delete from Latter l where l.member.id=:memberId")
-                    .setParameter("memberId", memberId);
-            query.executeUpdate();
-
-            Query query2 = em.createQuery("delete from Certificate c where c.member.id=:memberId")
-                    .setParameter("memberId", memberId);
-            query2.executeUpdate();
-
-            Query query3 = em.createQuery("delete from Site s where s.member.id=:memberId")
-                    .setParameter("memberId", memberId);
-            query3.executeUpdate();
-
+            deleteById(memberId);
         }
 
-        Query deleteAll = em.createQuery("delete from Member m");
-        deleteAll.executeUpdate();
     }
 }

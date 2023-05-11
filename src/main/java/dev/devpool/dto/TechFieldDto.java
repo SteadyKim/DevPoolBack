@@ -2,6 +2,7 @@ package dev.devpool.dto;
 
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Project;
+import dev.devpool.domain.Team;
 import dev.devpool.domain.TechField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,15 @@ public class TechFieldDto {
         public TechField toEntity(Member member) {
             TechField techField = TechField.builder()
                     .member(member)
+                    .name(this.name)
+                    .build();
+
+            return techField;
+        }
+
+        public TechField toEntity(Team team) {
+            TechField techField = TechField.builder()
+                    .team(team)
                     .name(this.name)
                     .build();
 

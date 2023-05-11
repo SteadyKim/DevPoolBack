@@ -1,7 +1,5 @@
 package dev.devpool.controller;
 
-import dev.devpool.domain.Member;
-import dev.devpool.domain.Project;
 import dev.devpool.dto.*;
 import dev.devpool.service.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "memberPool", description = "memberPool")
@@ -33,15 +30,9 @@ public class MemberPoolController {
     @PostMapping("/member_pool")
     public ResponseEntity<CommonResponseDto<Object>> saveMemberPool(@RequestBody @Valid MemberPoolDto.Save memberPoolDtoSave) {
         // 저장
-        memberPoolService.join(memberPoolDtoSave);
+        CommonResponseDto<Object> responseDto = memberPoolService.join(memberPoolDtoSave);
 
-        // 응답
-        CommonResponseDto<Object> createMemberPoolResponse = CommonResponseDto.builder()
-                .status(201)
-                .message("멤버 풀 저장에 성공하였습니다.")
-                .build();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(createMemberPoolResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @Operation(summary = "멤버 풀 조회", description = "특정 멤버 풀을 조회합니다.")
@@ -50,7 +41,7 @@ public class MemberPoolController {
             @ApiResponse(responseCode = "404", description = "멤버 풀 조회 실패 - 멤버 풀이 DB에 없습니다.")
     })
     @GetMapping("/member_pool/{memberId}")
-    public ResponseEntity<CommonDataResponseDto<Object>> getMemberPool(@PathVariable("memberId") Long memberId) {
+    public ResponseEntity<CommonDataResponseDto<Object>> findMemberPool(@PathVariable("memberId") Long memberId) {
 
         MemberPoolDto.Response memberPoolResponse = memberPoolService.findOneById(memberId);
 
@@ -68,14 +59,14 @@ public class MemberPoolController {
             @ApiResponse(responseCode = "200", description = "멤버 풀 멤버 풀 조회 - 성공"),
     })
     @GetMapping("/member_pools")
-    public ResponseEntity<CommonDataListResponseDto<Object>> getMemberPoolList() {
-        List<Object> memberPoolDtoList = memberPoolService.findMemberPools();
+    public ResponseEntity<CommonDataListResponseDto<MemberPoolDto.Response>> findMemberPoolList() {
+        List<MemberPoolDto.Response> memberPoolListDto = memberPoolService.findMemberPools();
 
 
-        CommonDataListResponseDto<Object> listResponseDto = CommonDataListResponseDto.builder()
+        CommonDataListResponseDto<MemberPoolDto.Response> listResponseDto = CommonDataListResponseDto.<MemberPoolDto.Response>builder()
                 .status(200)
                 .message("멤버 풀 리스트 조회에 성공하였습니다.")
-                .dataList(memberPoolDtoList)
+                .dataList(memberPoolListDto)
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(listResponseDto);
@@ -87,14 +78,8 @@ public class MemberPoolController {
             @ApiResponse(responseCode = "404", description = "멤버 삭제 실패 - 멤버가 DB에 없습니다.")
     })
     @DeleteMapping("/member_pool/{memberId}")
-    public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("memberId") Long memberId) {
-        memberPoolService.deleteById(memberId);
-
-        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
-                .status(200)
-                .message("멤버 풀 삭제에 성공하였습니다.")
-                .id(memberId)
-                .build();
+    public ResponseEntity<CommonResponseDto<Object>> deleteMemberPool(@PathVariable("memberId") Long memberId) {
+        CommonResponseDto<Object> responseDto = memberPoolService.deleteById(memberId);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
@@ -106,13 +91,7 @@ public class MemberPoolController {
     })
     @PutMapping("/member_pool/{memberId}")
     public ResponseEntity<CommonResponseDto<Object>> updateMemberPool(@PathVariable("memberId") Long memberId, @RequestBody @Valid MemberPoolDto.Save memberPoolDto) {
-        memberPoolService.update(memberPoolDto);
-
-        CommonResponseDto<Object> responseDto = CommonResponseDto.builder()
-                .status(200)
-                .message("멤버 풀 수정에 성공하였습니다.")
-                .id(memberId)
-                .build();
+        CommonResponseDto<Object> responseDto = memberPoolService.update(memberPoolDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }

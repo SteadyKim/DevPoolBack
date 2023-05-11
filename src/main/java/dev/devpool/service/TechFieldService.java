@@ -4,6 +4,7 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Team;
 import dev.devpool.domain.TechField;
+import dev.devpool.dto.TechFieldDto;
 import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.TeamRepository;
 import dev.devpool.repository.TechFieldRepository;
@@ -83,16 +84,13 @@ public class TechFieldService {
     }
 
     @Transactional
-    public void updateByTeam(Long teamId, List<String> techFieldNameList) {
+    public void updateByTeam(Long teamId, List<TechFieldDto.Save> techFieldDtoList) {
         Team findTeam = teamRepository.findOneById(teamId);
         // 지우기
         techFieldRepository.deleteAllByTeamId(findTeam.getId());
 
-        for (String techFieldName : techFieldNameList) {
-            TechField techField = TechField.builder()
-                    .team(findTeam)
-                    .name(techFieldName)
-                    .build();
+        for (TechFieldDto.Save techFieldDto : techFieldDtoList) {
+            TechField techField = techFieldDto.toEntity(findTeam);
 
             techFieldRepository.save(techField);
         }

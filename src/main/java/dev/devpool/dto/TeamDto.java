@@ -53,11 +53,11 @@ public class TeamDto {
 
         private int recruitNum;
 
-        private String categoryName;
+        private CategoryDto.Save categoryName;
 
-        private List<String> recruitTechFieldNameList;
+        private List<TechFieldDto.Save> recruitTechFieldNameList;
 
-        private List<String> recruitStackNameList;
+        private List<StackDto.Save> recruitStackNameList;
 
         public Team toEntity() {
 
@@ -88,11 +88,11 @@ public class TeamDto {
 
         private LocalDateTime createTime;
 
-        private String categoryName;
+        private CategoryDto.Save categoryName;
 
-        private List<String> recruitTechFieldNameList;
+        private List<TechFieldDto.Save> recruitTechFieldNameList;
 
-        private List<String> recruitStackNameList;
+        private List<StackDto.Save> recruitStackNameList;
 
         public Team toEntity() {
 

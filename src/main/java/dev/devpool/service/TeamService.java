@@ -88,7 +88,12 @@ public class TeamService {
         // category
         Category category = categoryRepository.findByTeamId(teamId);
 
-        TeamDto.Response responseDto = findTeam.toDto(stackList, techFieldList, category);
+        // HostMember
+        Member hostMember = findTeam.getHostMember();
+        if(hostMember == null){
+            throw new CustomEntityNotFoundException(Team.class.getName(), teamId);
+        }
+        TeamDto.Response responseDto = findTeam.toDto(stackList, techFieldList, category, hostMember);
 
 
         return responseDto;

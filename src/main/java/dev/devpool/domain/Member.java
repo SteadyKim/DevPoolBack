@@ -56,10 +56,14 @@ public class Member {
     private List<Project> projectList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
-    public List<MemberTeam> memberTeamList = new ArrayList<>();
+    private List<MemberTeam> memberTeamList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
-    public List<Stack> stackList = new ArrayList<>();
+    private List<Stack> stackList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "hostMember", orphanRemoval = true)
+    private List<Team> hostTeamList = new ArrayList<>();
+
 
 
     /**
@@ -97,10 +101,10 @@ public class Member {
 
     public MemberDto.Response toDto() {
         return MemberDto.Response.builder()
+                .memberId(this.id)
                 .name(this.name)
                 .nickName(this.nickName)
                 .email(this.email)
-                .password(this.password)
                 .imageUrl(this.imageUrl)
                 .build();
     }

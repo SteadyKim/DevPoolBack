@@ -22,9 +22,13 @@ public class Team {
     private Long id;
 
     @Builder.Default
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<MemberTeam> memberTeams = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "HOST_MEMBER_ID")
+    private Member hostMember;
 
     public List<MemberTeam> getMemberTeams() {
         return memberTeams;
@@ -50,7 +54,7 @@ public class Team {
         totalNum = team.getTotalNum();
     }
 
-    public TeamDto.Response toDto(List<Stack> stackList, List<TechField> techFieldList, Category category) {
+    public TeamDto.Response toDto(List<Stack> stackList, List<TechField> techFieldList, Category category, Member hostMember) {
         List<String> stackNameList = stackList.stream()
                 .map(Stack::getName)
                 .collect(Collectors.toList());
@@ -77,6 +81,7 @@ public class Team {
                 .createTime(this.createTime)
                 .recruitStackNameList(stackNameList)
                 .recruitTechFieldNameList(techFieldNameList)
+                .hostMember(hostMember.toDto())
                 .build();
         return response;
     }

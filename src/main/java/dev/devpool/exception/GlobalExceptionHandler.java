@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CommonResponseDto<Object>> handleException(Exception e){
         log.info("[handleException] 모든 예외 처리");
         CommonResponseDto<Object> respDto= CommonResponseDto.builder()
-                .message(e.getMessage())
+                .message(e.getMessage() + e.getStackTrace())
                 .build();
         return ResponseEntity.badRequest()
                 .body(respDto);

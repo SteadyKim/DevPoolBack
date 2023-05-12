@@ -167,11 +167,11 @@ public class InitDb {
             Team team = Team.builder()
                     .name("aa팀을 모집합니디.")
                     .totalNum(4)
+                    .hostMember(member)
                     .content("ㅗ디ㅣㅐ 째깅!")
                     .build();
 
             em.persist(team);
-
 
             MemberTeam memberTeam = new MemberTeam();
             memberTeam.addMemberTeam(member, team);

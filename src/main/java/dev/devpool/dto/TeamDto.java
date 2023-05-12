@@ -36,6 +36,8 @@ public class TeamDto {
 
         private String categoryName;
 
+        private MemberDto.Response hostMember;
+
     }
 
     @Data

@@ -15,10 +15,15 @@ public class MemberDto {
     @AllArgsConstructor
     @Schema(name = "member response dto")
     public static class Response {
+
+        private Long memberId;
+
         private String name;
+
         private String nickName;
+
         private String email;
-        private String password;
+
         private String imageUrl;
 
     }

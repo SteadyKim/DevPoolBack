@@ -32,10 +32,5 @@ public class Latter {
     @Enumerated(STRING)
     private IsCheck isCheck;
 
-    /**
-     * Set 메서드
-     */
-    public void addMember(Member member) {
-        this.member = member;
-    }
+
 }

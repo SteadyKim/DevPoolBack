@@ -27,18 +27,4 @@ public class Site {
     @JoinColumn(name = "MEMBER_ID")
     Member member;
 
-    /**
-     * Set 메서드
-     */
-    public void addMember(Member member) {
-        this.member = member;
-    }
-
-    public SiteDto.Response toDto() {
-        SiteDto.Response dto = SiteDto.Response.builder()
-                .name(this.name)
-                .build();
-
-        return dto;
-    }
 }

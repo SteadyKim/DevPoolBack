@@ -34,12 +34,5 @@ public class Stack {
     Project project;
 
     private String name;
-    public StackDto.Response toDto() {
 
-        StackDto.Response dto = StackDto.Response.builder()
-                .name(this.name)
-                .build();
-
-        return dto;
-    }
 }

@@ -5,6 +5,8 @@ import dev.devpool.dto.CommonResponseDto;
 import dev.devpool.dto.MemberDto;
 import dev.devpool.exception.CustomDuplicateException;
 import dev.devpool.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,18 +17,22 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Slf4j
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    @Autowired
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
 
     @Transactional
     // 회원가입
     public CommonResponseDto<Object> join(MemberDto.Save memberDto) {
-        Member member = memberDto.toEntity();
+        Member member = Member.builder()
+                .name(memberDto.getName())
+                .email(memberDto.getEmail())
+                .password(memberDto.getPassword())
+                .imageUrl(memberDto.getImageUrl())
+                .build();
+
 
         validateMember(member);
         memberRepository.save(member);
@@ -50,14 +56,28 @@ public class MemberService {
     public MemberDto.Response findOneById(Long memberId) {
         Member findMember = memberRepository.findOneById(memberId);
 
-        MemberDto.Response dto = findMember.toDto();
-        return dto;
+        MemberDto.Response responseDto = MemberDto.Response.builder()
+                .memberId(findMember.getId())
+                .name(findMember.getName())
+                .nickName(findMember.getNickName())
+                .email(findMember.getEmail())
+                .imageUrl(findMember.getImageUrl())
+                .build();
+
+        return responseDto;
     }
 
     public List<MemberDto.Response> findAll() {
         List<MemberDto.Response> dtoList = memberRepository.findAll()
                 .stream()
-                .map(Member::toDto)
+                .map(member -> MemberDto.Response.builder()
+                        .memberId(member.getId())
+                        .name(member.getName())
+                        .nickName(member.getNickName())
+                        .email(member.getEmail())
+                        .imageUrl(member.getImageUrl())
+                        .build()
+                )
                 .collect(Collectors.toList());
 
         return dtoList;
@@ -82,10 +102,9 @@ public class MemberService {
     @Transactional
     public CommonResponseDto<Object> update(Long id, MemberDto.Save memberDto) {
         Member findMember = memberRepository.findOneById(id);
-        Member newMember = memberDto.toEntity();
 
         // 변경 감지 사용하기
-        findMember.update(newMember);
+        findMember.update(memberDto);
 
         return CommonResponseDto.builder()
                 .status(200)

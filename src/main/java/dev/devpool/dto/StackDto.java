@@ -35,23 +35,7 @@ public class StackDto {
 
         private String name;
 
-        public Stack toEntity(Member member) {
-            Stack stack = Stack.builder()
-                    .member(member)
-                    .name(this.name)
-                    .build();
 
-            return stack;
-        }
-
-        public Stack toEntity(Team team) {
-            Stack stack = Stack.builder()
-                    .team(team)
-                    .name(this.name)
-                    .build();
-
-            return stack;
-        }
     }
 
 }

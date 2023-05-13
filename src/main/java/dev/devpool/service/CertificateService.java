@@ -4,6 +4,8 @@ import dev.devpool.domain.Certificate;
 import dev.devpool.domain.Member;
 import dev.devpool.repository.CertificateRepository;
 import dev.devpool.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,16 +14,14 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Slf4j
 public class CertificateService {
 
     private final CertificateRepository certificateRepository;
 
     private final MemberRepository memberRepository;
 
-    public CertificateService(CertificateRepository certificateRepository, MemberRepository memberRepository) {
-        this.certificateRepository = certificateRepository;
-        this.memberRepository = memberRepository;
-    }
 
 
     // 저장
@@ -56,19 +56,26 @@ public class CertificateService {
 
     // 수정
     @Transactional
-    public void update(Member member, ArrayList<Certificate> certificates) {
+    public void update(Long memberId, ArrayList<String> certificateNameList) {
         // 지우고
         /**
          * 리팩 해야함
          */
-        certificateRepository.deleteAllByMemberId(member.getId());
+        Member findMember = memberRepository.findOneById(memberId);
+
+        certificateRepository.deleteAllByMemberId(findMember.getId());
         // 추가
-        for (Certificate certificate : certificates) {
-            member.addCertificate(certificate);
+        for (String certificateName : certificateNameList) {
+            Certificate certificate = Certificate.builder()
+                    .name(certificateName)
+                    .member(findMember)
+                    .build();
+
             certificateRepository.save(certificate);
-
         }
+
+
     }
-
-
 }
+
+

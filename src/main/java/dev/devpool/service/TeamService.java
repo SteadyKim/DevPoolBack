@@ -6,6 +6,7 @@ import dev.devpool.exception.CustomDuplicateException;
 import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
@@ -31,40 +33,44 @@ public class TeamService {
 
     @Transactional
     public CommonResponseDto<Object> join(TeamDto.Save teamSaveDto) {
-        Team team = teamSaveDto.toEntity();
+        Long hostMemberId = teamSaveDto.getHostMemberId();
+        Member hostMember = memberRepository.findOneById(hostMemberId);
 
-        validateTeam(team);
-
-        Long memberId = teamSaveDto.getMemberId();
-
-        Member member = memberRepository.findOneById(memberId);
-
-
-        //MemberTeam Save -> 추후 repo, service 만들어야 할 듯??
-        MemberTeam memberTeam = MemberTeam.builder()
+        Team team = Team.builder()
+                .hostMember(hostMember)
+                .content(teamSaveDto.getContent())
+                .recruitNum(teamSaveDto.getRecruitNum())
+                .name(teamSaveDto.getName())
                 .build();
 
-        // 양방향 연관관계 메서드가 있어서 build에서 넣지 않음
-        memberTeam.addMemberTeam(member, team);
+        validateTeam(team);
 
         teamRepository.save(team);
 
         // stack
         teamSaveDto.getRecruitStackNameList()
                 .stream()
-                .map( dto -> dto.toEntity(team))
+                .map( dto -> Stack.builder()
+                        .name(dto.getName())
+                        .team(team).build())
                 .forEach(stackRepository::save);
 
 
         // TechField
         teamSaveDto.getRecruitTechFieldNameList()
                 .stream()
-                .map(dto -> dto.toEntity(team))
+                .map(dto -> TechField.builder()
+                        .name(dto.getName())
+                        .team(team).build())
                 .forEach(techFieldRepository::save);
 
         // category
-        CategoryDto.Save categoryName = teamSaveDto.getCategoryName();
-        Category category = categoryName.toEntity(team);
+        CategoryDto.Save categoryDto = teamSaveDto.getCategoryName();
+        Category category = Category.builder()
+                .team(team)
+                .name(categoryDto.getName())
+                .build();
+
         categoryRepository.save(category);
 
         return CommonResponseDto.builder()
@@ -81,20 +87,45 @@ public class TeamService {
         }
 
         // stack
-        List<Stack> stackList = stackRepository.findAllByTeamId(teamId);
+        List<String> stackNameList = stackRepository.findAllByTeamId(teamId)
+                .stream()
+                .map(Stack::getName)
+                .collect(Collectors.toList());
 
         // techfield
         List<TechField> techFieldList = techFieldRepository.findAllByTeamId(teamId);
+
+        List<String> techFieldNameList = techFieldList.stream()
+                .map(TechField::getName)
+                .collect(Collectors.toList());
+
         // category
-        Category category = categoryRepository.findByTeamId(teamId);
+        String categoryName = categoryRepository.findByTeamId(teamId).getName();
 
         // HostMember
         Member hostMember = findTeam.getHostMember();
         if(hostMember == null){
-            throw new CustomEntityNotFoundException(Team.class.getName(), teamId);
+            throw new CustomEntityNotFoundException(Member.class.getName(), teamId);
         }
-        TeamDto.Response responseDto = findTeam.toDto(stackList, techFieldList, category, hostMember);
 
+        TeamDto.Response responseDto = TeamDto.Response.builder()
+                .teamId(teamId)
+                .name(findTeam.getName())
+                .content(findTeam.getContent())
+                .categoryName(categoryName)
+                .currentCount(findTeam.getMemberTeams().size())
+                .recruitCount(findTeam.getRecruitNum())
+                .createTime(findTeam.getCreateTime())
+                .recruitStackNameList(stackNameList)
+                .recruitTechFieldNameList(techFieldNameList)
+                .hostMember(MemberDto.Response.builder()
+                        .memberId(hostMember.getId())
+                        .name(hostMember.getName())
+                        .email(hostMember.getNickName())
+                        .imageUrl(hostMember.getImageUrl())
+                        .email(hostMember.getEmail())
+                        .build())
+                .build();
 
         return responseDto;
     }
@@ -138,10 +169,8 @@ public class TeamService {
     public CommonResponseDto<Object> update(Long teamId, TeamDto.Update newTeamDto) {
         Team findTeam = teamRepository.findOneById(teamId);
 
-        Team team = newTeamDto.toEntity();
-
         // 변경감지를 활용해 Update 쿼리
-        findTeam.update(team);
+        findTeam.update(newTeamDto);
 
         List<StackDto.Save> stackDtoList = newTeamDto.getRecruitStackNameList();
         stackService.updateByTeam(teamId, stackDtoList);
@@ -161,19 +190,26 @@ public class TeamService {
     /**
      * MemberTeam
      */
-    @Transactional
-    public Team updateMemberTeam(Long teamId, Member... members) {
-        Team findTeam = teamRepository.findOneById(teamId);
-        // 지우고 추가하기...
-        teamRepository.deleteAllMemberTeam(findTeam.getId());
-
-        for (Member member : members) {
-            MemberTeam memberTeam = new MemberTeam();
-
-            memberTeam.addMemberTeam(member, findTeam);
-        }
-
-        return findTeam;
-    }
+//    @Transactional
+//    public Team updateMemberTeam(Long teamId, List<MemberDto.Save> memberDtoList ) {
+//        Team findTeam = teamRepository.findOneById(teamId);
+//        // 지우고 추가하기...
+//        teamRepository.deleteAllMemberTeam(findTeam.getId());
+//
+//        for (MemberDto.Save memberDto : memberDtoList) {
+//            memberDt
+//        }
+//
+//
+//        for (Member member : members) {
+//            MemberTeam memberTeam = MemberTeam.builder()
+//                    .team(findTeam)
+//                    .member(member)
+//                    .build();
+//
+//        }
+//
+//        return findTeam;
+//    }
 
 }

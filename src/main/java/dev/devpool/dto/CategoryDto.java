@@ -27,15 +27,6 @@ public class CategoryDto {
         private String name;
 
 
-
-        public Category toEntity(Team team) {
-            Category category = Category.builder()
-                    .team(team)
-                    .name(this.name)
-                    .build();
-
-            return category;
-        }
     }
 
     @Data

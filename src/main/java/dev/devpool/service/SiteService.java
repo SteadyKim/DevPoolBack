@@ -2,7 +2,11 @@ package dev.devpool.service;
 
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Site;
+import dev.devpool.dto.SiteDto;
+import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.SiteRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,13 +15,12 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Slf4j
 public class SiteService {
     private final SiteRepository siteRepository;
 
-
-    public SiteService(SiteRepository siteRepository) {
-        this.siteRepository = siteRepository;
-    }
+    private final MemberRepository memberRepository;
 
 
     // 저장
@@ -57,12 +60,18 @@ public class SiteService {
 
     // 수정
     @Transactional
-    public void update(Member member, ArrayList<Site> sites) {
+    public void update(Long memberId, ArrayList<SiteDto.Save> siteDtoList) {
+        Member findMember = memberRepository.findOneById(memberId);
+
         // 지우고
-        siteRepository.deleteAllByMemberId(member.getId());
+        siteRepository.deleteAllByMemberId(findMember.getId());
         // 추가
-        for (Site site : sites) {
-            member.addSite(site);
+        for (SiteDto.Save siteDto : siteDtoList) {
+            Site site = Site.builder()
+                    .member(findMember)
+                    .url(siteDto.getUrl())
+                    .build();
+
             siteRepository.save(site);
         }
     }

@@ -10,6 +10,7 @@ import dev.devpool.repository.ProjectRepository;
 import dev.devpool.repository.StackRepository;
 import dev.devpool.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class StackService {
 
     private final StackRepository stackRepository;
@@ -91,7 +93,11 @@ public class StackService {
         // 추가
         for (StackDto.Save stackDto : stackDtoList) {
 
-            Stack stack = stackDto.toEntity(findTeam);
+            Stack stack = Stack.builder()
+                    .team(findTeam)
+                    .name(stackDto.getName())
+                    .build();
+
             stackRepository.save(stack);
         }
     }

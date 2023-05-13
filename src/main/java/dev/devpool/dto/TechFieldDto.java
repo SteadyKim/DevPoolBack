@@ -37,22 +37,7 @@ public class TechFieldDto {
 
         private String name;
 
-        public TechField toEntity(Member member) {
-            TechField techField = TechField.builder()
-                    .member(member)
-                    .name(this.name)
-                    .build();
 
-            return techField;
-        }
 
-        public TechField toEntity(Team team) {
-            TechField techField = TechField.builder()
-                    .team(team)
-                    .name(this.name)
-                    .build();
-
-            return techField;
-        }
     }
 }

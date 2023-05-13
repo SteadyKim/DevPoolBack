@@ -65,49 +65,21 @@ public class Member {
     private List<Team> hostTeamList = new ArrayList<>();
 
 
-
-    /**
-     * 편의 메서드
-     */
-    public void addCertificate(Certificate certificate) {
-        certificate.addMember(this);
-        certificateList.add(certificate);
-    }
-
-    public void addLatter(Latter latter) {
-        latter.addMember(this);
-        latterList.add(latter);
-    }
-
-    public void addSite(Site site){
-        site.addMember(this);
-        siteList.add(site);
-    }
-
     /**
      * 비지니스 로직
      */
-    public void update(Member newMember) {
-        name = newMember.getName();
-        nickName = newMember.getNickName();
-        email = newMember.getEmail();
-        password = newMember.getPassword();
-        imageUrl = newMember.getImageUrl();
+    public void update(MemberDto.Save newMemberDto) {
+        name = newMemberDto.getName();
+        nickName = newMemberDto.getNickName();
+        email = newMemberDto.getEmail();
+        password = newMemberDto.getPassword();
+        imageUrl = newMemberDto.getImageUrl();
     }
 
     public void setMemberPoolCreateTime(LocalDateTime localDateTime) {
         this.createTime = localDateTime;
     }
 
-    public MemberDto.Response toDto() {
-        return MemberDto.Response.builder()
-                .memberId(this.id)
-                .name(this.name)
-                .nickName(this.nickName)
-                .email(this.email)
-                .imageUrl(this.imageUrl)
-                .build();
-    }
 
     public void updateImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;

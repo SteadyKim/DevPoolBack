@@ -49,8 +49,10 @@ public class TeamDto {
         public Save() {
         }
 
-        private Long memberId;
+        private Long hostMemberId;
+
         private String name;
+
         private String content;
 
         private int recruitNum;
@@ -61,16 +63,6 @@ public class TeamDto {
 
         private List<StackDto.Save> recruitStackNameList;
 
-        public Team toEntity() {
-
-            Team team = Team.builder()
-                    .name(this.name)
-                    .content(this.content)
-                    .createTime(LocalDateTime.now())
-                    .build();
-
-            return team;
-        }
     }
 
     @Data
@@ -96,16 +88,6 @@ public class TeamDto {
 
         private List<StackDto.Save> recruitStackNameList;
 
-        public Team toEntity() {
 
-            Team team = Team.builder()
-                    .name(this.name)
-                    .content(this.content)
-                    .totalNum(this.recruitCount)
-                    .createTime(this.getCreateTime())
-                    .build();
-
-            return team;
-        }
     }
 }

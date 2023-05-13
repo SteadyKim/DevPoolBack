@@ -34,15 +34,8 @@ public class SiteDto {
 
         private String name;
 
+        private String url;
 
 
-        public Site toEntity(Member member) {
-            Site site = Site.builder()
-                    .member(member)
-                    .name(this.name)
-                    .build();
-
-            return site;
-        }
     }
 }

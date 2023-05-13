@@ -6,6 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.*;
 
@@ -27,6 +29,9 @@ public class Project {
     @JoinColumn(name = "MEMBER_ID")
     Member member;
 
+    @OneToMany(mappedBy = "project", fetch = LAZY)
+    List<Stack> stackList = new ArrayList<>();
+
     String name;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -38,14 +43,4 @@ public class Project {
 
     String url;
 
-    public ProjectDto.Response toDto() {
-
-        ProjectDto.Response dto = ProjectDto.Response.builder()
-                .name(this.name)
-                .startDate(this.startDate)
-                .endDate(this.endDate)
-                .build();
-
-        return dto;
-    }
 }

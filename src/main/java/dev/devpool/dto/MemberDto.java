@@ -42,16 +42,6 @@ public class MemberDto {
         private String imageUrl;
 
 
-        public Member toEntity() {
-            Member member = Member.builder()
-                    .name(this.name)
-                    .nickName(this.nickName)
-                    .email(this.email)
-                    .password(this.password)
-                    .imageUrl(this.imageUrl)
-                    .build();
 
-            return member;
-        }
     }
 }

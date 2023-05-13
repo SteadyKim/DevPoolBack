@@ -51,7 +51,10 @@ public class CategoryService {
         categoryRepository.deleteByTeamId(findTeam.getId());
 
         // 추가
-        Category newCategory = categoryDto.toEntity(findTeam);
+        Category newCategory = Category.builder()
+                .name(categoryDto.getName())
+                .team(findTeam)
+                .build();
 
         categoryRepository.save(newCategory);
 

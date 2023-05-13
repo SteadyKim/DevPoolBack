@@ -27,13 +27,5 @@ public class TechField {
 
     private String name;
 
-    public TechFieldDto.Response toDto() {
-        TechFieldDto.Response dto = TechFieldDto.Response
-                .builder()
-                .name(this.name)
-                .build();
-
-        return dto;
-    }
 
 }

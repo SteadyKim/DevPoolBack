@@ -38,14 +38,5 @@ public class CertificateDto {
         private String name;
 
 
-
-        public Certificate toEntity(Member member) {
-            Certificate certificate = Certificate.builder()
-                    .member(member)
-                    .name(this.name)
-                    .build();
-
-            return certificate;
-        }
     }
 }

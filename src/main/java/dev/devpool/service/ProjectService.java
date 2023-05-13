@@ -1,21 +1,25 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Project;
+import dev.devpool.dto.ProjectDto;
+import dev.devpool.dto.StackDto;
 import dev.devpool.repository.ProjectRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Slf4j
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
-    }
 
 
     // 저장
@@ -27,19 +31,44 @@ public class ProjectService {
     }
 
     // 조회
-    public Project findOneById(Long projectId) {
+    public ProjectDto.Response findOneById(Long projectId) {
         Project findProject = projectRepository.findOneById(projectId);
-        return findProject;
+
+        ProjectDto.Response projectDto = getProjectDto(findProject);
+
+        return projectDto;
     }
 
-    public List<Project> findProjects() {
-        List<Project> findProjects = projectRepository.findAll();
-        return findProjects;
+    private static ProjectDto.Response getProjectDto(Project findProject) {
+        ProjectDto.Response projectDto = ProjectDto.Response
+                .builder()
+                .name(findProject.getName())
+                .startDate(findProject.getStartDate())
+                .endDate(findProject.getEndDate())
+                .stackDtoList(findProject.getStackList().stream().map(stack -> StackDto.Response.builder()
+                                .name(stack.getName())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
+
+        return projectDto;
     }
 
-    public List<Project> findAllbyMemberId(Long memberId) {
-        List<Project> findProjects = projectRepository.findAllByMemberId(memberId);
-        return findProjects;
+    public List<ProjectDto.Response> findProjects() {
+        List<ProjectDto.Response> projectDtoList = projectRepository.findAll().stream()
+                .map(ProjectService::getProjectDto)
+                .collect(Collectors.toList());
+
+        return projectDtoList;
+    }
+
+    public List<ProjectDto.Response> findAllByMemberId(Long memberId) {
+        List<Project> findProjectList = projectRepository.findAllByMemberId(memberId);
+        List<ProjectDto.Response> projectDtoList = findProjectList.stream()
+                .map(ProjectService::getProjectDto)
+                .collect(Collectors.toList());
+
+        return projectDtoList;
     }
 
     // 삭제

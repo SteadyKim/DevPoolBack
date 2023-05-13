@@ -9,6 +9,7 @@ import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.TeamRepository;
 import dev.devpool.repository.TechFieldRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class TechFieldService {
 
     private final TechFieldRepository techFieldRepository;
@@ -90,7 +92,10 @@ public class TechFieldService {
         techFieldRepository.deleteAllByTeamId(findTeam.getId());
 
         for (TechFieldDto.Save techFieldDto : techFieldDtoList) {
-            TechField techField = techFieldDto.toEntity(findTeam);
+            TechField techField = TechField.builder()
+                    .team(findTeam)
+                    .name(techFieldDto.getName())
+                    .build();
 
             techFieldRepository.save(techField);
         }

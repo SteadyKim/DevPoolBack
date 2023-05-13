@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,9 +24,13 @@ public class ProjectDto {
 
         private String name;
 
+        private List<StackDto.Response> stackDtoList;
+
         private LocalDate startDate;
 
         private LocalDate endDate;
+
+        private String url;
 
     }
 
@@ -42,18 +47,12 @@ public class ProjectDto {
 
         private LocalDate startDate;
 
+        private List<StackDto.Save> stackDtoList;
+
         private LocalDate endDate;
 
+        private String url;
 
-        public Project toEntity(Member member) {
-            Project project = Project.builder()
-                    .member(member)
-                    .name(this.name)
-                    .startDate(this.startDate)
-                    .endDate(this.endDate)
-                    .build();
 
-            return project;
-        }
     }
 }

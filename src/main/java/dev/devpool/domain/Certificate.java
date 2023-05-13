@@ -27,19 +27,4 @@ public class Certificate {
     Member member;
 
 
-    /**
-     * Set 메서드
-     */
-    public void addMember(Member member) {
-        this.member = member;
-    }
-
-    public CertificateDto.Response toDto() {
-        CertificateDto.Response dto = CertificateDto.Response.builder()
-                .name(this.name)
-                .build();
-
-        return dto;
-    }
-
 }

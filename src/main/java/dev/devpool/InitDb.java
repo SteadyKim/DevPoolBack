@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -96,6 +97,30 @@ public class InitDb {
                     .name("정보처리기사")
                     .build();
 
+
+
+            Project project = Project.builder()
+                    .member(member)
+                    .name("projectX")
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now())
+                    .url("1234")
+                    .build();
+            em.persist(project);
+
+
+            Stack stack7 = Stack.builder()
+                    .project(project)
+                    .name("Java")
+                    .build();
+
+
+            Stack stack8 = Stack.builder()
+                    .project(project)
+                    .name("React")
+                    .build();
+            em.persist(stack7);
+            em.persist(stack8);
             em.persist(certificate1);
 
             Member member2 = Member.builder()
@@ -166,7 +191,7 @@ public class InitDb {
 
             Team team = Team.builder()
                     .name("aa팀을 모집합니디.")
-                    .totalNum(4)
+                    .recruitNum(4)
                     .hostMember(member)
                     .content("ㅗ디ㅣㅐ 째깅!")
                     .build();

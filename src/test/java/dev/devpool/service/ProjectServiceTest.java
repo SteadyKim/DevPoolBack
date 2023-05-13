@@ -90,7 +90,7 @@ class ProjectServiceTest {
             em.flush();
             em.clear();
 
-            List<Project> projectsByMemberId = projectService.findAllbyMemberId(member.getId());
+            List<Project> projectsByMemberId = projectService.findAllByMemberId(member.getId());
 
 
             //then
@@ -158,7 +158,7 @@ class ProjectServiceTest {
             em.flush();
             em.clear();
 
-            List<Project> projectsByMemberId = projectService.findAllbyMemberId(member1.getId());
+            List<Project> projectsByMemberId = projectService.findAllByMemberId(member1.getId());
 
             assertEquals(0, projectsByMemberId.size());
             return null;

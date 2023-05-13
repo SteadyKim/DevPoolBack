@@ -42,14 +42,22 @@ public class MemberPoolService {
 
                 List<TechFieldDto.Save> techFieldDtoList = memberPoolDto.getTechFieldDtoList();
                 for (TechFieldDto.Save techFieldDto : techFieldDtoList) {
-                        TechField techField = techFieldDto.toEntity(findMember);
+
+                        TechField techField = TechField.builder()
+                                .member(findMember)
+                                .name(techFieldDto.getName())
+                                .build();
+
                         techFieldRepository.save(techField);
                 }
 
                 List<StackDto.Save> stackDtoList = memberPoolDto.getStackDtoList();
 
                 for (StackDto.Save stackDto : stackDtoList) {
-                        Stack stack = stackDto.toEntity(findMember);
+                        Stack stack = Stack.builder()
+                                .member(findMember)
+                                .name(stackDto.getName())
+                                .build();
                         stackRepository.save(stack);
                 }
 
@@ -57,28 +65,52 @@ public class MemberPoolService {
 
                 for (ProjectDto.Save projectDto : projectDtoList) {
 
-                        Project project = projectDto.toEntity(findMember);
+                        Project project = Project.builder()
+                                .member(findMember)
+                                .url(projectDto.getUrl())
+                                .startDate(projectDto.getStartDate())
+                                .endDate(projectDto.getEndDate())
+                                .build();
                         projectRepository.save(project);
+
+                        List<StackDto.Save> projectStackDtoList = projectDto.getStackDtoList();
+                        for (StackDto.Save projectStackDto : projectStackDtoList) {
+                                Stack stack = Stack.builder()
+                                        .project(project)
+                                        .name(projectStackDto.getName())
+                                        .build();
+
+                                stackRepository.save(stack);
+                        }
                 }
 
 
                 List<CertificateDto.Save> certificateDtoList = memberPoolDto.getCertificateDtoList();
                 for (CertificateDto.Save certificateDto : certificateDtoList) {
-                        Certificate certificate = certificateDto.toEntity(findMember);
+                        Certificate certificate = Certificate.builder()
+                                .member(findMember)
+                                .name(certificateDto.getName())
+                                .build();
+
                         certificateRepository.save(certificate);
                 }
 
                 List<SiteDto.Save> siteDtoList = memberPoolDto.getSiteDtoList();
                 for (SiteDto.Save siteDto : siteDtoList) {
-                        Site site = siteDto.toEntity(findMember);
+                        Site site = Site.builder()
+                                .url(siteDto.getUrl())
+                                .name(siteDto.getName())
+                                .member(findMember)
+                                .build();
+
                         siteRepository.save(site);
                 }
 
-        return CommonResponseDto.builder()
-                .status(201)
-                .message("멤버 풀 저장에 성공하였습니다.")
-                .build();
-}
+                return CommonResponseDto.builder()
+                        .status(201)
+                        .message("멤버 풀 저장에 성공하였습니다.")
+                        .build();
+        }
 
         public MemberPoolDto.Response findOneById(Long memberId) {
 
@@ -89,30 +121,58 @@ public class MemberPoolService {
                 }
                 List<TechFieldDto.Response> techFieldDtoList = techFieldRepository.findAllByMemberId(memberId)
                         .stream()
-                        .map(TechField::toDto)
+                        .map(techField -> TechFieldDto.Response.builder()
+                                .name(techField.getName())
+                                .build())
                         .collect(Collectors.toList());
 
                 List<StackDto.Response> stackDtoList = stackRepository.findAllByMemberId(memberId)
                         .stream()
-                        .map(Stack::toDto)
+                        .map(stack -> getStackDto(stack))
                         .collect(Collectors.toList());
 
                 List<ProjectDto.Response> projectDtoList = projectRepository.findAllByMemberId(memberId)
                         .stream()
-                        .map(Project::toDto)
+                        .map(project -> getProjectDto(project))
                         .collect(Collectors.toList());
 
                 List<CertificateDto.Response> certificateDtoList = certificateRepository.findAllByMemberId(memberId)
                         .stream()
-                        .map(Certificate::toDto)
+                        .map(certificate ->
+                                getCertificateDto(certificate))
                         .collect(Collectors.toList());
 
                 List<SiteDto.Response> siteDtoList = siteRepository.findAllByMemberId(memberId)
                         .stream()
-                        .map(Site::toDto)
+                        .map(site -> getSiteDto(site))
                         .collect(Collectors.toList());
 
-                MemberPoolDto.Response memberPoolResponseDto = MemberPoolDto.Response.builder()
+                MemberPoolDto.Response memberPoolResponseDto = getMemberPoolResponseDto(memberId, findMember, techFieldDtoList, stackDtoList, projectDtoList, certificateDtoList, siteDtoList);
+
+                return memberPoolResponseDto;
+
+        }
+
+        private static SiteDto.Response getSiteDto(Site site) {
+                return SiteDto.Response.builder()
+                        .name(site.getName())
+                        .build();
+        }
+
+        private static CertificateDto.Response getCertificateDto(Certificate certificate) {
+                return CertificateDto.Response.builder()
+                        .name(certificate.getName())
+                        .build();
+        }
+
+        private static StackDto.Response getStackDto(Stack stack) {
+                return StackDto.Response.builder()
+                        .name(stack.getName())
+                        .build();
+        }
+
+        private static MemberPoolDto.Response getMemberPoolResponseDto(Long memberId, Member findMember, List<TechFieldDto.Response> techFieldDtoList, List<StackDto.Response> stackDtoList, List<ProjectDto.Response> projectDtoList, List<CertificateDto.Response> certificateDtoList, List<SiteDto.Response> siteDtoList) {
+                return MemberPoolDto.Response.builder()
                         .memberId(memberId)
                         .createTime(findMember.getCreateTime())
                         .nickName(findMember.getNickName())
@@ -124,9 +184,22 @@ public class MemberPoolService {
                         .certificateDtoList(certificateDtoList)
                         .siteDtoList(siteDtoList)
                         .build();
+        }
 
-                return memberPoolResponseDto;
-
+        private static ProjectDto.Response getProjectDto(Project project) {
+                return ProjectDto.Response.builder()
+                        .name(project.getName())
+                        .startDate(project.getStartDate())
+                        .endDate(project.getEndDate())
+                        .url(project.getUrl())
+                        .stackDtoList(
+                                project.getStackList().stream()
+                                        .map(
+                                                stack -> getStackDto(stack)
+                                        )
+                                        .collect(Collectors.toList())
+                        )
+                        .build();
         }
 
         public List<MemberPoolDto.Response> findMemberPools() {

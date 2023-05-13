@@ -43,8 +43,8 @@ public class MemberController {
             @ApiResponse(responseCode = "200", description = "멤버 조회 - 성공"),
             @ApiResponse(responseCode = "404", description = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
     })
-    @GetMapping("/member/{id}")
-    public ResponseEntity<CommonDataResponseDto<MemberDto.Response>> findMember(@PathVariable("id") Long id) {
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<CommonDataResponseDto<MemberDto.Response>> findMember(@PathVariable("memberId") Long id) {
         MemberDto.Response memberDto = memberService.findOneById(id);
 
         CommonDataResponseDto<MemberDto.Response> responseDto = CommonDataResponseDto.<MemberDto.Response>builder()
@@ -82,8 +82,8 @@ public class MemberController {
             @ApiResponse(responseCode = "200", description = "멤버 삭제 - 성공"),
             @ApiResponse(responseCode = "404", description = "멤버 삭제 실패 - 멤버가 DB에 없습니다.")
     })
-    @DeleteMapping("/member/{id}")
-    public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("id") Long id) {
+    @DeleteMapping("/member/{memberId}")
+    public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("memberId") Long id) {
         CommonResponseDto<Object> responseDto = memberService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
@@ -94,8 +94,8 @@ public class MemberController {
             @ApiResponse(responseCode = "200", description = "멤버 수정 - 성공"),
             @ApiResponse(responseCode = "404", description = "멤버 수정 - 실패")
     })
-    @PatchMapping("/member/{id}")
-    public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("id") Long id, @RequestBody @Valid MemberDto.Save memberDto) {
+    @PatchMapping("/member/{memberId}")
+    public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("memberId") Long id, @RequestBody @Valid MemberDto.Save memberDto) {
         CommonResponseDto<Object> responseDto = memberService.update(id, memberDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);

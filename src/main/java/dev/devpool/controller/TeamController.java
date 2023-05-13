@@ -48,8 +48,8 @@ public class TeamController {
             @ApiResponse(responseCode = "200", description = "팀을 성공적으로 조회 하였습니다."),
             @ApiResponse(responseCode = "404", description = "팀 조회 실패 - 팀이 DB에 없습니다."),
     })
-    @GetMapping("/team/{id}")
-    public ResponseEntity<CommonDataResponseDto<TeamDto.Response>> findTeamById(@PathVariable("id") Long teamId) {
+    @GetMapping("/team/{teamId}")
+    public ResponseEntity<CommonDataResponseDto<TeamDto.Response>> findTeamById(@PathVariable("teamId") Long teamId) {
         // 조회
         // 팀 조회
         TeamDto.Response responseDto = teamService.findOneById(teamId);
@@ -87,8 +87,8 @@ public class TeamController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "팀 삭제에 성공하였습니다.")
     })
-    @DeleteMapping("/team/{id}")
-    public ResponseEntity<CommonResponseDto<Object>> deleteTeam(@PathVariable("id") Long id) {
+    @DeleteMapping("/team/{teamId}")
+    public ResponseEntity<CommonResponseDto<Object>> deleteTeam(@PathVariable("teamId") Long id) {
 
         CommonResponseDto<Object> response = teamService.deleteById(id);
 
@@ -99,8 +99,8 @@ public class TeamController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "팀 수정에 성공하였습니다.")
     })
-    @PutMapping("/team/{id}")
-    public ResponseEntity<CommonResponseDto<Object>> updateTeam(@PathVariable("id") Long teamId, @RequestBody @Valid TeamDto.Update newTeamDto) {
+    @PutMapping("/team/{teamId}")
+    public ResponseEntity<CommonResponseDto<Object>> updateTeam(@PathVariable("teamId") Long teamId, @RequestBody @Valid TeamDto.Update newTeamDto) {
 
         CommonResponseDto<Object> response = teamService.update(teamId, newTeamDto);
 

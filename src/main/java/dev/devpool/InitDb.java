@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -46,14 +47,15 @@ public class InitDb {
             Member member = Member.builder()
                     .name("김태우")
                     .nickName("찐빵")
-                    .email("ㄱㄷㄱㄷ@naver.com")
-                    .password("rter141")
+                    .email("1234@naver.com")
+                    .password("1234")
                     .createTime(LocalDateTime.of(2022,5,15,4,3))
                     .imageUrl("asdojasdsa/.sdfsdjfnj")
+                    .roles(List.of("USER"))
                     .build();
 
-
             em.persist(member);
+
             Stack stack1 = Stack.builder()
                     .member(member)
                     .name("Stack1")

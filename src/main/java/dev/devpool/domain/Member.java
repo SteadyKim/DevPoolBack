@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.dto.MemberDto;
 import lombok.*;
 
@@ -19,7 +20,6 @@ public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEMBER_ID")
     private Long id;
-
 
     private String name;
     private String nickName;
@@ -41,27 +41,35 @@ public class Member {
 
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonIgnore
     private List<Certificate> certificateList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonIgnore
     private List<Latter> latterList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonIgnore
     private List<Site> siteList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonIgnore
     private List<TechField> techFieldList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonIgnore
     private List<Project> projectList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonIgnore
     private List<MemberTeam> memberTeamList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @JsonIgnore
     private List<Stack> stackList = new ArrayList<>();
 
     @OneToMany(mappedBy = "hostMember", orphanRemoval = true)
+    @JsonIgnore
     private List<Team> hostTeamList = new ArrayList<>();
 
 

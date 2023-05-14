@@ -1,4 +1,4 @@
-package dev.devpool.config.swagger;
+package dev.devpool.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.converter.ModelConverters;

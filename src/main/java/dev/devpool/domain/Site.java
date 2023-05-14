@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.dto.SiteDto;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class Site {
     private String name;
 
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     @JoinColumn(name = "MEMBER_ID")
     Member member;
 

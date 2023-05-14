@@ -1,6 +1,7 @@
 package dev.devpool.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.dto.ProjectDto;
 import dev.devpool.dto.StackDto;
 import lombok.*;
@@ -22,14 +23,17 @@ public class Stack {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     @JoinColumn(name = "MEMBER_ID")
     Member member;
 
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     @JoinColumn(name = "TEAM_ID")
     Team team;
 
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     @JoinColumn(name = "PROJECT_ID")
     Project project;
 

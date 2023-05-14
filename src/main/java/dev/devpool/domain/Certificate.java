@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.dto.CertificateDto;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Certificate {
     private String name;
 
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     @JoinColumn(name = "MEMBER_ID")
     Member member;
 

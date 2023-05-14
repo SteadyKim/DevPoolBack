@@ -26,6 +26,7 @@ public class Team {
     private List<MemberTeam> memberTeams = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "HOST_MEMBER_ID")
     private Member hostMember;
 

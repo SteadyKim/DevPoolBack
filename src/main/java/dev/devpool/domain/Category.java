@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class Category {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
+    @JsonIgnore
     Team team;
 
     private String name;

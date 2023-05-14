@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.dto.ProjectDto;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,10 +27,12 @@ public class Project {
 
 
     @ManyToOne(fetch = LAZY)
+    @JsonIgnore
     @JoinColumn(name = "MEMBER_ID")
     Member member;
 
     @OneToMany(mappedBy = "project", fetch = LAZY)
+    @JsonIgnore
     List<Stack> stackList = new ArrayList<>();
 
     String name;

@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.domain.enums.IsCheck;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Latter {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
+    @JsonIgnore
     private Member member;
 
     private String body;

@@ -1,6 +1,5 @@
 package dev.devpool.dto;
 
-import dev.devpool.domain.Team;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,7 +52,7 @@ public class TeamDto {
 
         private String content;
 
-        private int recruitNum;
+        private int recruitCount;
 
         private CategoryDto.Save category;
 

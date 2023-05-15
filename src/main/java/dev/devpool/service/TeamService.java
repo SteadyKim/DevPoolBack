@@ -39,7 +39,7 @@ public class TeamService {
         Team team = Team.builder()
                 .hostMember(hostMember)
                 .content(teamSaveDto.getContent())
-                .recruitNum(teamSaveDto.getRecruitNum())
+                .recruitNum(teamSaveDto.getRecruitCount())
                 .name(teamSaveDto.getName())
                 .build();
 

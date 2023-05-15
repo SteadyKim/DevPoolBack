@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
                         .antMatchers("/login/**").permitAll()
                         .antMatchers("/api/member/**").hasRole("USER")
-                        .antMatchers("/api/team/**").hasRole("USER")
+//                        .antMatchers("/api/team/**").hasRole("USER")
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)

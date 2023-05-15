@@ -40,7 +40,7 @@ public class MemberPoolService {
                 Member findMember = memberRepository.findOneById(memberId);
                 findMember.setMemberPoolCreateTime(LocalDateTime.now());
 
-                List<TechFieldDto.Save> techFieldDtoList = memberPoolDto.getTechFieldDtoList();
+                List<TechFieldDto.Save> techFieldDtoList = memberPoolDto.getTechField();
                 for (TechFieldDto.Save techFieldDto : techFieldDtoList) {
 
                         TechField techField = TechField.builder()
@@ -51,7 +51,7 @@ public class MemberPoolService {
                         techFieldRepository.save(techField);
                 }
 
-                List<StackDto.Save> stackDtoList = memberPoolDto.getStackDtoList();
+                List<StackDto.Save> stackDtoList = memberPoolDto.getStack();
 
                 for (StackDto.Save stackDto : stackDtoList) {
                         Stack stack = Stack.builder()
@@ -61,7 +61,7 @@ public class MemberPoolService {
                         stackRepository.save(stack);
                 }
 
-                List<ProjectDto.Save> projectDtoList = memberPoolDto.getProjectDtoList();
+                List<ProjectDto.Save> projectDtoList = memberPoolDto.getProject();
 
                 for (ProjectDto.Save projectDto : projectDtoList) {
 
@@ -73,7 +73,7 @@ public class MemberPoolService {
                                 .build();
                         projectRepository.save(project);
 
-                        List<StackDto.Save> projectStackDtoList = projectDto.getStackDtoList();
+                        List<StackDto.Save> projectStackDtoList = projectDto.getStack();
                         for (StackDto.Save projectStackDto : projectStackDtoList) {
                                 Stack stack = Stack.builder()
                                         .project(project)
@@ -85,7 +85,7 @@ public class MemberPoolService {
                 }
 
 
-                List<CertificateDto.Save> certificateDtoList = memberPoolDto.getCertificateDtoList();
+                List<CertificateDto.Save> certificateDtoList = memberPoolDto.getCertificate();
                 for (CertificateDto.Save certificateDto : certificateDtoList) {
                         Certificate certificate = Certificate.builder()
                                 .member(findMember)
@@ -95,7 +95,7 @@ public class MemberPoolService {
                         certificateRepository.save(certificate);
                 }
 
-                List<SiteDto.Save> siteDtoList = memberPoolDto.getSiteDtoList();
+                List<SiteDto.Save> siteDtoList = memberPoolDto.getSite();
                 for (SiteDto.Save siteDto : siteDtoList) {
                         Site site = Site.builder()
                                 .url(siteDto.getUrl())

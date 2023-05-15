@@ -48,7 +48,7 @@ public class TeamService {
         teamRepository.save(team);
 
         // stack
-        teamSaveDto.getRecruitStackNameList()
+        teamSaveDto.getRecruitStack()
                 .stream()
                 .map( dto -> Stack.builder()
                         .name(dto.getName())
@@ -57,7 +57,7 @@ public class TeamService {
 
 
         // TechField
-        teamSaveDto.getRecruitTechFieldNameList()
+        teamSaveDto.getRecruitTechField()
                 .stream()
                 .map(dto -> TechField.builder()
                         .name(dto.getName())
@@ -65,7 +65,7 @@ public class TeamService {
                 .forEach(techFieldRepository::save);
 
         // category
-        CategoryDto.Save categoryDto = teamSaveDto.getCategoryName();
+        CategoryDto.Save categoryDto = teamSaveDto.getCategory();
         Category category = Category.builder()
                 .team(team)
                 .name(categoryDto.getName())
@@ -172,13 +172,13 @@ public class TeamService {
         // 변경감지를 활용해 Update 쿼리
         findTeam.update(newTeamDto);
 
-        List<StackDto.Save> stackDtoList = newTeamDto.getRecruitStackNameList();
+        List<StackDto.Save> stackDtoList = newTeamDto.getRecruitStack();
         stackService.updateByTeam(teamId, stackDtoList);
 
-        List<TechFieldDto.Save> techFieldDtoList = newTeamDto.getRecruitTechFieldNameList();
+        List<TechFieldDto.Save> techFieldDtoList = newTeamDto.getRecruitTechField();
         techFieldService.updateByTeam(teamId, techFieldDtoList);
 
-        CategoryDto.Save categoryDto = newTeamDto.getCategoryName();
+        CategoryDto.Save categoryDto = newTeamDto.getCategory();
         categoryService.update(teamId, categoryDto);
 
         return CommonResponseDto.builder()

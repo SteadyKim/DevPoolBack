@@ -17,6 +17,12 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 import static org.springframework.security.config.Customizer.*;
 
@@ -45,7 +51,22 @@ public class SecurityConfig {
                         .antMatchers("/api/team/**").hasRole("USER")
                         .anyRequest().permitAll()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+
+                .cors()
+                .configurationSource(
+                        request -> {
+                            CorsConfiguration cors = new CorsConfiguration();
+                            cors.setAllowedOrigins(List.of("http://localhost:3000"));
+                            cors.setAllowedMethods(List.of("*"));
+                            cors.setAllowedHeaders(List.of("*"));
+                            return cors;
+                        }
+                )
+
+        ;
+
+
 //                .and()
 //                .exceptionHandling()
 //                .authenticationEntryPoint()

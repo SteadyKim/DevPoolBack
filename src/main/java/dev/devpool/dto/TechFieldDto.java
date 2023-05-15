@@ -8,17 +8,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "techField dto")
 public class TechFieldDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "techField response dto")
     public static class Response {
 
@@ -29,11 +29,9 @@ public class TechFieldDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "techField save request dto")
     public static class Save {
-
-        public Save() {
-        }
 
         private String name;
 

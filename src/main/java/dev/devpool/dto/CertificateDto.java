@@ -7,12 +7,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "certificate dto")
 public class CertificateDto {
 
@@ -29,11 +28,10 @@ public class CertificateDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "certificate save request dto")
     public static class Save {
 
-        public Save() {
-        }
 
         private String name;
 

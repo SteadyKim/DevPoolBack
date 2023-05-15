@@ -8,15 +8,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "StackDto dto")
 public class StackDto {
 
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "StackDto response dto")
     public static class Response {
 
@@ -27,11 +28,9 @@ public class StackDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "StackDto save request dto")
     public static class Save {
-
-        public Save() {
-        }
 
         private String name;
 

@@ -11,18 +11,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "category dto")
 public class CategoryDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "category save request dto")
     public static class Save {
 
-        public Save() {
-        }
 
         private String name;
 
@@ -32,6 +29,7 @@ public class CategoryDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "category response dto")
     public static class Response {
 

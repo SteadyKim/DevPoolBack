@@ -5,15 +5,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "memberToken dto")
 public class MemberTokenDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "memberToken response dto")
     public static class Response {
 

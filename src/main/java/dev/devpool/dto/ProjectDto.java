@@ -6,19 +6,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "project dto")
 public class ProjectDto {
 
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "project response dto")
     public static class Response {
 
@@ -47,7 +47,7 @@ public class ProjectDto {
 
         private LocalDate startDate;
 
-        private List<StackDto.Save> stackDtoList;
+        private List<StackDto.Save> stack;
 
         private LocalDate endDate;
 

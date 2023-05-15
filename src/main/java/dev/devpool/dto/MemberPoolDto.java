@@ -5,18 +5,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "memberPool dto")
 public class MemberPoolDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "memberPool response dto")
     public static class Response {
         private Long memberId;
@@ -43,23 +43,22 @@ public class MemberPoolDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "memberPool save request dto")
     public static class Save {
 
-        public Save() {
-        }
 
         private Long memberId;
 
-        private List<TechFieldDto.Save> techFieldDtoList;
+        private List<TechFieldDto.Save> techField;
 
-        private List<StackDto.Save> stackDtoList;
+        private List<StackDto.Save> stack;
 
-        private List<ProjectDto.Save> projectDtoList;
+        private List<ProjectDto.Save> project;
 
-        private List<CertificateDto.Save> certificateDtoList;
+        private List<CertificateDto.Save> certificate;
 
-        private List<SiteDto.Save> siteDtoList;
+        private List<SiteDto.Save> site;
 
     }
 
@@ -72,15 +71,15 @@ public class MemberPoolDto {
         public Update() {
         }
 
-        private List<TechFieldDto.Save> techFieldDtoList;
+        private List<TechFieldDto.Save> techField;
 
-        private List<StackDto.Save> stackDtoList;
+        private List<StackDto.Save> stack;
 
-        private List<ProjectDto.Save> projectDtoList;
+        private List<ProjectDto.Save> project;
 
-        private List<CertificateDto.Save> certificateDtoList;
+        private List<CertificateDto.Save> certificate;
 
-        private List<SiteDto.Save> siteDtoList;
+        private List<SiteDto.Save> site;
 
     }
 }

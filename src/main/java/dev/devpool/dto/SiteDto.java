@@ -7,15 +7,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "site dto")
 public class SiteDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "site response dto")
     public static class Response {
 
@@ -26,11 +26,9 @@ public class SiteDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "site save request dto")
     public static class Save {
-
-        public Save() {
-        }
 
         private String name;
 

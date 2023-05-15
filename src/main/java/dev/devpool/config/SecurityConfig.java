@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .configurationSource(
                         request -> {
                             CorsConfiguration cors = new CorsConfiguration();
-                            cors.setAllowedOrigins(List.of("http://localhost:3000"));
+                            cors.setAllowedOrigins(List.of("http://localhost:3000", "http://devpool.s3-website.ap-northeast-2.amazonaws.com/"));
                             cors.setAllowedMethods(List.of("*"));
                             cors.setAllowedHeaders(List.of("*"));
                             return cors;

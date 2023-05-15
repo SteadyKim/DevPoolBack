@@ -5,14 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Data
-@Builder
-@AllArgsConstructor
 @Schema(description = "member dto")
 public class MemberDto {
 
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(name = "member response dto")
     public static class Response {
 
@@ -30,17 +29,14 @@ public class MemberDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Save {
-
-        public Save() {
-        }
 
         private String name;
         private String nickName;
         private String email;
         private String password;
         private String imageUrl;
-
 
 
     }

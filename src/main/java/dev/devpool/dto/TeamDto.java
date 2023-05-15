@@ -5,17 +5,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Builder
-@AllArgsConstructor
 public class TeamDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(description = "team response dto")
     public static class Response {
         private Long teamId;
@@ -43,11 +43,9 @@ public class TeamDto {
     @Data
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     @Schema(description = "team save request dto")
     public static class Save {
-
-        public Save() {
-        }
 
         private Long hostMemberId;
 
@@ -57,11 +55,11 @@ public class TeamDto {
 
         private int recruitNum;
 
-        private CategoryDto.Save categoryName;
+        private CategoryDto.Save category;
 
-        private List<TechFieldDto.Save> recruitTechFieldNameList;
+        private List<TechFieldDto.Save> recruitTechField;
 
-        private List<StackDto.Save> recruitStackNameList;
+        private List<StackDto.Save> recruitStack;
 
     }
 
@@ -82,11 +80,11 @@ public class TeamDto {
 
         private LocalDateTime createTime;
 
-        private CategoryDto.Save categoryName;
+        private CategoryDto.Save category;
 
-        private List<TechFieldDto.Save> recruitTechFieldNameList;
+        private List<TechFieldDto.Save> recruitTechField;
 
-        private List<StackDto.Save> recruitStackNameList;
+        private List<StackDto.Save> recruitStack;
 
 
     }

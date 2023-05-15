@@ -45,7 +45,7 @@ public class ProjectService {
                 .name(findProject.getName())
                 .startDate(findProject.getStartDate())
                 .endDate(findProject.getEndDate())
-                .stackDtoList(findProject.getStackList().stream().map(stack -> StackDto.Response.builder()
+                .stack(findProject.getStackList().stream().map(stack -> StackDto.Response.builder()
                                 .name(stack.getName())
                                 .build())
                         .collect(Collectors.toList()))

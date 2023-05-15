@@ -21,6 +21,8 @@ public class SiteDto {
 
         private String name;
 
+        private String url;
+
     }
 
     @Data

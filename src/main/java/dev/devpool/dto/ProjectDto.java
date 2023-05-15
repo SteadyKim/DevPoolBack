@@ -24,7 +24,7 @@ public class ProjectDto {
 
         private String name;
 
-        private List<StackDto.Response> stackDtoList;
+        private List<StackDto.Response> stack;
 
         private LocalDate startDate;
 

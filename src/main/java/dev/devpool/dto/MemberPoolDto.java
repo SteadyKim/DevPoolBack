@@ -29,15 +29,15 @@ public class MemberPoolDto {
 
         private LocalDateTime createTime;
 
-        private List<TechFieldDto.Response> techFieldDtoList;
+        private List<TechFieldDto.Response> techField;
 
-        private List<StackDto.Response> stackDtoList;
+        private List<StackDto.Response> stack;
 
-        private List<ProjectDto.Response> projectDtoList;
+        private List<ProjectDto.Response> project;
 
-        private List<CertificateDto.Response> certificateDtoList;
+        private List<CertificateDto.Response> certificate;
 
-        private List<SiteDto.Response> siteDtoList;
+        private List<SiteDto.Response> site;
 
     }
     @Data

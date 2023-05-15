@@ -178,11 +178,11 @@ public class MemberPoolService {
                         .nickName(findMember.getNickName())
                         .email(findMember.getEmail())
                         .imageUrl(findMember.getImageUrl())
-                        .techFieldDtoList(techFieldDtoList)
-                        .stackDtoList(stackDtoList)
-                        .projectDtoList(projectDtoList)
-                        .certificateDtoList(certificateDtoList)
-                        .siteDtoList(siteDtoList)
+                        .techField(techFieldDtoList)
+                        .stack(stackDtoList)
+                        .project(projectDtoList)
+                        .certificate(certificateDtoList)
+                        .site(siteDtoList)
                         .build();
         }
 
@@ -192,7 +192,7 @@ public class MemberPoolService {
                         .startDate(project.getStartDate())
                         .endDate(project.getEndDate())
                         .url(project.getUrl())
-                        .stackDtoList(
+                        .stack(
                                 project.getStackList().stream()
                                         .map(
                                                 stack -> getStackDto(stack)

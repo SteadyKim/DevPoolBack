@@ -87,20 +87,28 @@ public class TeamService {
         }
 
         // stack
-        List<String> stackNameList = stackRepository.findAllByTeamId(teamId)
+        List<StackDto.Response> stackDtoList = stackRepository.findAllByTeamId(teamId)
                 .stream()
-                .map(Stack::getName)
+                .map(stack -> StackDto.Response.builder()
+                        .name(stack.getName())
+                        .build())
                 .collect(Collectors.toList());
 
         // techfield
         List<TechField> techFieldList = techFieldRepository.findAllByTeamId(teamId);
 
-        List<String> techFieldNameList = techFieldList.stream()
-                .map(TechField::getName)
+        List<TechFieldDto.Response> techFieldDtoList = techFieldList.stream()
+                .map(techField -> TechFieldDto.Response.builder()
+                        .name(techField.getName())
+                        .build())
                 .collect(Collectors.toList());
 
         // category
-        String categoryName = categoryRepository.findByTeamId(teamId).getName();
+        Category category = categoryRepository.findByTeamId(teamId);
+        CategoryDto.Response categoryDto = CategoryDto.Response
+                .builder()
+                .name(category.getName())
+                .build();
 
         // HostMember
         Member hostMember = findTeam.getHostMember();
@@ -112,12 +120,12 @@ public class TeamService {
                 .teamId(teamId)
                 .name(findTeam.getName())
                 .content(findTeam.getContent())
-                .category(categoryName)
+                .category(categoryDto)
                 .currentCount(findTeam.getMemberTeams().size())
                 .recruitCount(findTeam.getRecruitNum())
                 .createTime(findTeam.getCreateTime())
-                .recruitStack(stackNameList)
-                .recruitTechField(techFieldNameList)
+                .recruitStack(stackDtoList)
+                .recruitTechField(techFieldDtoList)
                 .hostMember(MemberDto.Response.builder()
                         .memberId(hostMember.getId())
                         .name(hostMember.getName())

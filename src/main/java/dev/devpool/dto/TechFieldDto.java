@@ -36,6 +36,5 @@ public class TechFieldDto {
         private String name;
 
 
-
     }
 }

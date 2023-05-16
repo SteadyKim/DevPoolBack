@@ -29,11 +29,11 @@ public class TeamDto {
 
         private LocalDateTime createTime;
 
-        private List<String> recruitTechField;
+        private List<TechFieldDto.Response> recruitTechField;
 
-        private List<String> recruitStack;
+        private List<StackDto.Response> recruitStack;
 
-        private String category;
+        private CategoryDto.Response category;
 
         private MemberDto.Response hostMember;
 

@@ -1,9 +1,8 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Member;
-import dev.devpool.dto.CommonResponseDto;
+import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.dto.MemberDto;
-import dev.devpool.dto.MemberTokenDto;
 import dev.devpool.exception.CustomDuplicateException;
 import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.jwt.JwtTokenProvider;
@@ -11,18 +10,14 @@ import dev.devpool.jwt.TokenInfo;
 import dev.devpool.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

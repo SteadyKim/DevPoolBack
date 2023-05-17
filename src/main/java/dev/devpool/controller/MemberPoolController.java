@@ -1,6 +1,9 @@
 package dev.devpool.controller;
 
 import dev.devpool.dto.*;
+import dev.devpool.dto.common.CommonDataListResponseDto;
+import dev.devpool.dto.common.CommonDataResponseDto;
+import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -21,25 +22,29 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "TEAM_ID")
+    @ToString.Exclude
     private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @JsonIgnore
+    @ToString.Exclude
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     @JsonIgnore
+    @ToString.Exclude
     private Comment parent;
 
     private String content;
 
-    private LocalDate createDate;
+    @Builder.Default
+    private LocalDateTime createDate = LocalDateTime.now();
 
     public void updateComment(Comment comment) {
         this.content = comment.getContent();
-        this.createDate = LocalDate.now();
+        this.createDate = LocalDateTime.now();
     }
 
     public void addTeam(Team team) {

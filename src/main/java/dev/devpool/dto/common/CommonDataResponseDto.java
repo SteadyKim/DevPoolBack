@@ -1,8 +1,7 @@
-package dev.devpool.dto;
+package dev.devpool.dto.common;
 
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ToString
@@ -10,11 +9,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CommonDataListResponseDto<T> {
-
+public class CommonDataResponseDto<T> {
     int status;
 
     String message;
 
-    List<T> dataList;
+    T data;
 }

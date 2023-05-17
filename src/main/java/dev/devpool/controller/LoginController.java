@@ -1,9 +1,8 @@
 package dev.devpool.controller;
 
-import dev.devpool.dto.CommonResponseDto;
+import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.dto.LoginDto;
 import dev.devpool.dto.MemberDto;
-import dev.devpool.dto.MemberTokenDto;
 import dev.devpool.jwt.TokenInfo;
 import dev.devpool.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;

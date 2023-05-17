@@ -2,6 +2,7 @@ package dev.devpool.service;
 
 import dev.devpool.domain.*;
 import dev.devpool.dto.*;
+import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.*;
 import lombok.RequiredArgsConstructor;

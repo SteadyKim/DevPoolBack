@@ -226,6 +226,32 @@ public class InitDb {
                     .build();
 
             em.persist(category);
+
+            Comment comment = Comment.builder()
+                    .content("this is a comment")
+                    .member(member)
+                    .team(team)
+                    .build();
+
+            Comment childComment1 = Comment.builder()
+                    .content("this is a ChildComment1")
+                    .member(member2)
+                    .team(team)
+                    .parent(comment)
+                    .build();
+
+
+            Comment childComment2 = Comment.builder()
+                    .content("this is a ChildComment2")
+                    .member(member3)
+                    .team(team)
+                    .parent(comment)
+                    .build();
+
+            em.persist(comment);
+            em.persist(childComment1);
+            em.persist(childComment2);
+
         }
     }
 

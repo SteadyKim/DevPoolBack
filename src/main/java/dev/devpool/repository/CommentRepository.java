@@ -40,7 +40,7 @@ public class CommentRepository {
         List<Comment> childComments = em.createQuery("select c from Comment c where c.parent.id=:parentId", Comment.class)
                 .setParameter("parentId", parentId)
                 .getResultList();
-
+        System.out.println("childComments = " + childComments);
         if (childComments.size() == 0) {
             return null;
         } else return childComments;
@@ -48,7 +48,7 @@ public class CommentRepository {
 
     // 팀Id로 Parent 조회
     public List<Comment> findAllParentCommentByTeamId(Long teamId) {
-        List<Comment> commentList = em.createQuery("select c from Comment c where c.team.id=:teamId", Comment.class)
+        List<Comment> commentList = em.createQuery("select c from Comment c where c.team.id=:teamId and c.parent IS NULL", Comment.class)
                 .setParameter("teamId", teamId)
                 .getResultList();
 

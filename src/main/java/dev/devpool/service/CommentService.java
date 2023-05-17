@@ -1,13 +1,17 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Comment;
+import dev.devpool.dto.CommentDto;
 import dev.devpool.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,9 +30,27 @@ public class CommentService {
     }
 
     // 조회
-    public Comment findById(Long commentId) {
+    public CommentDto.Response findById(Long commentId) {
         Comment findComment = commentRepository.findById(commentId);
-        return findComment;
+        Comment parent = findComment.getParent();
+
+
+        List<CommentDto.Response> childDtoList = new ArrayList<>();
+        // 첫 댓글인지 대댓글인지 체크
+        if( parent == null ) { // 첫 댓글인 경우
+            Long parentId = findComment.getId();
+            childDtoList = findChildByParentId(parentId);
+        }
+
+        CommentDto.Response commentDto = CommentDto.Response.builder()
+                .commentId(findComment.getId())
+                .content(findComment.getContent())
+                .createTime(findComment.getCreateDate())
+                .nickName(findComment.getMember().getNickName())
+                .replies(childDtoList)
+                .build();
+
+        return commentDto;
     }
 
     public List<Comment> findAll() {
@@ -36,14 +58,38 @@ public class CommentService {
         return comments;
     }
 
-    public List<Comment> findChildByParentId(Long parentId) {
-        List<Comment> childComments = commentRepository.findChildByParentId(parentId);
-        return childComments;
+    public List<CommentDto.Response> findChildByParentId(Long parentId) {
+        Comment parentComment = commentRepository.findById(parentId);
+
+        List<CommentDto.Response> commentDtoList = commentRepository.findChildByParentId(parentId)
+                .stream()
+                .map(comment -> CommentDto.Response.builder()
+                        .teamId(parentComment.getId())
+                        .commentId(comment.getId())
+                        .content(comment.getContent())
+                        .createTime(comment.getCreateDate())
+                        .nickName(comment.getMember().getNickName())
+                        .build())
+                .collect(Collectors.toList());
+
+        return commentDtoList;
     }
 
-    public List<Comment> findAllParentByTeamId(Long teamId) {
+    public List<CommentDto.Response> findAllParentByTeamId(Long teamId) {
         List<Comment> commentList = commentRepository.findAllParentCommentByTeamId(teamId);
-        return commentList;
+
+        List<CommentDto.Response> commentDtoList = commentList.stream()
+                .map(comment -> CommentDto.Response.builder()
+                        .teamId(teamId)
+                        .nickName(comment.getMember().getNickName())
+                        .commentId(comment.getId())
+                        .content(comment.getContent())
+                        .createTime(comment.getCreateDate())
+                        .replies(findChildByParentId(comment.getId()))
+                        .build())
+                .collect(Collectors.toList());
+
+        return commentDtoList;
     }
 
     // 삭제

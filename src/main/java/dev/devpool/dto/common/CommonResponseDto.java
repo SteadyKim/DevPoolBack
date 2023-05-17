@@ -1,4 +1,4 @@
-package dev.devpool.dto;
+package dev.devpool.dto.common;
 
 import lombok.*;
 

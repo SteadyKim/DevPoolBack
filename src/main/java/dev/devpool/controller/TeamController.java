@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,32 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
+    @Operation(summary = "팀 댓글 저장", description = "팀 댓글을 저장합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "팀 댓글을 성공적으로 저장하였습니다."),
+            @ApiResponse(responseCode = "409", description = "팀 댓글 저장 실패"),
+    })
+    @PostMapping("/team/{teamId}/comment")
+    public ResponseEntity<CommonResponseDto<Object>> saveTeamComment(@RequestBody @Valid CommentDto.Save commentSaveDto ) {
+        // 저장
+        CommonResponseDto<Object> responseDto = commentService.join(commentSaveDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+
+    @Operation(summary = "팀 대댓글 저장", description = "팀 댓글을 저장합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "팀 댓글을 성공적으로 저장하였습니다."),
+            @ApiResponse(responseCode = "409", description = "팀 댓글 저장 실패"),
+    })
+    @PostMapping("/team/{teamId}/commentReply")
+    public ResponseEntity<CommonResponseDto<Object>> saveTeamCommentReply(@RequestBody @Valid CommentDto.SaveReply commentSaveReplyDto ) {
+        // 저장
+        CommonResponseDto<Object> responseDto = commentService.joinReply(commentSaveReplyDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
     // 조회
     @Operation(summary = "팀조회", description = "팀을 팀 id로 조회 합니다.")
     @ApiResponses({

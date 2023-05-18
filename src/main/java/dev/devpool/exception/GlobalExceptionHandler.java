@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponseDto<Object>> handleException(Exception e){
-        log.info("[handleException] 모든 예외 처리");
-        CommonResponseDto<Object> respDto= CommonResponseDto.builder()
-                .message(e.getMessage() + e.getStackTrace())
-                .build();
-        return ResponseEntity.badRequest()
-                .body(respDto);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<CommonResponseDto<Object>> handleException(Exception e){
+//        log.info("[handleException] 모든 예외 처리");
+//        CommonResponseDto<Object> respDto= CommonResponseDto.builder()
+//                .message(e.getMessage() + e.getStackTrace())
+//                .build();
+//        return ResponseEntity.badRequest()
+//                .body(respDto);
+//    }
 
 
     @ExceptionHandler(CustomEntityNotFoundException.class)

@@ -1,8 +1,13 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Comment;
+import dev.devpool.domain.Member;
+import dev.devpool.domain.Team;
 import dev.devpool.dto.CommentDto;
+import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.repository.CommentRepository;
+import dev.devpool.repository.MemberRepository;
+import dev.devpool.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,13 +25,52 @@ import java.util.stream.Stream;
 public class CommentService {
     private final CommentRepository commentRepository;
 
+    private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
 
     // 저장
     @Transactional
-    public Long join(Comment comment) {
+    public CommonResponseDto<Object> join(CommentDto.Save commentSaveDto) {
+        Team findTeam = teamRepository.findOneById(commentSaveDto.getTeamId());
+        Member findMember = memberRepository.findOneById(commentSaveDto.getMemberId());
+
+        Comment comment = Comment.builder()
+                .team(findTeam)
+                .member(findMember)
+                .content(commentSaveDto.getContent())
+                .build();
+
+        /**
+         * 왜 두개씩?
+         */
         commentRepository.save(comment);
 
-        return comment.getId();
+        return CommonResponseDto.builder()
+                .message("팀 댓글 저장에 성공하였습니다.")
+                .build();
+    }
+
+    @Transactional
+    public CommonResponseDto<Object> joinReply(CommentDto.SaveReply commentSaveReplyDto) {
+        Team findTeam = teamRepository.findOneById(commentSaveReplyDto.getTeamId());
+        Member findMember = memberRepository.findOneById(commentSaveReplyDto.getMemberId());
+        Comment parentComment = commentRepository.findById(commentSaveReplyDto.getParentId());
+
+        Comment comment = Comment.builder()
+                .team(findTeam)
+                .member(findMember)
+                .parent(parentComment)
+                .content(commentSaveReplyDto.getContent())
+                .build();
+
+
+        commentRepository.save(comment);
+
+
+        return CommonResponseDto.builder()
+                .message("팀 대댓글 저장에 성공하였습니다.")
+                .build();
+
     }
 
     // 조회
@@ -59,9 +103,15 @@ public class CommentService {
     }
 
     public List<CommentDto.Response> findChildByParentId(Long parentId) {
-        Comment parentComment = commentRepository.findById(parentId);
+        List<CommentDto.Response> commentDtoList;
 
-        List<CommentDto.Response> commentDtoList = commentRepository.findChildByParentId(parentId)
+        Comment parentComment = commentRepository.findById(parentId);
+        List<Comment> commentList = commentRepository.findChildByParentId(parentId);
+
+        if(commentList == null) {
+            commentDtoList = null;
+        } else {
+            commentDtoList = commentList
                 .stream()
                 .map(comment -> CommentDto.Response.builder()
                         .teamId(parentComment.getId())
@@ -71,12 +121,14 @@ public class CommentService {
                         .nickName(comment.getMember().getNickName())
                         .build())
                 .collect(Collectors.toList());
+        }
 
         return commentDtoList;
     }
 
     public List<CommentDto.Response> findAllParentByTeamId(Long teamId) {
         List<Comment> commentList = commentRepository.findAllParentCommentByTeamId(teamId);
+
 
         List<CommentDto.Response> commentDtoList = commentList.stream()
                 .map(comment -> CommentDto.Response.builder()

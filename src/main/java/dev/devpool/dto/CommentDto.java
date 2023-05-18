@@ -39,7 +39,26 @@ public class CommentDto {
     @Schema(name = "comment save request dto")
     public static class Save {
 
+        private Long teamId;
+
         private Long memberId;
+
+        private String content;
+
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Schema(name = "comment saveReply request dto")
+    public static class SaveReply {
+
+        private Long teamId;
+
+        private Long memberId;
+
+        private Long parentId;
 
         private String content;
 

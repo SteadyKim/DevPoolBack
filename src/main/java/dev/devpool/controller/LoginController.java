@@ -42,9 +42,9 @@ public class LoginController {
     })
     @PostMapping("/join")
     public ResponseEntity<CommonResponseDto<Object>> saveMember(@RequestBody @Valid MemberDto.Save memberSaveRequestDto) {
+
         // 저장
         CommonResponseDto<Object> responseDto = memberService.join(memberSaveRequestDto);
-
 
 
         return ResponseEntity.status(HttpStatus.CREATED)

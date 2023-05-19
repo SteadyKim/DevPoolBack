@@ -1,6 +1,5 @@
 package dev.devpool.dto;
 
-import dev.devpool.domain.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -30,12 +29,17 @@ public class MemberDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema(name = "member save dto")
     public static class Save {
 
         private String name;
+
         private String nickName;
+
         private String email;
+
         private String password;
+
         private String imageUrl;
 
 

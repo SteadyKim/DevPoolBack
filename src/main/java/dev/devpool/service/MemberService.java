@@ -68,6 +68,7 @@ public class MemberService {
         Member member = Member.builder()
                 .name(memberDto.getName())
                 .email(memberDto.getEmail())
+                .nickName(memberDto.getNickName())
                 .password(memberDto.getPassword())
                 .imageUrl(memberDto.getImageUrl())
                 .roles(List.of("USER"))

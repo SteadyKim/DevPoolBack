@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final TeamService teamService;
 
 //    @Operation(summary = "회원가입", description = "회원을 저장합니다.")
 //    @ApiResponses({
@@ -87,6 +88,8 @@ public class MemberController {
     })
     @DeleteMapping("/member/{memberId}")
     public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("memberId") Long id) {
+
+        teamService.deleteByHostId(id);
         CommonResponseDto<Object> responseDto = memberService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);

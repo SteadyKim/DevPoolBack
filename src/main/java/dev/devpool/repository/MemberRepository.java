@@ -1,8 +1,11 @@
 package dev.devpool.repository;
 
 import dev.devpool.domain.Member;
+import dev.devpool.domain.Project;
 import dev.devpool.exception.CustomEntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,17 +15,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class MemberRepository {
 
     private final EntityManager em;
-
+    private final TeamRepository teamRepository;
     /**
      * 향후 @RequiredArgsment로 변경 - lombok
      */
-    @Autowired
-    public MemberRepository(EntityManager em) {
-        this.em = em;
-    }
 
     // 저장
     public void save(Member member) {
@@ -61,6 +61,14 @@ public class MemberRepository {
             throw new CustomEntityNotFoundException(Member.class.getName(), memberId);
         }
         else {
+            List<Project> projectList = em.createQuery("select p from Project p where p.member.id=:memberId", Project.class)
+                    .setParameter("memberId", memberId)
+                    .getResultList();
+            projectList.stream()
+                        .forEach(project -> em.createQuery("delete from Stack s where s.project.id=:projectId")
+                        .setParameter("projectId", project.getId())
+                        .executeUpdate());
+
             em.remove(findMember);
         }
     }

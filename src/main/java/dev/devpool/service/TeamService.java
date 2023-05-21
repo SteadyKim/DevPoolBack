@@ -167,6 +167,17 @@ public class TeamService {
     }
 
     @Transactional
+    public CommonResponseDto<Object> deleteByHostId(Long hostId) {
+        teamRepository.deleteByHostId(hostId);
+
+        return CommonResponseDto.builder().id(hostId)
+                .message("팀 삭제에 성공하였습니다.").
+                build();
+
+    }
+
+
+    @Transactional
     public CommonResponseDto<Object> deleteAll() {
         teamRepository.deleteAll();
 

@@ -2,12 +2,15 @@ package dev.devpool.repository;
 
 
 import dev.devpool.domain.Latter;
+import dev.devpool.domain.Member;
+import dev.devpool.dto.LatterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class LatterRepository {
@@ -24,12 +27,24 @@ public class LatterRepository {
     }
 
     // 조회
-    public List<Latter> findAllByMemberId(Long memberId) {
-        List<Latter> latters = em.createQuery("select l from Latter l where l.member.id=:memberId", Latter.class)
-                .setParameter("memberId", memberId)
+    public List<Latter> findAllBySenderId(Long senderId) {
+        List<Latter> latterList = em.createQuery("select l from Latter l where l.sender.id=:senderId ", Latter.class)
+                .setParameter("senderId", senderId)
                 .getResultList();
 
-        return latters;
+//        latterDtoList.sort(Comparator.comparing(l -> l.get(0)));
+
+
+        return latterList;
+    }
+
+    public List<Latter> findAllByReceiverId(Long receiverId) {
+        List<Latter> latterList = em.createQuery("select l from Latter l where l.receiver.id=:receiverId", Latter.class)
+                .setParameter("receiverId", receiverId)
+                .getResultList();
+
+
+        return latterList;
     }
 
     public Latter findById(Long latterId) {
@@ -45,9 +60,9 @@ public class LatterRepository {
         em.remove(latter);
     }
 
-    public void deleteByMemberId(Long memberId) {
-        Query query = em.createQuery("delete from Latter l where l.member.id=:memberId")
-                .setParameter("memberId", memberId);
+    public void deleteAllBySenderId(Long senderId) {
+        Query query = em.createQuery("delete from Latter l where l.sender.id=:senderId")
+                .setParameter("senderId", senderId);
         query.executeUpdate();
     }
 

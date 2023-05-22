@@ -50,7 +50,7 @@ public class Member implements UserDetails {
     @JsonIgnore
     private List<Certificate> certificateList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @OneToMany(mappedBy = "sender", orphanRemoval = true)
     @JsonIgnore
     private List<Latter> latterList = new ArrayList<>();
 

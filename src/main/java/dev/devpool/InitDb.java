@@ -31,8 +31,6 @@ public class InitDb {
     public void init() {
         initService.ss();
 
-
-
     }
 
     @Component
@@ -183,7 +181,7 @@ public class InitDb {
 
             Member member3 = Member.builder()
                     .name("염진섭")
-                    .nickName("ㄴ빵")
+                    .nickName("똥빵")
                     .email("ㄱㄷㅇㄴㅇㄴㄷ@naver.com")
                     .password("rterㅇ41")
                     .imageUrl("asdㅌㅌㄴjasdsa/.sdfsdjfnj")
@@ -251,6 +249,38 @@ public class InitDb {
             em.persist(comment);
             em.persist(childComment1);
             em.persist(childComment2);
+
+            Latter latter1 = Latter.builder()
+                    .content("안녕하세요!!")
+                    .sender(member)
+                    .receiver(member2)
+                    .build();
+
+            Latter latter2 = Latter.builder()
+                    .content("안녕하세요22!!")
+                    .sender(member2)
+                    .receiver(member)
+                    .build();
+
+
+
+            Latter latter3 = Latter.builder()
+                    .content("안녕하세요33!!")
+                    .sender(member)
+                    .receiver(member3)
+                    .build();
+
+
+            Latter latter4 = Latter.builder()
+                    .content("안녕하세요44!!")
+                    .sender(member3)
+                    .receiver(member)
+                    .build();
+
+            em.persist(latter1);
+            em.persist(latter2);
+            em.persist(latter3);
+            em.persist(latter4);
 
         }
     }

@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -23,16 +24,24 @@ public class Latter {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "SENDER_ID")
     @JsonIgnore
-    private Member member;
+    @ToString.Exclude
+    private Member sender;
 
-    private String body;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RECEIVER_ID")
+    @JsonIgnore
+    @ToString.Exclude
+    private Member receiver;
 
-    private LocalDate createDate;
+    private String content;
 
-    @Enumerated(STRING)
-    private IsCheck isCheck;
+    @Builder.Default
+    private LocalDateTime createDate = LocalDateTime.now();
+//
+//    @Enumerated(STRING)
+//    private IsCheck isCheck;
 
 
 }

@@ -86,12 +86,12 @@ public class Member implements UserDetails {
     /**
      * 비지니스 로직
      */
-    public void update(MemberDto.Save newMemberDto) {
+    public void update(MemberDto.Save newMemberDto, String url) {
         name = newMemberDto.getName();
         nickName = newMemberDto.getNickName();
         email = newMemberDto.getEmail();
         password = newMemberDto.getPassword();
-        imageUrl = newMemberDto.getImageUrl();
+        imageUrl = url;
     }
 
     public void setMemberPoolCreateTime(LocalDateTime localDateTime) {

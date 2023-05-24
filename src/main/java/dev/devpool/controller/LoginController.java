@@ -1,5 +1,6 @@
 package dev.devpool.controller;
 
+import dev.devpool.dto.MemberParameter;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.dto.LoginDto;
 import dev.devpool.dto.MemberDto;
@@ -10,13 +11,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -40,11 +43,12 @@ public class LoginController {
             @ApiResponse(responseCode = "409", description = "멤버 저장 실패 - 중복된 멤버가 있습니다."),
             @ApiResponse(responseCode = "500", description = "멤버 저장 실패 - 인터넷 에러")
     })
-    @PostMapping("/join")
-    public ResponseEntity<CommonResponseDto<Object>> saveMember(@RequestBody @Valid MemberDto.Save memberSaveRequestDto) {
+    @PostMapping(value = "/join", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CommonResponseDto<Object>> saveMember(@ModelAttribute MemberParameter memberParameter) throws IOException {
+
 
         // 저장
-        CommonResponseDto<Object> responseDto = memberService.join(memberSaveRequestDto);
+        CommonResponseDto<Object> responseDto = memberService.join(memberParameter);
 
 
         return ResponseEntity.status(HttpStatus.CREATED)

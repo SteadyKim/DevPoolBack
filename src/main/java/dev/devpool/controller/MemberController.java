@@ -13,8 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Tag(name = "member", description = "member")
@@ -24,23 +26,6 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     private final TeamService teamService;
-
-//    @Operation(summary = "회원가입", description = "회원을 저장합니다.")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "201", description = "회원을 성공적으로 저장하였습니다."),
-//            @ApiResponse(responseCode = "409", description = "멤버 저장 실패 - 중복된 멤버가 있습니다."),
-//            @ApiResponse(responseCode = "500", description = "멤버 저장 실패 - 인터넷 에러")
-//    })
-//    @PostMapping("/member")
-//    public ResponseEntity<CommonResponseDto<Object>> saveMember(@RequestBody @Valid MemberDto.Save memberSaveRequestDto) {
-//        // 저장
-//        CommonResponseDto<Object> responseDto = memberService.join(memberSaveRequestDto);
-//
-//
-//
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(responseDto);
-//    }
 
     @Operation(summary = "회원정보조회", description = "본인의 회원정보를 조회합니다.")
     @ApiResponses({
@@ -101,8 +86,8 @@ public class MemberController {
             @ApiResponse(responseCode = "404", description = "멤버 수정 - 실패")
     })
     @PatchMapping("/member/{memberId}")
-    public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("memberId") Long id, @RequestBody @Valid MemberDto.Save memberDto) {
-        CommonResponseDto<Object> responseDto = memberService.update(id, memberDto);
+    public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("memberId") Long id, @RequestBody @Valid MemberDto.Save memberDto, @RequestParam(value = "image") MultipartFile image) throws IOException {
+        CommonResponseDto<Object> responseDto = memberService.update(id, memberDto, image);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }

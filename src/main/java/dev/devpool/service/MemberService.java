@@ -1,6 +1,7 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Member;
+import dev.devpool.dto.MemberParameter;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.dto.MemberDto;
 import dev.devpool.exception.CustomDuplicateException;
@@ -8,6 +9,7 @@ import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.jwt.JwtTokenProvider;
 import dev.devpool.jwt.TokenInfo;
 import dev.devpool.repository.MemberRepository;
+import dev.devpool.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +19,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +36,8 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final S3Uploader s3Uploader;
 
     @Transactional
     public TokenInfo login(String email, String password){
@@ -56,21 +62,28 @@ public class MemberService {
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
 
-
         return tokenInfo;
 
     }
 
-
     @Transactional
     // 회원가입
-    public CommonResponseDto<Object> join(MemberDto.Save memberDto) {
+    public CommonResponseDto<Object> join(MemberParameter memberParameter) throws IOException {
+        String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/default.png";
+
+        MultipartFile image = memberParameter.getImage();
+        System.out.println("image.isEmpty() = " + image.isEmpty());
+
+        if(!(image == null) && !(image.isEmpty())) {
+            storeFileName = s3Uploader.upload(image, "images");
+        }
+
         Member member = Member.builder()
-                .name(memberDto.getName())
-                .email(memberDto.getEmail())
-                .nickName(memberDto.getNickName())
-                .password(memberDto.getPassword())
-                .imageUrl(memberDto.getImageUrl())
+                .name(memberParameter.getName())
+                .email(memberParameter.getEmail())
+                .nickName(memberParameter.getNickName())
+                .password(memberParameter.getPassword())
+                .imageUrl(storeFileName)
                 .roles(List.of("USER"))
                 .build();
 
@@ -88,7 +101,7 @@ public class MemberService {
         Optional<Member>  findMember = memberRepository.findOneByEmail(member.getEmail());
 
         if (findMember.isPresent()) {
-            throw new CustomDuplicateException(Member.class.getName(), member.getId());
+            throw new CustomDuplicateException(Member.class.getName(), 1L);
         }
     }
 
@@ -140,16 +153,24 @@ public class MemberService {
     }
 
     @Transactional
-    public CommonResponseDto<Object> update(Long id, MemberDto.Save memberDto) {
+    public CommonResponseDto<Object> update(Long id, MemberDto.Save memberDto, MultipartFile image) throws IOException {
         Member findMember = memberRepository.findOneById(id);
+        String storeFileName = null;
 
+        if(!image.isEmpty()) {
+            storeFileName = s3Uploader.upload(image, "images");
+        }
         // 변경 감지 사용하기
-        findMember.update(memberDto);
+        findMember.update(memberDto, storeFileName);
 
         return CommonResponseDto.builder()
                 .status(200)
                 .id(id)
                 .message("멤버 수정에 성공하였습니다.")
                 .build();
+    }
+
+    public void updateImage(MultipartFile image) throws IOException {
+        s3Uploader.upload(image, "images");
     }
 }

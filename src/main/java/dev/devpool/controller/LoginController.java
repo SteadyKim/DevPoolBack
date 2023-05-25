@@ -1,9 +1,8 @@
 package dev.devpool.controller;
 
-import dev.devpool.dto.MemberParameter;
+import dev.devpool.parameter.MemberParameter;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.dto.LoginDto;
-import dev.devpool.dto.MemberDto;
 import dev.devpool.jwt.TokenInfo;
 import dev.devpool.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,14 +10,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 
 @Slf4j

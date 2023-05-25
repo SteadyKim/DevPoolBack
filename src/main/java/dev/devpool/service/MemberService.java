@@ -1,7 +1,7 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Member;
-import dev.devpool.dto.MemberParameter;
+import dev.devpool.parameter.MemberParameter;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.dto.MemberDto;
 import dev.devpool.exception.CustomDuplicateException;

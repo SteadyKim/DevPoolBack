@@ -191,7 +191,7 @@ public class InitDb {
 
             Team team = Team.builder()
                     .name("aa팀을 모집합니디.")
-                    .recruitNum(4)
+                    .recruitCount(4)
                     .hostMember(member)
                     .content("ㅗ디ㅣㅐ 째깅!")
                     .build();

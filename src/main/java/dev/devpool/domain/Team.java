@@ -40,8 +40,7 @@ public class Team {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "total_num")
-    private int recruitNum;
+    private Integer recruitCount;
 
     @Builder.Default
     private LocalDateTime createTime = LocalDateTime.now();
@@ -51,7 +50,7 @@ public class Team {
     public void update(TeamDto.Update teamDto) {
         name = teamDto.getName();
         content = teamDto.getContent();
-        recruitNum = teamDto.getRecruitCount();
+        recruitCount = teamDto.getRecruitCount();
     }
 
 

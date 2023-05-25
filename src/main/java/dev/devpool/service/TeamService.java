@@ -40,7 +40,7 @@ public class TeamService {
         Team team = Team.builder()
                 .hostMember(hostMember)
                 .content(teamSaveDto.getContent())
-                .recruitNum(teamSaveDto.getRecruitCount())
+                .recruitCount(teamSaveDto.getRecruitCount())
                 .name(teamSaveDto.getName())
                 .build();
 
@@ -123,7 +123,7 @@ public class TeamService {
                 .content(findTeam.getContent())
                 .category(categoryDto)
                 .currentCount(findTeam.getMemberTeams().size())
-                .recruitCount(findTeam.getRecruitNum())
+                .recruitCount(findTeam.getRecruitCount())
                 .createTime(findTeam.getCreateTime())
                 .recruitStack(stackDtoList)
                 .recruitTechField(techFieldDtoList)

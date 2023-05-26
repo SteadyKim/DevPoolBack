@@ -27,6 +27,19 @@ public class GlobalExceptionHandler {
         CommonResponseDto<Object> respDto = CommonResponseDto.builder()
                 .message(e.getMessage())
                 .build();
+
+        return ResponseEntity.badRequest()
+                .body(respDto);
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<Object> handleCustomException(CustomException e) {
+        log.info("[handleCustomException] 에러 메세지: {}", e.getMessage());
+
+        CommonResponseDto<Object> respDto = CommonResponseDto.builder()
+                .message(e.getMessage())
+                .build();
+
         return ResponseEntity.badRequest()
                 .body(respDto);
     }

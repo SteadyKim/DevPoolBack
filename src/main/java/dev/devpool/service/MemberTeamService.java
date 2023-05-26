@@ -37,7 +37,25 @@ public class MemberTeamService {
 
         Team findTeam = teamRepository.findOneById(teamId);
 
+        Integer recruitCount = findTeam.getRecruitCount();
 
+        int currentCount = findTeam.getMemberTeams().size();
+
+        // 가득차있습니다.
+        if(currentCount >= recruitCount) {
+            throw new CustomException("현재 팀에 인원이 가득차 있습니다.", MemberTeamService.class.getName(), "join()");
+        }
+
+        // 이미 있는 회원입니다.
+        List<MemberTeam> memberTeamList = findTeam.getMemberTeams();
+
+        boolean isDuplicateMember = memberTeamList.stream()
+                .map(memberTeam -> memberTeam.getMember().getId())
+                .anyMatch(memberTeamMemberId -> Objects.equals(memberTeamMemberId, findMember.getId()));
+
+        if (isDuplicateMember) {
+            throw new CustomException("현재 팀에 중복된 멤버입니다.", MemberTeamService.class.getName(), "join()");
+        }
 
         memberTeamRepository.join(findMember, findTeam);
 

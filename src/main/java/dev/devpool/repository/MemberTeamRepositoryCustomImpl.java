@@ -4,6 +4,7 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.MemberTeam;
 import dev.devpool.domain.Team;
 import dev.devpool.dto.common.CommonResponseDto;
+import dev.devpool.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -26,4 +27,16 @@ public class MemberTeamRepositoryCustomImpl implements MemberTeamRepositoryCusto
 
         em.persist(memberTeam);
     }
+
+    @Override
+    public void delete(Member member, Team team) {
+        Long memberId = member.getId();
+        Long teamId = team.getId();
+        em.createQuery("delete from MemberTeam mt where mt.member.id=:memberId and mt.team.id=:teamId")
+                .setParameter("memberId", memberId)
+                .setParameter("teamId", teamId)
+                .executeUpdate();
+    }
+
+
 }

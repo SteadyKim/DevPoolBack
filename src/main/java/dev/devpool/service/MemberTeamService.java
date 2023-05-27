@@ -28,7 +28,6 @@ public class MemberTeamService {
     private final TeamRepository teamRepository;
 
     private final MemberTeamRepository memberTeamRepository;
-    private final EntityManager em;
 
     // 팀에 멤버 조인
     @Transactional
@@ -62,6 +61,23 @@ public class MemberTeamService {
         return CommonResponseDto.builder()
                 .message("팀에 멤버를 저장하였습니다.")
                 .status(201)
+                .build();
+    }
+
+    @Transactional
+    public CommonResponseDto<Object> delete(Long memberId, Long teamId) {
+        Member findMember = memberRepository.findOneById(memberId);
+        Team findTeam = teamRepository.findOneById(teamId);
+        if(findMember == null) throw new CustomException("멤버가 없습니디.", MemberTeamService.class.getName(), "delete()");
+        if(findTeam == null) throw new CustomException("팀이 없습니다.", MemberTeamService.class.getName(), "delete()");
+
+        memberTeamRepository.delete(findMember, findTeam);
+        /**
+         * 조회 여기다 리팩토링 하기
+          */
+        return CommonResponseDto.builder()
+                .message("팀에서 멤버를 삭제하였습니다.")
+                .status(200)
                 .build();
     }
 

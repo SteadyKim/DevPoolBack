@@ -6,4 +6,6 @@ import dev.devpool.dto.common.CommonResponseDto;
 
 public interface MemberTeamRepositoryCustom {
     void join(Member member, Team team);
+
+    void delete(Member member, Team team);
 }

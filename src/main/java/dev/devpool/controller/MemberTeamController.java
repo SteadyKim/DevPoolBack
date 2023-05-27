@@ -28,11 +28,22 @@ public class MemberTeamController {
     })
     @PostMapping("/memberTeam")
     public ResponseEntity<CommonResponseDto<Object>> saveMemberTeam(@ModelAttribute MemberTeamParameter memberTeamParameter) {
-        // 저장
-        // 팀, 팀멤버, stack, techfield 등 관련 모든 정보 저장
-
 
         CommonResponseDto<Object> responseDto = memberTeamService.join(memberTeamParameter.getMemberId(), memberTeamParameter.getTeamId());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+
+    @Operation(summary = "팀에서 멤버 삭제", description = "팀에서 멤버를 삭제합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "팀에 멤버를 성공적으로 삭제하였습니다."),
+            @ApiResponse(responseCode = "409", description = "팀에 멤버 삭제 실패"),
+    })
+    @DeleteMapping("/memberTeam")
+    public ResponseEntity<CommonResponseDto<Object>> deleteMemberTeam(@ModelAttribute MemberTeamParameter memberTeamParameter) {
+
+        CommonResponseDto<Object> responseDto = memberTeamService.delete(memberTeamParameter.getMemberId(), memberTeamParameter.getTeamId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }

@@ -80,12 +80,12 @@ public class TeamRepository {
         List<Team> teamList = em.createQuery("select t from Team t where t.hostMember.id=:hostId", Team.class)
                 .setParameter("hostId", hostId)
                 .getResultList();
-        if (teamList == null || teamList.size() == 0) {
-            throw new CustomEntityNotFoundException(Team.class.getName(), hostId);
-        }
-        /**
-         * 영속성 컨텍스트를 사용하는 queryDsl로 리팩토링 할 예정
-         */
+//        if (teamList == null || teamList.size() == 0) {
+//            throw new CustomEntityNotFoundException(Team.class.getName(), hostId);
+//        }
+//        /**
+//         * 영속성 컨텍스트를 사용하는 queryDsl로 리팩토링 할 예정
+//         */
 
         teamList.stream()
                 .forEach(s -> deleteById(s.getId()));
@@ -102,13 +102,4 @@ public class TeamRepository {
 
     }
 
-    /**
-     * MemberTEAM
-     */
-    public void deleteAllMemberTeam(Long teamId) {
-        Query query = em.createQuery("delete from MemberTeam mt where mt.team.id =:teamId")
-                .setParameter("teamId", teamId);
-
-        query.executeUpdate();
-    }
 }

@@ -1,5 +1,6 @@
 package dev.devpool;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.devpool.domain.Member;
 import dev.devpool.dto.MemberDto;
 import dev.devpool.dto.common.CommonResponseDto;
@@ -42,6 +43,9 @@ public class MemberControllerTest {
 
         @Autowired
         private MemberRepository memberRepository;
+
+        @Autowired
+        private ObjectMapper objectMapper;
 
         @Test
         public void testGetMemberApi() throws Exception {
@@ -91,7 +95,23 @@ public class MemberControllerTest {
 
     }
 
+    @Test
+    @WithMockUser(roles = "USER")
+    public void testDeleteMemberWithAuthApi() throws Exception {
 
+        // API 호출 및 응답 확인
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/member/{memberId}", 1L)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/member/{memberId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        ;
+
+    }
 
 
 

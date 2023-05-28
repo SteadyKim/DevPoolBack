@@ -74,6 +74,9 @@ public class MemberController {
     @DeleteMapping("/member/{memberId}")
     public ResponseEntity<CommonResponseDto<Object>> deleteMember(@PathVariable("memberId") Long id) {
 
+        /**
+         * 있는 경우에만 delete 해야하는데 그 비즈니스로직을 어떻게..?? 그리고 throw exception을 언젠 하지않고 언젠 해도 되는지
+         */
         teamService.deleteByHostId(id);
         CommonResponseDto<Object> responseDto = memberService.deleteById(id);
 

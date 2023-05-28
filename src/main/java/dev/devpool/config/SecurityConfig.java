@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .authorizeRequests((request) -> request
                         .antMatchers(HttpMethod.OPTIONS, "/**/*").permitAll()
                         .antMatchers("/login/**").permitAll()
-                        .antMatchers("/api/member/**").hasRole("USER")
+//                        .antMatchers("/api/member/**").hasRole("USER")
 //                        .antMatchers("/api/team/**").hasRole("USER")
                         .anyRequest().permitAll()
                 )

@@ -4,6 +4,7 @@ import dev.devpool.domain.Latter;
 import dev.devpool.domain.Member;
 import dev.devpool.dto.LatterDto;
 import dev.devpool.dto.common.CommonResponseDto;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.LatterRepository;
 import dev.devpool.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -111,8 +112,10 @@ public class LatterService {
     }
 
     public Latter findById(Long latterId) {
-        Latter findLatter = latterRepository.findById(latterId);
-        return findLatter;
+        Latter latter = latterRepository.findById(latterId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Latter.class.getName(), latterId));
+
+        return latter;
     }
 
     // 삭제

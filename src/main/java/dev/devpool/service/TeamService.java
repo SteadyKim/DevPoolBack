@@ -139,6 +139,9 @@ public class TeamService {
         return responseDto;
     }
 
+
+
+
     public List<TeamDto.Response> findAll() {
         List<TeamDto.Response> responseDtoList = teamRepository.findAll()
                 .stream()
@@ -206,30 +209,5 @@ public class TeamService {
                 .message("팀 수정에 성공하였습니다.")
                 .build();
     }
-
-    /**
-     * MemberTeam
-     */
-//    @Transactional
-//    public Team updateMemberTeam(Long teamId, List<MemberDto.Save> memberDtoList ) {
-//        Team findTeam = teamRepository.findOneById(teamId);
-//        // 지우고 추가하기...
-//        teamRepository.deleteAllMemberTeam(findTeam.getId());
-//
-//        for (MemberDto.Save memberDto : memberDtoList) {
-//            memberDt
-//        }
-//
-//
-//        for (Member member : members) {
-//            MemberTeam memberTeam = MemberTeam.builder()
-//                    .team(findTeam)
-//                    .member(member)
-//                    .build();
-//
-//        }
-//
-//        return findTeam;
-//    }
 
 }

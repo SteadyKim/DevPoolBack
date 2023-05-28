@@ -52,7 +52,11 @@ public class Member implements UserDetails {
 
     @OneToMany(mappedBy = "sender", orphanRemoval = true)
     @JsonIgnore
-    private List<Latter> latterList = new ArrayList<>();
+    private List<Latter> sendLatterList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver", orphanRemoval = true)
+    @JsonIgnore
+    private List<Latter> receiveLatterList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     @JsonIgnore

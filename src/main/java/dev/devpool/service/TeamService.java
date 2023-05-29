@@ -138,8 +138,63 @@ public class TeamService {
 
         return responseDto;
     }
+    public TeamDto.Response findOneByHostId(Long hostId) {
+        Team findTeam = teamRepository.findOneByHostId(hostId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), hostId));
 
+        Long teamId = findTeam.getId();
 
+        // stack
+        List<StackDto.Response> stackDtoList = stackRepository.findAllByTeamId(teamId)
+                .stream()
+                .map(stack -> StackDto.Response.builder()
+                        .name(stack.getName())
+                        .build())
+                .collect(Collectors.toList());
+
+        // techfield
+        List<TechField> techFieldList = techFieldRepository.findAllByTeamId(teamId);
+
+        List<TechFieldDto.Response> techFieldDtoList = techFieldList.stream()
+                .map(techField -> TechFieldDto.Response.builder()
+                        .name(techField.getName())
+                        .build())
+                .collect(Collectors.toList());
+
+        // category
+        Category category = categoryRepository.findByTeamId(teamId);
+        CategoryDto.Response categoryDto = CategoryDto.Response
+                .builder()
+                .name(category.getName())
+                .build();
+
+        // HostMember
+        Member hostMember = findTeam.getHostMember();
+        if(hostMember == null){
+            throw new CustomEntityNotFoundException(Member.class.getName(), teamId);
+        }
+
+        TeamDto.Response responseDto = TeamDto.Response.builder()
+                .teamId(teamId)
+                .name(findTeam.getName())
+                .content(findTeam.getContent())
+                .category(categoryDto)
+                .currentCount(findTeam.getMemberTeams().size())
+                .recruitCount(findTeam.getRecruitCount())
+                .createTime(findTeam.getCreateTime())
+                .recruitStack(stackDtoList)
+                .recruitTechField(techFieldDtoList)
+                .hostMember(MemberDto.Response.builder()
+                        .memberId(hostMember.getId())
+                        .name(hostMember.getName())
+                        .email(hostMember.getNickName())
+                        .imageUrl(hostMember.getImageUrl())
+                        .email(hostMember.getEmail())
+                        .build())
+                .build();
+
+        return responseDto;
+    }
 
 
     public List<TeamDto.Response> findAll() {

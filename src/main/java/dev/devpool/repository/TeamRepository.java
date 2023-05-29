@@ -45,6 +45,16 @@ public class TeamRepository {
         return findTeam;
     }
 
+    public Optional<Team> findOneByHostId(Long hostId) {
+        Optional<Team> findTeam = em.createQuery("select t from Team t where t.hostMember.id=:hostId", Team.class)
+                .setParameter("hostId", hostId)
+                .getResultStream()
+                .findAny();
+
+
+        return findTeam;
+    }
+
     public void deleteById(Long teamId) {
         Team findTeam = em.find(Team.class, teamId);
         if (findTeam == null) {
@@ -80,12 +90,7 @@ public class TeamRepository {
         List<Team> teamList = em.createQuery("select t from Team t where t.hostMember.id=:hostId", Team.class)
                 .setParameter("hostId", hostId)
                 .getResultList();
-//        if (teamList == null || teamList.size() == 0) {
-//            throw new CustomEntityNotFoundException(Team.class.getName(), hostId);
-//        }
-//        /**
-//         * 영속성 컨텍스트를 사용하는 queryDsl로 리팩토링 할 예정
-//         */
+
 
         teamList.stream()
                 .forEach(s -> deleteById(s.getId()));

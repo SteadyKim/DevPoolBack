@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @Data
@@ -26,9 +28,11 @@ public class ProjectDto {
 
         private List<StackDto.Response> stack;
 
-        private LocalDate startDate;
+        @DateTimeFormat(pattern = "yyyy-MM")
+        private YearMonth startDate;
 
-        private LocalDate endDate;
+        @DateTimeFormat(pattern = "yyyy-MM")
+        private YearMonth endDate;
 
         private String url;
 
@@ -45,11 +49,13 @@ public class ProjectDto {
 
         private String name;
 
-        private LocalDate startDate;
+        @DateTimeFormat(pattern = "yyyy-MM")
+        private YearMonth startDate;
+
+        @DateTimeFormat(pattern = "yyyy-MM")
+        private YearMonth endDate;
 
         private List<StackDto.Save> stack;
-
-        private LocalDate endDate;
 
         private String url;
 

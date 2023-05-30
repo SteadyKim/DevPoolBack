@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +38,12 @@ public class Project {
 
     String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM")
+    YearMonth startDate;
 
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate endDate;
+    @DateTimeFormat(pattern = "yyyy-MM")
+    YearMonth endDate;
 
     String url;
 

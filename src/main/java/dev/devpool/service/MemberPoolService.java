@@ -65,9 +65,9 @@ public class MemberPoolService {
                 List<ProjectDto.Save> projectDtoList = memberPoolDto.getProject();
 
                 for (ProjectDto.Save projectDto : projectDtoList) {
-
                         Project project = Project.builder()
                                 .member(findMember)
+                                .name(projectDto.getName())
                                 .url(projectDto.getUrl())
                                 .startDate(projectDto.getStartDate())
                                 .endDate(projectDto.getEndDate())
@@ -188,6 +188,7 @@ public class MemberPoolService {
         }
 
         private static ProjectDto.Response getProjectDto(Project project) {
+
                 return ProjectDto.Response.builder()
                         .name(project.getName())
                         .startDate(project.getStartDate())

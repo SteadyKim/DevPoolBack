@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
+
     private final StackRepository stackRepository;
     private final TechFieldRepository techFieldRepository;
     private final CategoryRepository categoryRepository;

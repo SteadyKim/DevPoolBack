@@ -24,7 +24,6 @@ public class StackService {
 
     private final StackRepository stackRepository;
     private final TeamRepository teamRepository;
-
     private final MemberRepository memberRepository;
 
     private final ProjectRepository projectRepository;
@@ -39,7 +38,8 @@ public class StackService {
 
     //조회
     public Stack findOneById(Long stackId) {
-        return stackRepository.findOneById(stackId);
+        return stackRepository.findById(stackId)
+                .orElse(null);
     }
 
     public List<Stack> findAllByTeamId(Long teamId){

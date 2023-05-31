@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -103,8 +104,8 @@ public class InitDb {
             Project project = Project.builder()
                     .member(member)
                     .name("projectX")
-                    .startDate(YearMonth.now())
-                    .endDate(YearMonth.now())
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now())
                     .url("1234")
                     .build();
             em.persist(project);

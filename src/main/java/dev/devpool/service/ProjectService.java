@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,11 +42,20 @@ public class ProjectService {
     }
 
     private static ProjectDto.Response getProjectDto(Project findProject) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+        LocalDate startDate = findProject.getStartDate();
+        String startDateString = startDate.format(formatter);
+
+        LocalDate endDate = findProject.getEndDate();
+        String endDateString = endDate.format(formatter);
+
         ProjectDto.Response projectDto = ProjectDto.Response
                 .builder()
                 .name(findProject.getName())
-                .startDate(findProject.getStartDate())
-                .endDate(findProject.getEndDate())
+                .startDate(startDateString)
+                .endDate(endDateString)
                 .stack(findProject.getStackList().stream().map(stack -> StackDto.Response.builder()
                                 .name(stack.getName())
                                 .build())

@@ -47,20 +47,26 @@ public class ProjectRepository {
 
     //삭제
     public void deleteById(Long projectId) {
+
         Project findProject = em.find(Project.class, projectId);
         em.remove(findProject);
     }
 
     public void deleteAll() {
-        Query deleteAll = em.createQuery("delete from Project p");
-        deleteAll.executeUpdate();
+        List<Project> projectList = em.createQuery("select p from Project p", Project.class)
+                .getResultList();
+
+        for (Project project : projectList) {
+            em.remove(project);
+        }
     }
 
     public void deleteByMemberId(Long memberId) {
-        Query query = em.createQuery("delete from Project p where p.member.id =:memberId")
-                .setParameter("memberId", memberId);
+        List<Project> projectList = findAllByMemberId(memberId);
 
-        query.executeUpdate();
+        for (Project project : projectList) {
+            deleteById(project.getId());
+        }
     }
 
 

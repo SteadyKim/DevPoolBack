@@ -1,5 +1,6 @@
 package dev.devpool.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.devpool.dto.ProjectDto;
 import lombok.*;
@@ -32,18 +33,18 @@ public class Project {
     @JoinColumn(name = "MEMBER_ID")
     Member member;
 
-    @OneToMany(mappedBy = "project", fetch = LAZY)
+    @OneToMany(mappedBy = "project", fetch = LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     List<Stack> stackList = new ArrayList<>();
 
     String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM")
-    YearMonth startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate startDate;
 
 
-    @DateTimeFormat(pattern = "yyyy-MM")
-    YearMonth endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate endDate;
 
     String url;
 

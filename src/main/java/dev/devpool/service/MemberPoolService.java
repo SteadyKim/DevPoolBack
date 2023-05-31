@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -65,12 +67,23 @@ public class MemberPoolService {
                 List<ProjectDto.Save> projectDtoList = memberPoolDto.getProject();
 
                 for (ProjectDto.Save projectDto : projectDtoList) {
+
+                        String startDateString = projectDto.getStartDate();
+                        String fullStartDateString = startDateString + "-01";
+
+                        LocalDate startDate = LocalDate.parse(fullStartDateString);
+
+                        String endDateString = projectDto.getEndDate();
+                        String fullEndDateString = endDateString + "-01";
+
+                        LocalDate endDate = LocalDate.parse(fullEndDateString);
+
                         Project project = Project.builder()
                                 .member(findMember)
                                 .name(projectDto.getName())
                                 .url(projectDto.getUrl())
-                                .startDate(projectDto.getStartDate())
-                                .endDate(projectDto.getEndDate())
+                                .startDate(startDate)
+                                .endDate(endDate)
                                 .build();
                         projectRepository.save(project);
 
@@ -189,10 +202,18 @@ public class MemberPoolService {
 
         private static ProjectDto.Response getProjectDto(Project project) {
 
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+                LocalDate startDate = project.getStartDate();
+                String startDateString = startDate.format(formatter);
+
+                LocalDate endDate = project.getEndDate();
+                String endDateString = endDate.format(formatter);
+
                 return ProjectDto.Response.builder()
                         .name(project.getName())
-                        .startDate(project.getStartDate())
-                        .endDate(project.getEndDate())
+                        .startDate(startDateString)
+                        .endDate(endDateString)
                         .url(project.getUrl())
                         .stack(
                                 project.getStackList().stream()

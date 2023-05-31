@@ -1,5 +1,6 @@
 package dev.devpool.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Project;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,10 +30,10 @@ public class ProjectDto {
         private List<StackDto.Response> stack;
 
         @DateTimeFormat(pattern = "yyyy-MM")
-        private YearMonth startDate;
+        private String startDate;
 
         @DateTimeFormat(pattern = "yyyy-MM")
-        private YearMonth endDate;
+        private String endDate;
 
         private String url;
 
@@ -50,10 +51,10 @@ public class ProjectDto {
         private String name;
 
         @DateTimeFormat(pattern = "yyyy-MM")
-        private YearMonth startDate;
+        private String startDate;
 
         @DateTimeFormat(pattern = "yyyy-MM")
-        private YearMonth endDate;
+        private String endDate;
 
         private List<StackDto.Save> stack;
 

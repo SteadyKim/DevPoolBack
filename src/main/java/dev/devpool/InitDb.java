@@ -256,33 +256,48 @@ public class InitDb {
                     .content("안녕하세요!!")
                     .sender(member)
                     .receiver(member2)
+                    .createDate(LocalDateTime.now())
                     .build();
 
             Latter latter2 = Latter.builder()
                     .content("안녕하세요22!!")
                     .sender(member2)
                     .receiver(member)
+                    .createDate(LocalDateTime.now().plusDays(1))
+                    .build();
+
+            Latter latter3 = Latter.builder()
+                    .content("안녕하세요33!!")
+                    .sender(member)
+                    .receiver(member2)
+                    .createDate(LocalDateTime.now().plusDays(2))
                     .build();
 
 
 
-            Latter latter3 = Latter.builder()
-                    .content("안녕하세요33!!")
+            Latter latter4 = Latter.builder()
+                    .content("안녕하세요44!!")
                     .sender(member)
                     .receiver(member3)
                     .build();
 
 
-            Latter latter4 = Latter.builder()
-                    .content("안녕하세요44!!")
+            Latter latter5 = Latter.builder()
+                    .content("안녕하세요55!!")
                     .sender(member3)
                     .receiver(member)
                     .build();
 
             em.persist(latter1);
+
+
             em.persist(latter2);
+
             em.persist(latter3);
+
             em.persist(latter4);
+
+            em.persist(latter5);
 
         }
     }

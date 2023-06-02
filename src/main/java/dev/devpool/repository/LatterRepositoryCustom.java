@@ -12,4 +12,5 @@ public interface LatterRepositoryCustom {
 
     void deleteAllBySenderId(Long senderId);
 
+    void deleteTargetLatter(Long senderId, Long receiverId);
 }

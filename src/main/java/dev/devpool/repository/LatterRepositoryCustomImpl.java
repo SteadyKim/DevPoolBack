@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class LatterRepositoryImpl implements LatterRepositoryCustom {
+public class LatterRepositoryCustomImpl implements LatterRepositoryCustom {
 
     private final EntityManager em;
 
@@ -40,5 +40,13 @@ public class LatterRepositoryImpl implements LatterRepositoryCustom {
         Query query = em.createQuery("delete from Latter l where l.sender.id=:senderId")
                 .setParameter("senderId", senderId);
         query.executeUpdate();
+    }
+
+    @Override
+    public void deleteTargetLatter(Long senderId, Long receiverId) {
+        em.createQuery("delete from Latter l where l.sender.id=:senderId and l.receiver.id=:receiverId")
+                .setParameter("senderId", senderId)
+                .setParameter("receiverId", receiverId)
+                .executeUpdate();
     }
 }

@@ -20,6 +20,8 @@ public class LatterDto {
     @Schema(name = "latter response dto")
     public static class Response {
 
+        private Long latterId;
+
         private String senderNickName;
 
         private String receiverNickName;

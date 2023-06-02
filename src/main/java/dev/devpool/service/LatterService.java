@@ -48,6 +48,10 @@ public class LatterService {
     }
 
     // 조회
+
+    /**
+     * sender를 기준으로 for문을 돌리고 있어서 문제가 발생함. sender가 보낸 쪽지가 없는 경우 받은 쪽지도 안보임
+     */
     public List<List<LatterDto.Response>> findAllByMemberId(Long senderId) {
         List<Latter> latterSenderList = latterRepository.findAllBySenderId(senderId); // 내가 보낸 모든 쪽지
         List<Latter> latterReceiverList = latterRepository.findAllByReceiverId(senderId); // 내가 받은 모든 쪽지
@@ -59,53 +63,72 @@ public class LatterService {
         Set<Long> receiverIdSet = latterSenderList.stream()
                 .map(latter -> latter.getReceiver().getId())
                 .collect(Collectors.toSet());
+            for (Long receiverId : receiverIdSet) {
 
-        for (Long receiverId : receiverIdSet) {
+                List<LatterDto.Response> latterSenderDtoList = latterSenderList.stream()  // 내가 보낸 쪽지 중 receiver가 특정한 경우
+                        .filter(latter -> latter.getReceiver() != null && Objects.equals(latter.getReceiver().getId(), receiverId))
+                        .map(latter -> {
+                            String receiverNickName = Optional.ofNullable(latter.getReceiver())
+                                    .map(Member::getNickName)
+                                    .orElse("탈퇴한 회원");
 
-            List<LatterDto.Response> latterSenderDtoList = latterSenderList.stream()  // 내가 보낸 쪽지 중 receiver가 특정한 경우
-                    .filter(latter -> latter.getReceiver() != null && Objects.equals(latter.getReceiver().getId(), receiverId))
-                    .map(latter -> {
-                        String receiverNickName = Optional.ofNullable(latter.getReceiver())
-                                .map(Member::getNickName)
-                                .orElse("탈퇴한 회원");
+                            return   LatterDto.Response.builder()
+                                    .latterId(latter.getId())
+                                    .senderNickName(latter.getSender().getNickName())
+                                    .receiverNickName(receiverNickName)
+                                    .content(latter.getContent())
+                                    .createTime(latter.getCreateDate())
+                                    .build();
+                        })
+                        .collect(Collectors.toList());
 
-                        return   LatterDto.Response.builder()
-                                .senderNickName(latter.getSender().getNickName())
-                                .receiverNickName(receiverNickName)
-                                .content(latter.getContent())
-                                .createTime(latter.getCreateDate())
-                                .build();
-                    })
-                    .collect(Collectors.toList());
+                // sender receiverId인 쪽지 중 receiver의 아이디가 senderId인 쪽지의 Dto   receiver >> sender 내가 받은 쪽지 중 sender가 특정한 경우
+                List<LatterDto.Response> latterReceiverDtoList = latterReceiverList.stream()
+                        .filter(latter -> latter.getSender() != null && Objects.equals(latter.getSender().getId(), receiverId))
+                        .map(latter -> {
 
-            // sender receiverId인 쪽지 중 receiver의 아이디가 senderId인 쪽지의 Dto   receiver >> sender 내가 받은 쪽지 중 sender가 특정한 경우
-            List<LatterDto.Response> latterReceiverDtoList = latterReceiverList.stream()
-                    .filter(latter -> latter.getSender() != null && Objects.equals(latter.getSender().getId(), receiverId))
-                    .map(latter -> {
-                        /**
-                         * 여기가 안찍힘
-                         */
+                            String senderNickName = Optional.ofNullable(latter.getSender())
+                                    .map(Member::getNickName)
+                                    .orElse("탈퇴한 회원");
+
+                            return LatterDto.Response.builder()
+                                    .latterId(latter.getId())
+                                    .senderNickName(senderNickName)
+                                    .receiverNickName(latter.getReceiver().getNickName())
+                                    .content(latter.getContent())
+                                    .createTime(latter.getCreateDate())
+                                    .build();
+                        })
+                        .collect(Collectors.toList());
+
+                List<LatterDto.Response> sumDtoList = new ArrayList<>();
+                sumDtoList.addAll(latterSenderDtoList);
+                sumDtoList.addAll(latterReceiverDtoList);
+                sumDtoList.sort(Comparator.comparing(LatterDto.Response::getCreateTime));
+
+                latterDtoList.add(sumDtoList);
+            }
+        // 내가 받은 쪽지 중 sender가 receiverId가 아닌 쪽지 ( 예외 적인 상황임)
+        List<LatterDto.Response> sumDtoList = latterReceiverList.stream()
+                .filter(latter -> !receiverIdSet.contains(latter.getSender().getId()))
+                .map(latter -> {
                         String senderNickName = Optional.ofNullable(latter.getSender())
-                                .map(Member::getNickName)
-                                .orElse("탈퇴한 회원");
+                        .map(Member::getNickName)
+                        .orElse("탈퇴한 회원");
 
-                        return LatterDto.Response.builder()
-                                .senderNickName(senderNickName)
-                                .receiverNickName(latter.getReceiver().getNickName())
-                                .content(latter.getContent())
-                                .createTime(latter.getCreateDate())
-                                .build();
-                    })
-                    .collect(Collectors.toList());
+                    return LatterDto.Response.builder()
+                            .latterId(latter.getId())
+                            .senderNickName(senderNickName)
+                            .receiverNickName(latter.getReceiver().getNickName())
+                            .content(latter.getContent())
+                            .createTime(latter.getCreateDate())
+                            .build();
+                })
+                .collect(Collectors.toList());
 
-            List<LatterDto.Response> sumDtoList = new ArrayList<>();
-            sumDtoList.addAll(latterSenderDtoList);
-            sumDtoList.addAll(latterReceiverDtoList);
-            sumDtoList.sort(Comparator.comparing(LatterDto.Response::getCreateTime));
-
+        if(!sumDtoList.isEmpty()) {
             latterDtoList.add(sumDtoList);
         }
-
         latterDtoList.sort(Comparator.comparing(l -> l.get(0).getCreateTime()));
 
         return latterDtoList;
@@ -120,8 +143,13 @@ public class LatterService {
 
     // 삭제
     @Transactional
-    public void deleteById(Long latterId) {
+    public CommonResponseDto<Object> deleteById(Long latterId) {
         latterRepository.deleteById(latterId);
+
+        return CommonResponseDto.builder()
+                .status(200)
+                .message("특정 latter 삭제에 성공하였습니다.")
+                .build();
     }
 
     @Transactional
@@ -132,6 +160,7 @@ public class LatterService {
     public void deleteAll() {
         latterRepository.deleteAll();
     }
+
 
 
 }

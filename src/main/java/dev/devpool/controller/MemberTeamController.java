@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +27,8 @@ public class MemberTeamController {
             @ApiResponse(responseCode = "201", description = "팀에 멤버를 성공적으로 저장하였습니다."),
             @ApiResponse(responseCode = "409", description = "팀에 멤버 저장 실패"),
     })
-    @PostMapping("/memberTeam")
-    public ResponseEntity<CommonResponseDto<Object>> saveMemberTeam(@ModelAttribute MemberTeamParameter memberTeamParameter) {
+    @PostMapping("/member-team")
+    public ResponseEntity<CommonResponseDto<Object>> saveMemberTeam(@ParameterObject @ModelAttribute MemberTeamParameter memberTeamParameter) {
 
         CommonResponseDto<Object> responseDto = memberTeamService.join(memberTeamParameter.getMemberId(), memberTeamParameter.getTeamId());
 
@@ -40,7 +41,7 @@ public class MemberTeamController {
             @ApiResponse(responseCode = "201", description = "팀에 멤버를 성공적으로 삭제하였습니다."),
             @ApiResponse(responseCode = "409", description = "팀에 멤버 삭제 실패"),
     })
-    @DeleteMapping("/memberTeam")
+    @DeleteMapping("/member-team")
     public ResponseEntity<CommonResponseDto<Object>> deleteMemberTeam(@ModelAttribute MemberTeamParameter memberTeamParameter) {
 
         CommonResponseDto<Object> responseDto = memberTeamService.delete(memberTeamParameter.getMemberId(), memberTeamParameter.getTeamId());

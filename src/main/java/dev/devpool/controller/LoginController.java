@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class LoginController {
             @ApiResponse(responseCode = "500", description = "멤버 저장 실패 - 인터넷 에러")
     })
     @PostMapping(value = "/join", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CommonResponseDto<Object>> saveMember(@ModelAttribute MemberParameter memberParameter) throws IOException {
+    public ResponseEntity<CommonResponseDto<Object>> saveMember(@ParameterObject @ModelAttribute MemberParameter memberParameter) throws IOException {
 
 
         // 저장

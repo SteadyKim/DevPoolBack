@@ -27,6 +27,8 @@ public class Member implements UserDetails {
     @Column(name = "MEMBER_ID")
     private Long id;
 
+    private String BJId;
+
     private String name;
     private String nickName;
     private String email;
@@ -88,7 +90,7 @@ public class Member implements UserDetails {
 
 
     /**
-     * 비지니스 로직
+     * 비지니스 로직 -- 수정해야 할 듯??
      */
     public void update(MemberDto.Save newMemberDto, String url) {
         name = newMemberDto.getName();

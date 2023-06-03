@@ -40,6 +40,7 @@ public class MemberService {
     private final S3Uploader s3Uploader;
 
     @Transactional
+    // 로그인
     public TokenInfo login(String email, String password){
 
         // 사용자가 아이디와 비밀번호를 입력하면 UsernamePasswordAuthentication 토큰을 생성한다.
@@ -72,7 +73,7 @@ public class MemberService {
         String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/default.png";
 
         MultipartFile image = memberParameter.getImage();
-        System.out.println("image.isEmpty() = " + image.isEmpty());
+        System.out.println("image = " + image);
 
         if(!(image == null) && !(image.isEmpty())) {
             storeFileName = s3Uploader.upload(image, "images");
@@ -80,6 +81,7 @@ public class MemberService {
 
         Member member = Member.builder()
                 .name(memberParameter.getName())
+                .BJId(memberParameter.getBJId())
                 .email(memberParameter.getEmail())
                 .nickName(memberParameter.getNickName())
                 .password(memberParameter.getPassword())
@@ -111,6 +113,7 @@ public class MemberService {
 
         MemberDto.Response responseDto = MemberDto.Response.builder()
                 .memberId(findMember.getId())
+                .BJId(findMember.getBJId())
                 .name(findMember.getName())
                 .nickName(findMember.getNickName())
                 .email(findMember.getEmail())
@@ -125,6 +128,7 @@ public class MemberService {
                 .stream()
                 .map(member -> MemberDto.Response.builder()
                         .memberId(member.getId())
+                        .BJId(member.getBJId())
                         .name(member.getName())
                         .nickName(member.getNickName())
                         .email(member.getEmail())

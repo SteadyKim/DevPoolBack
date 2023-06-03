@@ -18,5 +18,7 @@ public class MemberParameter {
 
     private String password;
 
+    private String BJId;
+
     private MultipartFile image;
 }

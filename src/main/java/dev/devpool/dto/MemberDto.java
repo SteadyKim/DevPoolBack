@@ -17,6 +17,8 @@ public class MemberDto {
 
         private Long memberId;
 
+        private String BJId;
+
         private String name;
 
         private String nickName;

@@ -157,24 +157,34 @@ public class MemberService {
     }
 
     @Transactional
-    public CommonResponseDto<Object> update(Long id, MemberDto.Save memberDto, MultipartFile image) throws IOException {
-        Member findMember = memberRepository.findOneById(id);
-        String storeFileName = null;
+    public CommonResponseDto<Object> update(MemberParameter memberParameter) throws IOException {
+        String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/default.png";
 
-        if(!image.isEmpty()) {
+        Member findMember = memberRepository.findOneById(memberParameter.getMemberId());
+        MultipartFile image = memberParameter.getImage();
+
+        if(!(image == null) && !(image.isEmpty())) {
             storeFileName = s3Uploader.upload(image, "images");
         }
+
+
+        MemberDto.Update memberDto = MemberDto.Update.builder()
+                .name(memberParameter.getName())
+                .nickName(memberParameter.getNickName())
+                .email(memberParameter.getEmail())
+                .password(memberParameter.getPassword())
+                .BJId(memberParameter.getBJId())
+                .imgUrl(storeFileName)
+                .build();
+
         // 변경 감지 사용하기
-        findMember.update(memberDto, storeFileName);
+        findMember.update(memberDto);
 
         return CommonResponseDto.builder()
                 .status(200)
-                .id(id)
+                .id(memberParameter.getMemberId())
                 .message("멤버 수정에 성공하였습니다.")
                 .build();
     }
 
-    public void updateImage(MultipartFile image) throws IOException {
-        s3Uploader.upload(image, "images");
-    }
 }

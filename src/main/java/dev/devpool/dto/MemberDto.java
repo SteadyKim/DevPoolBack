@@ -2,7 +2,6 @@ package dev.devpool.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Schema(description = "member dto")
@@ -32,8 +31,10 @@ public class MemberDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    @Schema(name = "member save dto")
-    public static class Save {
+    @Schema(name = "member update dto")
+    public static class Update {
+
+        private String BJId;
 
         private String name;
 
@@ -42,6 +43,9 @@ public class MemberDto {
         private String email;
 
         private String password;
+
+        private String imgUrl;
+
 
     }
 }

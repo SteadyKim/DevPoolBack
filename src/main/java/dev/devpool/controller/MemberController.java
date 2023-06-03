@@ -4,12 +4,14 @@ import dev.devpool.dto.*;
 import dev.devpool.dto.common.CommonDataListResponseDto;
 import dev.devpool.dto.common.CommonDataResponseDto;
 import dev.devpool.dto.common.CommonResponseDto;
+import dev.devpool.parameter.MemberParameter;
 import dev.devpool.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -88,9 +90,10 @@ public class MemberController {
             @ApiResponse(responseCode = "200", description = "멤버 수정 - 성공"),
             @ApiResponse(responseCode = "404", description = "멤버 수정 - 실패")
     })
-    @PatchMapping("/member/{memberId}")
-    public ResponseEntity<CommonResponseDto<Object>> updateMember(@PathVariable("memberId") Long id, @RequestBody @Valid MemberDto.Save memberDto, @RequestParam(value = "image") MultipartFile image) throws IOException {
-        CommonResponseDto<Object> responseDto = memberService.update(id, memberDto, image);
+    @PatchMapping("/member")
+    public ResponseEntity<CommonResponseDto<Object>> updateMember(
+            @ParameterObject @ModelAttribute MemberParameter memberParameter) throws IOException {
+        CommonResponseDto<Object> responseDto = memberService.update(memberParameter);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }

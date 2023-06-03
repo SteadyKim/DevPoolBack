@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Schema(description = "member 저장 파라미터")
 public class MemberParameter {
 
+    private Long memberId;
+
     private String name;
 
     private String nickName;

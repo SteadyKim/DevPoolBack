@@ -37,7 +37,8 @@ public class Member implements UserDetails {
     private String imageUrl;
 
     @Comment("생성시간")
-    private LocalDateTime createTime;
+    @Builder.Default
+    private LocalDateTime createTime = LocalDateTime.now();
 
     public String getImageUrl() {
         return imageUrl;
@@ -92,12 +93,13 @@ public class Member implements UserDetails {
     /**
      * 비지니스 로직 -- 수정해야 할 듯??
      */
-    public void update(MemberDto.Save newMemberDto, String url) {
+    public void update(MemberDto.Update newMemberDto) {
         name = newMemberDto.getName();
         nickName = newMemberDto.getNickName();
         email = newMemberDto.getEmail();
         password = newMemberDto.getPassword();
-        imageUrl = url;
+        imageUrl = newMemberDto.getImgUrl();
+        BJId = newMemberDto.getBJId();
     }
 
     public void setMemberPoolCreateTime(LocalDateTime localDateTime) {

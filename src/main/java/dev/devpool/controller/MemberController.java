@@ -69,10 +69,10 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(listResponseDto);
     }
 
-    @Operation(summary = "회원정보리스트조회", description = "모든 회원의 정보를 조회합니다.")
+    @Operation(summary = "회원 백준 리스트조회", description = "모든 백준 회원의 정보를 조회합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "멤버 조회 - 성공"),
-            @ApiResponse(responseCode = "404", description = "멤버 조회 실패 - 멤버가 DB에 없습니다.")
+            @ApiResponse(responseCode = "200", description = "백준 멤버 조회 - 성공"),
+            @ApiResponse(responseCode = "404", description = "백준 멤버 조회 실패 - 백준 멤버가 DB에 없습니다.")
     })
     @GetMapping("/members/back-joon")
     public ResponseEntity<CommonDataListResponseDto<BackJoonDto.Response>> findMemberBackJoonList() {

@@ -128,6 +128,7 @@ public class InitDb {
             Member member2 = Member.builder()
                     .name("이영진")
                     .nickName("ㄴ빵")
+                    .BJId("rereers1125")
                     .createTime(LocalDateTime.now())
                     .email("ㄱㄷㄴㄴㄷ@naver.com")
                     .password("rter141")

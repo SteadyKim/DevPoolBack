@@ -201,10 +201,19 @@ public class InitDb {
 
             em.persist(team);
 
-            MemberTeam memberTeam = new MemberTeam();
-            memberTeam.addMemberTeam(member, team);
+            MemberTeam memberTeam = MemberTeam.builder()
+                    .member(member)
+                    .team(team)
+                    .build();
 
             em.persist(memberTeam);
+
+            MemberTeam memberTeam2 = MemberTeam.builder()
+                    .member(member2)
+                    .team(team)
+                    .build();
+
+            em.persist(memberTeam2);
 
 
             Stack stack = Stack.builder()

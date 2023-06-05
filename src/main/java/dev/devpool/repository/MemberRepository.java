@@ -31,7 +31,6 @@ public class MemberRepository {
 
     //조회
     public Member findOneById(Long memberId) {
-        System.out.println("memberId = " + memberId);
         Member findMember = em.find(Member.class, memberId);
 
             if (findMember == null) {

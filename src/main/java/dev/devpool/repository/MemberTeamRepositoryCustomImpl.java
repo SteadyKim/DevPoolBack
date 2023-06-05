@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -36,6 +37,13 @@ public class MemberTeamRepositoryCustomImpl implements MemberTeamRepositoryCusto
                 .setParameter("memberId", memberId)
                 .setParameter("teamId", teamId)
                 .executeUpdate();
+    }
+
+    @Override
+    public List<MemberTeam> findAllByTeamId(Long teamId) {
+        return em.createQuery("select mt from MemberTeam mt where mt.team.id=:teamId", MemberTeam.class)
+                .setParameter("teamId", teamId)
+                .getResultList();
     }
 
 

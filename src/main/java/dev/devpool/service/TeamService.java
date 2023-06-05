@@ -2,6 +2,7 @@ package dev.devpool.service;
 
 import dev.devpool.domain.*;
 import dev.devpool.dto.*;
+import dev.devpool.dto.common.CommonDataListResponseDto;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.exception.CustomDuplicateException;
 import dev.devpool.exception.CustomEntityNotFoundException;
@@ -24,6 +25,7 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
 
+    private final MemberTeamRepository memberTeamRepository;
     private final StackRepository stackRepository;
     private final TechFieldRepository techFieldRepository;
     private final CategoryRepository categoryRepository;
@@ -31,6 +33,8 @@ public class TeamService {
     private final  StackService stackService;
     private final TechFieldService techFieldService;
     private final CategoryService categoryService;
+
+    private final MemberTeamService memberTeamService;
 
 
     @Transactional
@@ -84,6 +88,9 @@ public class TeamService {
 
     public TeamDto.Response findOneById(Long teamId) {
         Team findTeam = teamRepository.findOneById(teamId);
+
+        List<MemberTeamDto.Response> memberTeamDtoList = memberTeamService.findAllByTeamId(teamId);
+
         if (findTeam == null) {
             throw new CustomEntityNotFoundException(Team.class.getName(), teamId);
         }
@@ -135,10 +142,12 @@ public class TeamService {
                         .imageUrl(hostMember.getImageUrl())
                         .email(hostMember.getEmail())
                         .build())
+                .teamMemberList(memberTeamDtoList)
                 .build();
 
         return responseDto;
     }
+
     public TeamDto.Response findOneByHostId(Long hostId) {
         Team findTeam = teamRepository.findOneByHostId(hostId)
                 .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), hostId));

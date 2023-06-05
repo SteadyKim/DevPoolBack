@@ -3,6 +3,9 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.MemberTeam;
 import dev.devpool.domain.Team;
+import dev.devpool.dto.MemberDto;
+import dev.devpool.dto.MemberTeamDto;
+import dev.devpool.dto.common.CommonDataListResponseDto;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.exception.CustomException;
 import dev.devpool.repository.MemberRepository;
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -62,6 +66,26 @@ public class MemberTeamService {
                 .message("팀에 멤버를 저장하였습니다.")
                 .status(201)
                 .build();
+    }
+
+    @Transactional
+    public List<MemberTeamDto.Response> findAllByTeamId(Long teamId) {
+        List<MemberTeam> memberTeamList = memberTeamRepository.findAllByTeamId(teamId);
+
+        List<Member> memberList = memberTeamList.stream()
+                .map(MemberTeam::getMember)
+                .collect(Collectors.toList());
+
+        List<MemberTeamDto.Response> responseDtoList = memberList
+                .stream()
+                .map(member -> MemberTeamDto.Response.builder()
+                        .memberId(member.getId())
+                        .nickName(member.getNickName())
+                        .build())
+                .collect(Collectors.toList());
+
+        return responseDtoList;
+
     }
 
     @Transactional

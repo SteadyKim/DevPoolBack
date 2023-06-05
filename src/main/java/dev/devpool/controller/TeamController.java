@@ -25,11 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
-    private final MemberService memberService;
-    private final TechFieldService techFieldService;
-    private final StackService stackService;
     private final CommentService commentService;
-    private final CategoryService categoryService;
 
     @Operation(summary = "팀등록", description = "팀을 저장합니다.")
     @ApiResponses({

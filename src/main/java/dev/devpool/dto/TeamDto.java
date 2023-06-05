@@ -37,6 +37,8 @@ public class TeamDto {
 
         private MemberDto.Response hostMember;
 
+        private List<MemberTeamDto.Response> teamMemberList;
+
     }
 
     @Data

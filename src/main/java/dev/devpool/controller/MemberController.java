@@ -120,7 +120,7 @@ public class MemberController {
     })
     @PatchMapping("/member")
     public ResponseEntity<CommonResponseDto<Object>> updateMember(
-            @ParameterObject @ModelAttribute MemberParameter memberParameter) throws IOException {
+            @ParameterObject @ModelAttribute MemberParameter.Update memberParameter) throws IOException {
         CommonResponseDto<Object> responseDto = memberService.update(memberParameter);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);

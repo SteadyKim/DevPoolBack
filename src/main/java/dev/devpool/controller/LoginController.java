@@ -45,7 +45,7 @@ public class LoginController {
             @ApiResponse(responseCode = "500", description = "멤버 저장 실패 - 인터넷 에러")
     })
     @PostMapping(value = "/join", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<CommonResponseDto<Object>> saveMember(@ParameterObject @ModelAttribute MemberParameter memberParameter) throws IOException {
+    public ResponseEntity<CommonResponseDto<Object>> saveMember(@ParameterObject @ModelAttribute MemberParameter.Save memberParameter) throws IOException {
 
 
         // 저장

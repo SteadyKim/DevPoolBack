@@ -69,11 +69,10 @@ public class MemberService {
 
     @Transactional
     // 회원가입
-    public CommonResponseDto<Object> join(MemberParameter memberParameter) throws IOException {
+    public CommonResponseDto<Object> join(MemberParameter.Save memberParameter) throws IOException {
         String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/default.png";
 
         MultipartFile image = memberParameter.getImage();
-        System.out.println("image = " + image);
 
         if(!(image == null) && !(image.isEmpty())) {
             storeFileName = s3Uploader.upload(image, "images");
@@ -157,7 +156,7 @@ public class MemberService {
     }
 
     @Transactional
-    public CommonResponseDto<Object> update(MemberParameter memberParameter) throws IOException {
+    public CommonResponseDto<Object> update(MemberParameter.Update memberParameter) throws IOException {
         String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/default.png";
 
         Member findMember = memberRepository.findOneById(memberParameter.getMemberId());

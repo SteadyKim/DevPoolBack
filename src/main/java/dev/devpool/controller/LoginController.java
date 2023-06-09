@@ -1,5 +1,7 @@
 package dev.devpool.controller;
 
+import dev.devpool.dto.MemberDto;
+import dev.devpool.exception.CustomException;
 import dev.devpool.parameter.MemberParameter;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.dto.LoginDto;
@@ -17,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -46,6 +50,8 @@ public class LoginController {
     })
     @PostMapping(value = "/join", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommonResponseDto<Object>> saveMember(@ParameterObject @ModelAttribute MemberParameter.Save memberParameter) throws IOException {
+
+
 
 
         // 저장

@@ -1,6 +1,8 @@
 package dev.devpool.service;
 
+import dev.devpool.controller.LoginController;
 import dev.devpool.domain.Member;
+import dev.devpool.exception.CustomException;
 import dev.devpool.parameter.MemberParameter;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.dto.MemberDto;
@@ -70,6 +72,9 @@ public class MemberService {
     @Transactional
     // 회원가입
     public CommonResponseDto<Object> join(MemberParameter.Save memberParameter) throws IOException {
+        // 백준 아이디 중복 체크
+        checkDuplicateBJId(memberParameter);
+
         String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/default.png";
 
         MultipartFile image = memberParameter.getImage();
@@ -96,6 +101,21 @@ public class MemberService {
                 .status(201)
                 .message("회원 저장에 성공하였습니다.")
                 .build();
+    }
+
+    private void checkDuplicateBJId(MemberParameter.Save memberParameter) {
+        List<String> BJIdList = findAll()
+                .stream()
+                .filter(member -> member.getBJId() != null)
+                .map(MemberDto.Response::getBJId)
+                .collect(Collectors.toList());
+
+        String bjId = memberParameter.getBJId();
+        if(bjId != null) {
+            if(BJIdList.contains(bjId)) {
+                throw new CustomException("중복된 BJ 아이디가 있습니다." + bjId, LoginController.class.getName(), "saveMember()");
+            }
+        }
     }
 
     public void validateMember(Member member) {

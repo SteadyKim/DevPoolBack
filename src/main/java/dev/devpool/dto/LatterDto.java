@@ -22,6 +22,10 @@ public class LatterDto {
 
         private Long latterId;
 
+        private Long senderId;
+
+        private Long receiverId;
+
         private String senderNickName;
 
         private String receiverNickName;

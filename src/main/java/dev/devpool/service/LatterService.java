@@ -68,14 +68,16 @@ public class LatterService {
                 List<LatterDto.Response> latterSenderDtoList = latterSenderList.stream()  // 내가 보낸 쪽지 중 receiver가 특정한 경우
                         .filter(latter -> latter.getReceiver() != null && Objects.equals(latter.getReceiver().getId(), receiverId))
                         .map(latter -> {
-                            String receiverNickName = Optional.ofNullable(latter.getReceiver())
-                                    .map(Member::getNickName)
-                                    .orElse("탈퇴한 회원");
+//                            String receiverNickName = Optional.ofNullable(latter.getReceiver())
+//                                    .map(Member::getNickName)
+//                                    .orElse("탈퇴한 회원");
 
                             return   LatterDto.Response.builder()
                                     .latterId(latter.getId())
+                                    .senderId(latter.getSender().getId())
+                                    .receiverId(receiverId)
                                     .senderNickName(latter.getSender().getNickName())
-                                    .receiverNickName(receiverNickName)
+                                    .receiverNickName(latter.getReceiver().getNickName())
                                     .content(latter.getContent())
                                     .createTime(latter.getCreateDate())
                                     .build();
@@ -87,13 +89,15 @@ public class LatterService {
                         .filter(latter -> latter.getSender() != null && Objects.equals(latter.getSender().getId(), receiverId))
                         .map(latter -> {
 
-                            String senderNickName = Optional.ofNullable(latter.getSender())
-                                    .map(Member::getNickName)
-                                    .orElse("탈퇴한 회원");
+//                            String senderNickName = Optional.ofNullable(latter.getSender())
+//                                    .map(Member::getNickName)
+//                                    .orElse("탈퇴한 회원");
 
                             return LatterDto.Response.builder()
                                     .latterId(latter.getId())
-                                    .senderNickName(senderNickName)
+                                    .senderId(latter.getSender().getId())
+                                    .receiverId(latter.getReceiver().getId())
+                                    .senderNickName(latter.getSender().getNickName())
                                     .receiverNickName(latter.getReceiver().getNickName())
                                     .content(latter.getContent())
                                     .createTime(latter.getCreateDate())
@@ -108,17 +112,16 @@ public class LatterService {
 
                 latterDtoList.add(sumDtoList);
             }
-        // 내가 받은 쪽지 중 sender가 receiverId가 아닌 쪽지 ( 예외 적인 상황임)
+        // 내가 받은 쪽지 중 내가 보내지 않은 쪽지 (예외적인 상황임)
         List<LatterDto.Response> sumDtoList = latterReceiverList.stream()
-                .filter(latter -> !receiverIdSet.contains(latter.getSender().getId()))
+                .filter(latter -> latter.getSender().getId() != null && !receiverIdSet.contains(latter.getSender().getId()))
                 .map(latter -> {
-                        String senderNickName = Optional.ofNullable(latter.getSender())
-                        .map(Member::getNickName)
-                        .orElse("탈퇴한 회원");
 
                     return LatterDto.Response.builder()
                             .latterId(latter.getId())
-                            .senderNickName(senderNickName)
+                            .senderId(latter.getSender().getId())
+                            .receiverId(latter.getReceiver().getId())
+                            .senderNickName(latter.getSender().getNickName())
                             .receiverNickName(latter.getReceiver().getNickName())
                             .content(latter.getContent())
                             .createTime(latter.getCreateDate())

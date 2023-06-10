@@ -5,6 +5,7 @@ import dev.devpool.domain.Project;
 import dev.devpool.domain.Stack;
 import dev.devpool.domain.Team;
 import dev.devpool.dto.StackDto;
+import dev.devpool.exception.CustomException;
 import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.ProjectRepository;
 import dev.devpool.repository.StackRepository;
@@ -127,7 +128,12 @@ public class StackService {
         stackRepository.deleteAllByProjectId(projectId);
 
         // 추가
-        Project project = projectRepository.findOneById(projectId);
+        Project project = projectRepository.findById(projectId)
+                .orElse(null);
+
+        if(project == null) {
+            throw new CustomException("update할 Project가 없습니다.", StackService.class.getName(), "updateByProject()");
+        }
         for (String stackName : stackNameList) {
             Stack stack = Stack.builder()
                     .name(stackName)

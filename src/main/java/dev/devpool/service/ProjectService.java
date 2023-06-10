@@ -34,7 +34,10 @@ public class ProjectService {
 
     // 조회
     public ProjectDto.Response findOneById(Long projectId) {
-        Project findProject = projectRepository.findOneById(projectId);
+        Project findProject = projectRepository.findById(projectId)
+                .orElse(null);
+
+        if(findProject == null) return null;
 
         ProjectDto.Response projectDto = getProjectDto(findProject);
 
@@ -66,6 +69,7 @@ public class ProjectService {
     }
 
     public List<ProjectDto.Response> findProjects() {
+
         List<ProjectDto.Response> projectDtoList = projectRepository.findAll().stream()
                 .map(ProjectService::getProjectDto)
                 .collect(Collectors.toList());

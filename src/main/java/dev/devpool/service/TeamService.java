@@ -2,7 +2,6 @@ package dev.devpool.service;
 
 import dev.devpool.domain.*;
 import dev.devpool.dto.*;
-import dev.devpool.dto.common.CommonDataListResponseDto;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.exception.CustomDuplicateException;
 import dev.devpool.exception.CustomEntityNotFoundException;

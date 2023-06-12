@@ -1,27 +1,23 @@
 package dev.devpool.service;
 
 import dev.devpool.domain.Category;
-import dev.devpool.domain.Certificate;
 import dev.devpool.domain.Team;
 import dev.devpool.dto.CategoryDto;
 import dev.devpool.repository.CategoryRepository;
 import dev.devpool.repository.TeamRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
     private final TeamRepository teamRepository;
 
-
-    public CategoryService(CategoryRepository categoryRepository, TeamRepository teamRepository) {
-        this.categoryRepository = categoryRepository;
-        this.teamRepository = teamRepository;
-    }
 
     // 저장
     @Transactional

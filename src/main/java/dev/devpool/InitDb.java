@@ -6,6 +6,7 @@ import dev.devpool.service.StackService;
 import dev.devpool.service.TeamService;
 import dev.devpool.service.TechFieldService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,6 @@ public class InitDb {
     private final MemberService memberService;
 
     private final StackService stackService;
-
     private final TechFieldService techFieldService;
     private final TeamService teamService;
     private final EntityManager em;
@@ -42,13 +42,15 @@ public class InitDb {
 
         private final EntityManager em;
 
+        private final PasswordEncoder passwordEncoder;
 
         public void ss() {
+            String encode = passwordEncoder.encode("1234");
             Member member = Member.builder()
                     .name("김태우")
                     .nickName("찐빵")
                     .email("1234@naver.com")
-                    .password("1234")
+                    .password(encode)
                     .createTime(LocalDateTime.of(2022,5,15,4,3))
                     .imageUrl("asdojasdsa/.sdfsdjfnj")
                     .roles(List.of("USER"))

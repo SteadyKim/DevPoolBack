@@ -82,13 +82,13 @@ public class MemberService {
         if(!(image == null) && !(image.isEmpty())) {
             storeFileName = s3Uploader.upload(image, "images");
         }
-
+        String encodedPassword = passwordEncoder.encode(memberParameter.getPassword());
         Member member = Member.builder()
                 .name(memberParameter.getName())
                 .BJId(memberParameter.getBJId())
                 .email(memberParameter.getEmail())
                 .nickName(memberParameter.getNickName())
-                .password(memberParameter.getPassword())
+                .password(encodedPassword)
                 .imageUrl(storeFileName)
                 .roles(List.of("USER"))
                 .build();

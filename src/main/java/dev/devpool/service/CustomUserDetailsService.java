@@ -19,7 +19,6 @@ import java.util.Arrays;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
@@ -33,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return User.builder()
                 .username(member.getEmail())
-                .password(passwordEncoder.encode(member.getPassword()))
+                .password(member.getPassword())
                 .roles(member.getRoles().toArray(new String[0]))
                 .build();
     }

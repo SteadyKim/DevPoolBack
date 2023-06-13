@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class LoginController {
 
     private final MemberService memberService;
+
     @Operation(summary = "로그인", description = "회원 로그인을 합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "로그인 성공"),

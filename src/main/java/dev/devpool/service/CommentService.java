@@ -5,6 +5,7 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.Team;
 import dev.devpool.dto.CommentDto;
 import dev.devpool.dto.common.CommonResponseDto;
+import dev.devpool.exception.CustomException;
 import dev.devpool.repository.CommentRepository;
 import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.TeamRepository;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -40,9 +40,6 @@ public class CommentService {
                 .content(commentSaveDto.getContent())
                 .build();
 
-        /**
-         * 왜 두개씩?
-         */
         commentRepository.save(comment);
 
         return CommonResponseDto.builder()
@@ -54,7 +51,8 @@ public class CommentService {
     public CommonResponseDto<Object> joinReply(CommentDto.SaveReply commentSaveReplyDto) {
         Team findTeam = teamRepository.findOneById(commentSaveReplyDto.getTeamId());
         Member findMember = memberRepository.findOneById(commentSaveReplyDto.getMemberId());
-        Comment parentComment = commentRepository.findById(commentSaveReplyDto.getParentId());
+        Comment parentComment = commentRepository.findById(commentSaveReplyDto.getParentId())
+                .orElse(null);
 
         Comment comment = Comment.builder()
                 .team(findTeam)
@@ -75,7 +73,8 @@ public class CommentService {
 
     // 조회
     public CommentDto.Response findById(Long commentId) {
-        Comment findComment = commentRepository.findById(commentId);
+        Comment findComment = commentRepository.findById(commentId)
+                .orElse(null);
         Comment parent = findComment.getParent();
 
 
@@ -105,7 +104,8 @@ public class CommentService {
     public List<CommentDto.Response> findChildByParentId(Long parentId) {
         List<CommentDto.Response> commentDtoList;
 
-        Comment parentComment = commentRepository.findById(parentId);
+        Comment parentComment = commentRepository.findById(parentId)
+                .orElse(null);
         List<Comment> commentList = commentRepository.findChildByParentId(parentId);
 
         if(commentList == null) {
@@ -147,7 +147,8 @@ public class CommentService {
     // 삭제
     @Transactional
     public void deleteById(Long commentId) {
-        commentRepository.deleteById(commentId);
+
+        commentRepository.deleteCustomById(commentId);
     }
 
     @Transactional
@@ -168,6 +169,9 @@ public class CommentService {
     // 수정
     @Transactional
     public void update(Long commentId, Comment newComment) {
-        commentRepository.update(commentId, newComment);
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CustomException("DB에 comment가 없습니다.", CommentService.class.getName(), "update()"));
+
+        comment.updateComment(newComment);
     }
 }

@@ -27,14 +27,15 @@ public class TechFieldService {
 
     // 저장
     @Transactional
-    public Long join(TechField techField) {
-        Long techFieldId = techFieldRepository.save(techField);
-        return techFieldId;
+    public void join(TechField techField) {
+        techFieldRepository.save(techField);
+        return ;
     }
 
     // 조회
     public TechField findById(Long techFieldId) {
-        TechField findTechField = techFieldRepository.findOneById(techFieldId);
+        TechField findTechField = techFieldRepository.findById(techFieldId)
+                .orElse(null);
         return findTechField;
     }
 

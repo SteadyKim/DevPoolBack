@@ -11,6 +11,7 @@ import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.jwt.JwtTokenProvider;
 import dev.devpool.jwt.TokenInfo;
 import dev.devpool.repository.MemberRepository;
+import dev.devpool.repository.MemberRepositoryCustom;
 import dev.devpool.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -128,7 +129,8 @@ public class MemberService {
 
     //조회
     public MemberDto.Response findOneById(Long memberId) {
-        Member findMember = memberRepository.findOneById(memberId);
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
 
         MemberDto.Response responseDto = MemberDto.Response.builder()
                 .memberId(findMember.getId())
@@ -179,7 +181,8 @@ public class MemberService {
     public CommonResponseDto<Object> update(MemberParameter.Update memberParameter) throws IOException {
         String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/default.png";
 
-        Member findMember = memberRepository.findOneById(memberParameter.getMemberId());
+        Member findMember = memberRepository.findById(memberParameter.getMemberId())
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberParameter.getMemberId()));
         MultipartFile image = memberParameter.getImage();
 
         if(!(image == null) && !(image.isEmpty())) {

@@ -3,6 +3,7 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Site;
 import dev.devpool.dto.SiteDto;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.SiteRepository;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +62,8 @@ public class SiteService {
     // 수정
     @Transactional
     public void update(Long memberId, ArrayList<SiteDto.Save> siteDtoList) {
-        Member findMember = memberRepository.findOneById(memberId);
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
 
         // 지우고
         siteRepository.deleteAllByMemberId(findMember.getId());

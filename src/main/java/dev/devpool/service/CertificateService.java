@@ -2,6 +2,7 @@ package dev.devpool.service;
 
 import dev.devpool.domain.Certificate;
 import dev.devpool.domain.Member;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.CertificateRepository;
 import dev.devpool.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +62,8 @@ public class CertificateService {
         /**
          * 리팩 해야함
          */
-        Member findMember = memberRepository.findOneById(memberId);
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
 
         certificateRepository.deleteAllByMemberId(findMember.getId());
         // 추가

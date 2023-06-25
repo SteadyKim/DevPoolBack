@@ -5,6 +5,7 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.Team;
 import dev.devpool.domain.TechField;
 import dev.devpool.dto.TechFieldDto;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.TeamRepository;
 import dev.devpool.repository.TechFieldRepository;
@@ -73,7 +74,8 @@ public class TechFieldService {
     // 수정
     @Transactional
     public void updateByMember(Long memberId, List<String> techFieldNameList) {
-        Member findMember = memberRepository.findOneById(memberId);
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
         // 지우기
         techFieldRepository.deleteAllByMemberId(findMember.getId());
 

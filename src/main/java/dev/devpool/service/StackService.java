@@ -5,6 +5,7 @@ import dev.devpool.domain.Project;
 import dev.devpool.domain.Stack;
 import dev.devpool.domain.Team;
 import dev.devpool.dto.StackDto;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.exception.CustomException;
 import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.ProjectRepository;
@@ -109,7 +110,8 @@ public class StackService {
         // 지우기
         stackRepository.deleteAllByMemberId(memberId);
 
-        Member member = memberRepository.findOneById(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
 
         // 추가
         for (String stackName : StackNameList) {

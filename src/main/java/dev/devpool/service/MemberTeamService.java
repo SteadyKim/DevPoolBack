@@ -3,10 +3,9 @@ package dev.devpool.service;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.MemberTeam;
 import dev.devpool.domain.Team;
-import dev.devpool.dto.MemberDto;
 import dev.devpool.dto.MemberTeamDto;
-import dev.devpool.dto.common.CommonDataListResponseDto;
 import dev.devpool.dto.common.CommonResponseDto;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.exception.CustomException;
 import dev.devpool.repository.MemberRepository;
 import dev.devpool.repository.MemberTeamRepository;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -36,7 +34,8 @@ public class MemberTeamService {
     // 팀에 멤버 조인
     @Transactional
     public CommonResponseDto<Object> join(Long memberId, Long teamId) {
-        Member findMember = memberRepository.findOneById(memberId);
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
 
         Team findTeam = teamRepository.findOneById(teamId);
 
@@ -90,9 +89,10 @@ public class MemberTeamService {
 
     @Transactional
     public CommonResponseDto<Object> delete(Long memberId, Long teamId) {
-        Member findMember = memberRepository.findOneById(memberId);
+        Member findMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
+
         Team findTeam = teamRepository.findOneById(teamId);
-        if(findMember == null) throw new CustomException("멤버가 없습니디.", MemberTeamService.class.getName(), "delete()");
         if(findTeam == null) throw new CustomException("팀이 없습니다.", MemberTeamService.class.getName(), "delete()");
 
         memberTeamRepository.delete(findMember, findTeam);

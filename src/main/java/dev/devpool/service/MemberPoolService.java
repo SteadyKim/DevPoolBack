@@ -40,7 +40,9 @@ public class MemberPoolService {
         @Transactional
         public CommonResponseDto<Object> join(MemberPoolDto.Save memberPoolDto) {
                 Long memberId = memberPoolDto.getMemberId();
-                Member findMember = memberRepository.findOneById(memberId);
+                Member findMember = memberRepository.findById(memberId)
+                        .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
+
                 findMember.setMemberPoolCreateTime(LocalDateTime.now());
 
                 List<TechFieldDto.Save> techFieldDtoList = memberPoolDto.getTechField();
@@ -128,7 +130,8 @@ public class MemberPoolService {
 
         public MemberPoolDto.Response findOneById(Long memberId) {
 
-                Member findMember = memberRepository.findOneById(memberId);
+                Member findMember = memberRepository.findById(memberId)
+                        .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
 
                 if (findMember.getCreateTime() == null) {
                         throw new CustomEntityNotFoundException("MemberPool", memberId);
@@ -245,7 +248,8 @@ public class MemberPoolService {
 
         @Transactional
         public CommonResponseDto<Object> deleteById(Long memberId) {
-                Member findMember = memberRepository.findOneById(memberId);
+                Member findMember = memberRepository.findById(memberId)
+                        .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
                 findMember.setMemberPoolCreateTime(null);
                 techFieldRepository.deleteAllByMemberId(memberId);
                 stackRepository.deleteAllByMemberId(memberId);

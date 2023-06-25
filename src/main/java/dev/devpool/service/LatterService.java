@@ -29,9 +29,11 @@ public class LatterService {
     @Transactional
     public CommonResponseDto<Object> join(LatterDto.Save latterDto) {
         Long senderId = latterDto.getSenderId();
-        Member sender = memberRepository.findOneById(senderId);
+        Member sender = memberRepository.findById(senderId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), senderId));
         Long receiverId = latterDto.getReceiverId();
-        Member receiver = memberRepository.findOneById(receiverId);
+        Member receiver = memberRepository.findById(receiverId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), receiverId));
 
         Latter latter = Latter.builder()
                 .sender(sender)

@@ -5,6 +5,7 @@ import dev.devpool.domain.Member;
 import dev.devpool.domain.Team;
 import dev.devpool.dto.CommentDto;
 import dev.devpool.dto.common.CommonResponseDto;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.exception.CustomException;
 import dev.devpool.repository.CommentRepository;
 import dev.devpool.repository.MemberRepository;
@@ -32,7 +33,8 @@ public class CommentService {
     @Transactional
     public CommonResponseDto<Object> join(CommentDto.Save commentSaveDto) {
         Team findTeam = teamRepository.findOneById(commentSaveDto.getTeamId());
-        Member findMember = memberRepository.findOneById(commentSaveDto.getMemberId());
+        Member findMember = memberRepository.findById(commentSaveDto.getMemberId())
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), commentSaveDto.getMemberId()));
 
         Comment comment = Comment.builder()
                 .team(findTeam)
@@ -50,7 +52,8 @@ public class CommentService {
     @Transactional
     public CommonResponseDto<Object> joinReply(CommentDto.SaveReply commentSaveReplyDto) {
         Team findTeam = teamRepository.findOneById(commentSaveReplyDto.getTeamId());
-        Member findMember = memberRepository.findOneById(commentSaveReplyDto.getMemberId());
+        Member findMember = memberRepository.findById(commentSaveReplyDto.getMemberId())
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), commentSaveReplyDto.getMemberId()));
         Comment parentComment = commentRepository.findById(commentSaveReplyDto.getParentId())
                 .orElse(null);
 

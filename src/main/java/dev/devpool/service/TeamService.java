@@ -39,7 +39,8 @@ public class TeamService {
     @Transactional
     public CommonResponseDto<Object> join(TeamDto.Save teamSaveDto) {
         Long hostMemberId = teamSaveDto.getHostMemberId();
-        Member hostMember = memberRepository.findOneById(hostMemberId);
+        Member hostMember = memberRepository.findById(hostMemberId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), hostMemberId));
 
         Team team = Team.builder()
                 .hostMember(hostMember)

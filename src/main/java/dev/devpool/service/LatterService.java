@@ -115,25 +115,37 @@ public class LatterService {
                 latterDtoList.add(sumDtoList);
             }
         // 내가 받은 쪽지 중 내가 보내지 않은 쪽지 (예외적인 상황임)
-        List<LatterDto.Response> sumDtoList = latterReceiverList.stream()
+        Set<Long> receivedExceptionSenderIdSet = latterReceiverList.stream()
                 .filter(latter -> latter.getSender().getId() != null && !receiverIdSet.contains(latter.getSender().getId()))
-                .map(latter -> {
+                .map(latter -> latter.getSender().getId())
+                .collect(Collectors.toSet());
 
-                    return LatterDto.Response.builder()
-                            .latterId(latter.getId())
-                            .senderId(latter.getSender().getId())
-                            .receiverId(latter.getReceiver().getId())
-                            .senderNickName(latter.getSender().getNickName())
-                            .receiverNickName(latter.getReceiver().getNickName())
-                            .content(latter.getContent())
-                            .createTime(latter.getCreateDate())
-                            .build();
-                })
-                .collect(Collectors.toList());
+        for (Long exceptionSenderId : receivedExceptionSenderIdSet) {
+            List<LatterDto.Response> latterExceptionSenderDtoList = latterReceiverList.stream()
+                    .filter(latter -> Objects.equals(latter.getSender().getId(), exceptionSenderId))
+                    .map(latter -> {
 
-        if(!sumDtoList.isEmpty()) {
-            latterDtoList.add(sumDtoList);
+//                            String senderNickName = Optional.ofNullable(latter.getSender())
+//                                    .map(Member::getNickName)
+//                                    .orElse("탈퇴한 회원");
+
+                        return LatterDto.Response.builder()
+                                .latterId(latter.getId())
+                                .senderId(latter.getSender().getId())
+                                .receiverId(latter.getReceiver().getId())
+                                .senderNickName(latter.getSender().getNickName())
+                                .receiverNickName(latter.getReceiver().getNickName())
+                                .content(latter.getContent())
+                                .createTime(latter.getCreateDate())
+                                .build();
+                    })
+                    .collect(Collectors.toList());
+
+            latterExceptionSenderDtoList.sort(Comparator.comparing(LatterDto.Response::getCreateTime));
+            latterDtoList.add(latterExceptionSenderDtoList);
+
         }
+
         latterDtoList.sort(Comparator.comparing(l -> l.get(0).getCreateTime()));
 
         return latterDtoList;

@@ -26,6 +26,7 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
     private final CommentService commentService;
+    private final MemberTeamService memberTeamService;
 
     @Operation(summary = "팀등록", description = "팀을 저장합니다.")
     @ApiResponses({
@@ -37,6 +38,9 @@ public class TeamController {
         // 저장
         // 팀, 팀멤버, stack, techfield 등 관련 모든 정보 저장
         CommonResponseDto<Object> responseDto = teamService.join(teamSaveRequestDto);
+
+        Long teamId = responseDto.getId();
+        memberTeamService.join(teamSaveRequestDto.getHostMemberId(), teamId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }

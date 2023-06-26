@@ -92,8 +92,8 @@ public class MemberPoolController {
             @ApiResponse(responseCode = "200", description = "멤버 풀 수정 - 성공"),
             @ApiResponse(responseCode = "404", description = "멤버 풀 수정 - 실패")
     })
-    @PutMapping("/member-pool/{memberId}")
-    public ResponseEntity<CommonResponseDto<Object>> updateMemberPool(@PathVariable("memberId") Long memberId, @RequestBody @Valid MemberPoolDto.Save memberPoolDto) {
+    @PutMapping("/member-pool")
+    public ResponseEntity<CommonResponseDto<Object>> updateMemberPool(@RequestBody @Valid MemberPoolDto.Save memberPoolDto) {
         CommonResponseDto<Object> responseDto = memberPoolService.update(memberPoolDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);

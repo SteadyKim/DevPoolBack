@@ -4,6 +4,7 @@ import dev.devpool.domain.*;
 import dev.devpool.dto.*;
 import dev.devpool.dto.common.CommonResponseDto;
 import dev.devpool.exception.CustomEntityNotFoundException;
+import dev.devpool.exception.CustomException;
 import dev.devpool.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +79,12 @@ public class MemberPoolService {
                         String endDateString = projectDto.getEndDate();
                         String fullEndDateString = endDateString + "-01";
 
-                        LocalDate endDate = LocalDate.parse(fullEndDateString);
+                        LocalDate endDate = null;
+                        try {
+                                endDate = LocalDate.parse(fullEndDateString);
+                        } catch (Exception e) {
+                                throw new CustomException("날짜 형식이 잘못되었습니다.", MemberPoolService.class.getName(), "join()");
+                        }
 
                         Project project = Project.builder()
                                 .member(findMember)
@@ -173,6 +179,7 @@ public class MemberPoolService {
         private static SiteDto.Response getSiteDto(Site site) {
                 return SiteDto.Response.builder()
                         .name(site.getName())
+                        .url(site.getUrl())
                         .build();
         }
 

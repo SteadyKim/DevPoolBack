@@ -138,9 +138,11 @@ public class TeamService {
                 .hostMember(MemberDto.Response.builder()
                         .memberId(hostMember.getId())
                         .name(hostMember.getName())
+                        .nickName(hostMember.getNickName())
                         .email(hostMember.getNickName())
                         .imageUrl(hostMember.getImageUrl())
                         .email(hostMember.getEmail())
+                        .BJId(hostMember.getBJId())
                         .build())
                 .teamMemberList(memberTeamDtoList)
                 .build();

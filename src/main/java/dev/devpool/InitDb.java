@@ -1,63 +1,63 @@
-//package dev.devpool;
-//
-//import dev.devpool.domain.*;
-//import dev.devpool.service.MemberService;
-//import dev.devpool.service.StackService;
-//import dev.devpool.service.TeamService;
-//import dev.devpool.service.TechFieldService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.stereotype.Component;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import javax.annotation.PostConstruct;
-//import javax.persistence.EntityManager;
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
-//import java.time.Year;
-//import java.time.YearMonth;
-//import java.util.List;
-//
-//@Component
-//@RequiredArgsConstructor
-//public class InitDb {
-//
-//    private final InitService initService;
-//    private final MemberService memberService;
-//
-//    private final StackService stackService;
-//    private final TechFieldService techFieldService;
-//    private final TeamService teamService;
-//    private final EntityManager em;
-//    @PostConstruct
-//    public void init() {
-//        initService.ss();
-//
-//    }
-//
-//    @Component
-//    @Transactional
-//    @RequiredArgsConstructor
-//    static class InitService {
-//
-//        private final EntityManager em;
-//
-//        private final PasswordEncoder passwordEncoder;
-//
-//        public void ss() {
-//            String encode = passwordEncoder.encode("1234");
-//            Member member = Member.builder()
-//                    .name("김태우")
-//                    .nickName("귀염둥이")
-//                    .email("1234@naver.com")
-//                    .password(encode)
-//                    .createTime(LocalDateTime.of(2022,5,15,4,3))
-//                    .imageUrl("asdojasdsa/.sdfsdjfnj")
-//                    .roles(List.of("USER"))
-//                    .build();
-//
-//            em.persist(member);
-//
+package dev.devpool;
+
+import dev.devpool.domain.*;
+import dev.devpool.service.MemberService;
+import dev.devpool.service.StackService;
+import dev.devpool.service.TeamService;
+import dev.devpool.service.TechFieldService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Year;
+import java.time.YearMonth;
+import java.util.List;
+
+@Component
+@RequiredArgsConstructor
+public class InitDb {
+
+    private final InitService initService;
+    private final MemberService memberService;
+
+    private final StackService stackService;
+    private final TechFieldService techFieldService;
+    private final TeamService teamService;
+    private final EntityManager em;
+    @PostConstruct
+    public void init() {
+        initService.ss();
+
+    }
+
+    @Component
+    @Transactional
+    @RequiredArgsConstructor
+    static class InitService {
+
+        private final EntityManager em;
+
+        private final PasswordEncoder passwordEncoder;
+
+        public void ss() {
+            String encode = passwordEncoder.encode("1234");
+            Member member = Member.builder()
+                    .name("김태우")
+                    .nickName("귀염둥이")
+                    .email("1234@naver.com")
+                    .password(encode)
+                    .createTime(LocalDateTime.of(2022,5,15,4,3))
+                    .imageUrl("asdojasdsa/.sdfsdjfnj")
+                    .roles(List.of("USER"))
+                    .build();
+
+            em.persist(member);
+
 //            Stack stack1 = Stack.builder()
 //                    .member(member)
 //                    .name("Stack1")
@@ -310,8 +310,8 @@
 //            em.persist(latter4);
 //
 //            em.persist(latter5);
-//
-//        }
-//    }
-//
-//}
+
+        }
+    }
+
+}

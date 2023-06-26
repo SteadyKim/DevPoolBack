@@ -1,5 +1,6 @@
 package dev.devpool.repository;
 
+import dev.devpool.domain.Board;
 import dev.devpool.domain.Member;
 import dev.devpool.domain.Project;
 import dev.devpool.exception.CustomEntityNotFoundException;
@@ -42,6 +43,13 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
                     .forEach(project -> em.createQuery("delete from Stack s where s.project.id=:projectId")
                             .setParameter("projectId", project.getId())
                             .executeUpdate());
+
+            List<Board> boardList = em.createQuery("select b from Board b where b.member.id=:memberId", Board.class)
+                    .setParameter("memberId", memberId)
+                    .getResultList();
+
+            boardList.stream()
+                            .forEach(em::remove);
 
             em.remove(findMember);
         }

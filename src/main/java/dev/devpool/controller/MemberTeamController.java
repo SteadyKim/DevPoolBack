@@ -46,6 +46,6 @@ public class MemberTeamController {
 
         CommonResponseDto<Object> responseDto = memberTeamService.delete(memberTeamParameter.getMemberId(), memberTeamParameter.getTeamId());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 }

@@ -76,7 +76,7 @@ public class MemberService {
         // 백준 아이디 중복 체크
         checkDuplicateBJId(memberParameter);
 
-        String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/default.png";
+        String storeFileName = "https://devpoolback.s3.ap-northeast-2.amazonaws.com/images/defaultProfile.png";
 
         MultipartFile image = memberParameter.getImage();
 

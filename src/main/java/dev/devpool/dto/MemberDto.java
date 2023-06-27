@@ -47,5 +47,6 @@ public class MemberDto {
         private String imgUrl;
 
 
+
     }
 }

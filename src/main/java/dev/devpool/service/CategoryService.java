@@ -3,6 +3,7 @@ package dev.devpool.service;
 import dev.devpool.domain.Category;
 import dev.devpool.domain.Team;
 import dev.devpool.dto.CategoryDto;
+import dev.devpool.exception.CustomEntityNotFoundException;
 import dev.devpool.repository.CategoryRepository;
 import dev.devpool.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,8 @@ public class CategoryService {
     @Transactional
     public void update(Long teamId, CategoryDto.Save categoryDto) {
         // 지우고
-        Team findTeam = teamRepository.findOneById(teamId);
+        Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), teamId));
         categoryRepository.deleteByTeamId(findTeam.getId());
 
         // 추가

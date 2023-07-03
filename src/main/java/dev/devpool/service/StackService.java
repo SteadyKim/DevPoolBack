@@ -87,7 +87,8 @@ public class StackService {
     // 수정
     @Transactional
     public void updateByTeam(Long teamId, List<StackDto.Save> stackDtoList) {
-        Team findTeam = teamRepository.findOneById(teamId);
+        Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), teamId));
 
         // 지우기
         stackRepository.deleteAllByTeamId(findTeam.getId());

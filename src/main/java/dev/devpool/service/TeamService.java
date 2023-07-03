@@ -24,7 +24,6 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
 
-    private final MemberTeamRepository memberTeamRepository;
     private final StackRepository stackRepository;
     private final TechFieldRepository techFieldRepository;
     private final CategoryRepository categoryRepository;
@@ -87,7 +86,8 @@ public class TeamService {
     }
 
     public TeamDto.Response findOneById(Long teamId) {
-        Team findTeam = teamRepository.findOneById(teamId);
+        Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), teamId));
 
         List<MemberTeamDto.Response> memberTeamDtoList = memberTeamService.findAllByTeamId(teamId);
 
@@ -257,7 +257,8 @@ public class TeamService {
 
     @Transactional
     public CommonResponseDto<Object> update(Long teamId, TeamDto.Update newTeamDto) {
-        Team findTeam = teamRepository.findOneById(teamId);
+        Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), teamId));
 
         // 변경감지를 활용해 Update 쿼리
         findTeam.update(newTeamDto);

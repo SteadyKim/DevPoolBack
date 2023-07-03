@@ -90,7 +90,8 @@ public class TechFieldService {
 
     @Transactional
     public void updateByTeam(Long teamId, List<TechFieldDto.Save> techFieldDtoList) {
-        Team findTeam = teamRepository.findOneById(teamId);
+        Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), teamId));
         // 지우기
         techFieldRepository.deleteAllByTeamId(findTeam.getId());
 

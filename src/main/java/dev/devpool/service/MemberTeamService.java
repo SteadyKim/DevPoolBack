@@ -37,7 +37,8 @@ public class MemberTeamService {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
 
-        Team findTeam = teamRepository.findOneById(teamId);
+        Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), teamId));
 
         Integer recruitCount = findTeam.getRecruitCount();
 
@@ -92,8 +93,8 @@ public class MemberTeamService {
         Member findMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), memberId));
 
-        Team findTeam = teamRepository.findOneById(teamId);
-        if(findTeam == null) throw new CustomException("팀이 없습니다.", MemberTeamService.class.getName(), "delete()");
+        Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), teamId));
 
         memberTeamRepository.delete(findMember, findTeam);
         /**

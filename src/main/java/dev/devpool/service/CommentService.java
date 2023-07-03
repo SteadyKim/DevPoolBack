@@ -32,7 +32,8 @@ public class CommentService {
     // 저장
     @Transactional
     public CommonResponseDto<Object> join(CommentDto.Save commentSaveDto) {
-        Team findTeam = teamRepository.findOneById(commentSaveDto.getTeamId());
+        Team findTeam = teamRepository.findById(commentSaveDto.getTeamId())
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), commentSaveDto.getTeamId()));
         Member findMember = memberRepository.findById(commentSaveDto.getMemberId())
                 .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), commentSaveDto.getMemberId()));
 
@@ -51,7 +52,8 @@ public class CommentService {
 
     @Transactional
     public CommonResponseDto<Object> joinReply(CommentDto.SaveReply commentSaveReplyDto) {
-        Team findTeam = teamRepository.findOneById(commentSaveReplyDto.getTeamId());
+        Team findTeam = teamRepository.findById(commentSaveReplyDto.getTeamId())
+                .orElseThrow(() -> new CustomEntityNotFoundException(Team.class.getName(), commentSaveReplyDto.getTeamId()));
         Member findMember = memberRepository.findById(commentSaveReplyDto.getMemberId())
                 .orElseThrow(() -> new CustomEntityNotFoundException(Member.class.getName(), commentSaveReplyDto.getMemberId()));
         Comment parentComment = commentRepository.findById(commentSaveReplyDto.getParentId())
